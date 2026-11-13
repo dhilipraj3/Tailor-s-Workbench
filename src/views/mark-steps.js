@@ -93,20 +93,33 @@ function pieceSteps(ctx, pls, layIn, cls) {
     }
     pts.forEach((q, i) => { q.F = F(q.p); q.rel = [r8(q.F[0] - S[0]), r8(q.F[1] - S[1])]; q.name = LETTERS[i % LETTERS.length] + (i >= LETTERS.length ? '2' : ''); });
     const drawn = (upto) => pts.slice(0, upto).map((q) => dot(v.M(q.F), q.guide ? 4 : 6, q.guide ? '#9fd3ff' : '#fff') + label(v.M(q.F), q.name, q.guide ? '#9fd3ff' : '#fff')).join('');
-    for (let i = 0; i < pts.length; i += 2) {
-      const grp = pts.slice(i, i + 2);
-      const say = grp.map((q) => `From S, ${along(q.rel[0], q.rel[1], edge)}. Mark ${q.guide ? 'a small curve guide dot' : 'point'} ${q.name}.`).join(' ');
-      steps.push({ sec, cap: `Mark point${grp.length > 1 ? 's' : ''} ${grp.map((q) => q.name).join(' and ')}`, say, svg: () => {
+    // one point per step, so the two measurements can sit right on their own chalk lines
+    const tag = (x, y, txt, d0) => {
+      const w = txt.length * 10.5 + 18;
+      return H.pop(`<rect x="${(x - w / 2).toFixed(1)}" y="${(y - 14).toFixed(1)}" width="${w.toFixed(1)}" height="28" rx="9" class="chipbg"/><text x="${x.toFixed(1)}" y="${(y + 1).toFixed(1)}" class="chipt" style="font-size:16px">${txt}</text>`, d0);
+    };
+    const clampX = (x, w) => Math.min(800 - w / 2 - 6, Math.max(w / 2 + 6, x));
+    pts.forEach((q, i) => {
+      const say = `From S, ${along(q.rel[0], q.rel[1], edge)}. Mark ${q.guide ? 'a small curve guide dot' : 'point'} ${q.name}.`;
+      steps.push({ sec, cap: `Mark point ${q.name}`, say, svg: () => {
         let o = bg() + ghost + cross(Sm) + label(Sm, 'S', '#ffd84a') + drawn(i);
-        grp.forEach((q, k) => {
-          const d0 = 0.3 + k * 1.6, corner = v.M([q.F[0], S[1]]), P = v.M(q.F);
-          o += H.draw(`M${Sm[0]} ${Sm[1]} L${corner[0]} ${corner[1]} L${P[0]} ${P[1]}`, 'chalkd', d0, 1);
-          o += H.chip(680, 34 + k * 46, `${q.name} ${arrowChip(q.rel[0], q.rel[1])}`, d0 + 0.6);
-          o += H.pop(dot(P, q.guide ? 5 : 8, q.guide ? '#9fd3ff' : '#ffd84a') + label(P, q.name, '#ffd84a'), d0 + 1);
-        });
+        const corner = v.M([q.F[0], S[1]]), P = v.M(q.F);
+        o += H.draw(`M${Sm[0]} ${Sm[1]} L${corner[0]} ${corner[1]} L${P[0]} ${P[1]}`, 'chalkd', 0.3, 1.2);
+        if (q.rel[0]) {
+          // "along the fabric": centred on the horizontal line, or just above it when the line is short
+          const t = `→ ${f(q.rel[0])}`, w = t.length * 10.5 + 18, len = Math.abs(corner[0] - Sm[0]);
+          o += tag(clampX((Sm[0] + corner[0]) / 2, w), Sm[1] - (len > w + 20 ? 0 : 24), t, 0.9);
+        }
+        if (q.rel[1]) {
+          // "away from the fold": centred on the vertical line, or beside it when the line is short
+          const t = `↓ ${f(q.rel[1])}`, w = t.length * 10.5 + 18, len = Math.abs(P[1] - corner[1]);
+          const beside = len < 44, side = corner[0] > 680 ? -1 : 1;
+          o += tag(clampX(corner[0] + (beside ? side * (w / 2 + 12) : 0), w), (corner[1] + P[1]) / 2, t, 1.4);
+        }
+        o += H.pop(dot(P, q.guide ? 5 : 8, q.guide ? '#9fd3ff' : '#ffd84a') + label(P, q.name, '#ffd84a'), 1.6);
         return o;
       } });
-    }
+    });
     // 3. join the points
     const curved = piece.outline.edges.some((e) => /^[CQ]/.test(e.cmd));
     steps.push({ sec, cap: 'Join the chalk lines', say: `Join the points in order${curved ? ': straight lines where the edge is straight, and a smooth curve through each blue guide dot' : ' with straight lines'}. Use a long ruler for straight lines. This chalk line is where you will sew.`, svg: () =>
