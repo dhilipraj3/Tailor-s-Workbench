@@ -14,7 +14,7 @@ a full-size printable pattern, the fabric to buy, and animated step-by-step inst
   one big sheet for a print shop, or an SVG file.
 - **Fabric**: metres to buy for 36″, 44″ or 58″ fabric, worked out by laying the real piece shapes on folded fabric.
   Also a shopping list and a cutting layout picture.
-- **Make it**: around 100 animated steps per design, in four sections (Buy, Prepare, Mark & cut, Sew),, matched to the chosen options, with progress saved per project.
+- **Make it**: around 100 animated steps per design, in four sections (Buy, Prepare, Mark & cut, Sew), matched to the chosen options, with progress saved per project.
 - Works offline once loaded and can be installed on a phone. Backup and restore are on the People page.
 
 ## Run it
