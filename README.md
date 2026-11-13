@@ -9,11 +9,12 @@ a full-size printable pattern, the fabric to buy, and animated step-by-step inst
 - **People**: save sizes for each family member, from a ready-made size (S–XXL, waist 28–44) or their own measurements.
 - **Extra cloth for later adjustment**: every seam has its own sewing space plus optional extra cloth
   (None / Standard / Generous / Growing child). It's drawn as an orange band on the pattern and listed seam by seam.
-- **Printable pattern**: full-size PDF on A4 pages (with page map, joining labels and test squares),
+- **No printer needed**: the Make it tab guides chalking every piece straight onto the folded fabric: where each piece starts (from the fold and the fabric end), every point measured from there, curve guide dots, pocket, button and pleat marks, and the cutting line seam by seam with the extra cloth. Generated from the real pattern, so it works for every design, option and size.
+- **Printable pattern (optional)**: full-size PDF on A4 pages (with page map, joining labels and test squares),
   one big sheet for a print shop, or an SVG file.
 - **Fabric**: metres to buy for 36″, 44″ or 58″ fabric, worked out by laying the real piece shapes on folded fabric.
   Also a shopping list and a cutting layout picture.
-- **Make it**: 25–30 animated steps per design, matched to the chosen options, with progress saved per project.
+- **Make it**: around 100 animated steps per design, in four sections (Buy, Prepare, Mark & cut, Sew),, matched to the chosen options, with progress saved per project.
 - Works offline once loaded and can be installed on a phone. Backup and restore are on the People page.
 
 ## Run it

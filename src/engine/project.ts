@@ -32,7 +32,10 @@ export function buildCtx(designId: string, options: Options, m: Measurements, ex
 }
 
 /* ---------- fabric layout on folded fabric ---------- */
-export interface Placed { g: PieceGeo; x: number; y: number; w: number; h: number; poly: Pt[] }
+export interface Tf { x0: number; y0: number; fx: number; fy: number; mx: number; my: number; ox: number; oy: number }
+export interface Placed { g: PieceGeo; x: number; y: number; w: number; h: number; poly: Pt[]; tf: Tf }
+/** piece-local point → fabric point [along the fabric from its end, away from the fold] */
+export const toFabric = (p: Placed, [px, py]: Pt): Pt => [(py - p.tf.y0) * p.tf.fx - p.tf.mx + p.tf.ox, (px - p.tf.x0) * p.tf.fy - p.tf.my + p.tf.oy];
 export interface Layout { widthIn: number; halfIn: number; lengthIn: number; metres: number; placed: Placed[]; open: number }
 
 type Item = { g: PieceGeo; w: number; h: number; fold: boolean };
@@ -74,7 +77,7 @@ function computeLayout(ctx: Ctx, widthIn: number, fabric: Piece['fabric']): Layo
 // Shape-aware packing on a ¼″ grid. Each piece keeps its grain along the fabric length,
 // but may be turned end-to-end (and flipped across, if it isn't cut on the fold).
 const CELL = 0.25;
-type Mask = { poly: Pt[]; cols: number; lo: Int16Array; hi: Int16Array; w: number; h: number };
+type Mask = { poly: Pt[]; cols: number; lo: Int16Array; hi: Int16Array; w: number; h: number; fx: number; fy: number; mx: number; my: number };
 
 function orientations(it: Item): Mask[] {
   const [x0, y0] = it.g.box;
@@ -96,7 +99,7 @@ function orientations(it: Item): Mask[] {
         }
       }
     }
-    return { poly, cols, lo, hi, w, h };
+    return { poly, cols, lo, hi, w, h, fx, fy, mx, my };
   });
 }
 
@@ -133,7 +136,8 @@ function packOnce(items: Item[], widthIn: number): Layout {
       for (let r = Math.max(0, m.lo[c]); r <= Math.min(rows - 1 - y, m.hi[c]); r++) grid[(x + c) * rows + r + y] = 1;
     }
     used = Math.max(used, (x + m.cols) * CELL);
-    placed.push({ g: it.g, x: x * CELL, y: y * CELL, w: m.w, h: m.h, poly: m.poly.map(([px, py]) => [px + x * CELL, py + y * CELL] as Pt) });
+    placed.push({ g: it.g, x: x * CELL, y: y * CELL, w: m.w, h: m.h, poly: m.poly.map(([px, py]) => [px + x * CELL, py + y * CELL] as Pt),
+      tf: { x0: it.g.box[0], y0: it.g.box[1], fx: m.fx, fy: m.fy, mx: m.mx, my: m.my, ox: x * CELL, oy: y * CELL } });
   }
   const lengthIn = used + open * 2 + 2;
   const metres = Math.ceil(((lengthIn * 1.05 * 2.54) / 100) * 10) / 10;

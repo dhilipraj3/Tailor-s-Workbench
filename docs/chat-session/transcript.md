@@ -688,3 +688,215 @@ Everything passes. Updating the README and plan to match what's built, then comm
 > 🔧 *Write* · D:\New folder\tailors-workbench\README.md
 
 > 🔧 *Bash* · Update plan, refresh transcript, stage changes
+
+> 🔧 *Bash* · Commit Phase A
+
+> 🔧 *TaskStop*
+
+### 🤖 Claude
+
+Phase A is built, tested and committed in `D:\New folder\tailors-workbench`.
+
+**To try it:** open a terminal in that folder, run `npm run dev`, then open http://localhost:5173.
+
+**How it works now:**
+1. **Choose a design** from the catalogue of 10 men's designs: 6 shirts and 4 trousers.
+2. **Customise it** by tapping pictures, and the drawing changes as you tap:
+   - **Shirt:** collar (classic, spread, button-down, band), sleeve, fit, pockets, curved or straight bottom, back pleat.
+   - **Trousers:** flat or pleated front, fit, slant or side pockets, back pockets, belt loops, plain or turn-up hem.
+3. **Pick who it's for.** Each family member has a profile. Start from a ready-made size and adjust any measurement with − / +. Each measurement shows a picture of where to put the tape and a voice explanation.
+4. **Choose how much extra cloth to keep** for later adjustment: None, Standard, Generous or Growing child.
+5. **The project page has three tabs:**
+   - **Pattern:**
+     - Every piece is shown to scale with three lines: where to cut (black), where to sew (blue dashed) and the extra cloth (orange).
+     - A seam-by-seam list shows exactly how much extra cloth each seam has.
+     - Downloads: a full-size PDF for home printing on A4 sheets (with a page map and a test square to check the print size), a single sheet for a print shop, or an SVG file.
+   - **Fabric:** how many metres to buy for 36″, 44″ or 58″ fabric, worked out by fitting the real piece shapes onto folded fabric. It shows the metres for each extra-cloth level side by side, plus a layout picture and a shopping list.
+   - **Make it:** 25–30 animated steps with voice. They match your options, for example band collar steps or turn-up steps. Your progress is saved.
+6. **Works offline** and can be installed on a phone. A backup and restore button is on the People page.
+
+**What I checked:**
+- 27 automatic tests pass. They draft every option combination: 192 for the shirt and 96 for the trousers.
+- I looked at screenshots of every screen in light and dark themes, and at the printed PDFs.
+- That review caught and fixed several problems: a jagged cut line, fabric amounts that were too high, the page being too wide on phones, and updates not showing after a change.
+
+**Things to know:**
+- **Extra cloth costs fabric.** Formal trousers in size 34 need about 1.5 m with no extra cloth, but 2.4 m with Standard. The wider pieces no longer fit side by side on the fabric. The Fabric tab shows this so you can choose.
+- **Printing at home takes many pages:** about 26 A4 pages for a shirt and 34 for trousers. Bought PDF patterns are similar. The print-shop option is a single sheet.
+- **No tailor has checked the patterns yet.** Make your first one in cheap fabric.
+- **Phone screenshots:** I could only check down to 500 px wide, because desktop Edge won't go narrower. Please look at it on a real phone.
+- **Hand-drawing guide removed:** the old "draw the pattern by hand" chapter is gone for now, since printing replaces it. I can rebuild it on the new pattern system later.
+
+**Next is Phase B,** adding more designs:
+- **Men:** kurta, pyjama and shorts.
+- **Women:** blouse, kurti, salwar, churidar, palazzo, A-line skirt and a simple dress.
+- **Kids:** frock, shorts and shirt.
+
+Say **"go"** to start, or tell me which of these you want first.
+
+---
+
+## 🧑 User
+
+you run the npn and show the output
+
+> 🔧 *Bash* · Start the app's development server
+
+> 🔧 *Bash* · Run the test suite
+
+> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\tasks\bucwjgpb4.output
+
+### 🤖 Claude
+
+The server is up. Opening the app in your browser:
+
+> 🔧 *PowerShell* · Open the app in the default browser
+
+### 🤖 Claude
+
+The app is running, and I opened http://localhost:5173 in your default browser.
+
+**Server output:**
+```
+> [email removed] dev
+> vite --port 5173 --strictPort
+
+  VITE v6.4.6  ready in 246 ms
+  ➜  Local:   http://localhost:5173/
+```
+
+**Test output:**
+```
+ ✓ tests/units.test.js     (3 tests)
+ ✓ tests/geometry.test.ts  (6 tests)
+ ✓ tests/pdf.test.ts       (2 tests)
+ ✓ tests/designs.test.ts   (16 tests)
+ Test Files  4 passed (4)
+      Tests  27 passed (27)
+```
+
+**Things to try:**
+1. On the catalogue, tap **Classic formal shirt**.
+2. Change a few options, like the collar or sleeve, and watch the drawing update.
+3. Tap **Start making**. On the **Pattern** tab, tap **Print at home** to download the PDF.
+4. Open the **Fabric** tab and compare the metres for each extra-cloth level.
+5. Open **Make it** and use the big ▶ button. Tap 🔊 to hear the instructions.
+6. Go to **People** at the top to add a family member and set their sizes.
+
+The server keeps running in the background until you ask me to stop it.
+
+To open it on your phone: it currently only works on this computer. I can restart it so phones on the same Wi-Fi can open it, if you want.
+
+---
+
+## 🧑 User
+
+why the user should print and mark, if we are creating app, the app should tell everything in details. do what ever best you can.
+
+### 🤖 Claude
+
+You're right: printing should be optional, not required. Traditional tailors chalk the pattern straight onto the fabric with a measuring tape, and the app can guide that point by point. Here's my plan:
+
+1. **Chalk directly on the fabric.** For every piece, using its real place on your fabric, the app will show where to start (measured from the fold and the fabric end). Then it goes point by point ("go 7½″ along, 2¼″ away from the fold, mark B"), then which lines to join and curves to draw, and the pocket, button and pleat marks. Last come the exact cutting line around each seam, with the extra cloth, and the cut. All of it is generated from each design and size, so it works for every option and every future garment.
+2. **Sections in the player.** With that much detail there will be 150+ steps, so I'll group them into Buy → Prepare → Mark & cut → Sew, with progress for each.
+3. **Fabric width.** The width you choose on the Fabric tab will drive the marking positions.
+
+> 🔧 *Read* · D:\New folder\tailors-workbench\src\engine\project.ts
+
+> 🔧 *Bash* · Record each piece's placement transform in the layout
+
+### 🤖 Claude
+
+Now the chalk-on-fabric guide itself:
+
+> 🔧 *Write* · D:\New folder\tailors-workbench\src\views\mark-steps.js
+
+### 🤖 Claude
+
+Now wiring it into the "Make it" flow with sections, and making the fabric width you pick drive the marking:
+
+> 🔧 *Read* · D:\New folder\tailors-workbench\src\views\make-steps.js
+
+> 🔧 *Bash* · Insert marking steps and sections into the make flow
+
+### 🤖 Claude
+
+Now the player: a section bar (Buy · Prepare · Mark & cut · Sew), with step dots for the current section only:
+
+> 🔧 *Edit* · D:\New folder\tailors-workbench\src\views\player.js
+
+> 🔧 *Edit* · D:\New folder\tailors-workbench\src\views\player.js
+
+> 🔧 *Bash* · Add section bar styles; find fabric width usage
+
+> 🔧 *Bash* · Store fabric width per project; make printing optional
+
+### 🤖 Claude
+
+Running the tests. They now also go through every new marking step of every design:
+
+> 🔧 *Bash* · Extend tests for marking steps and run
+
+### 🤖 Claude
+
+All tests pass. Now I want to see the marking steps on screen. I'll add a direct link to any step, `#/project/<id>/make/<step>`, so I can open specific ones:
+
+> 🔧 *Bash* · Add step deep link; list step indexes
+
+> 🔧 *Bash* · Screenshot the marking steps
+
+> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-start.png
+
+> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-pts.png
+
+> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-cutline.png
+
+> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-det.png
+
+### 🤖 Claude
+
+The player area is blank, so something is throwing an error. I'll run the screen code in the test runner with a fake page to see it:
+
+> 🔧 *Bash* · Run project screens in a stub DOM to find the error
+
+### 🤖 Claude
+
+It works in the test runner, so the problem is browser-specific. I'll capture the browser's console messages:
+
+> 🔧 *Bash* · Capture browser console errors
+
+> 🔧 *Read* · D:\New folder\tailors-workbench\src\views\player.js
+
+> 🔧 *Bash* · Check make tab with and without step number
+
+> 🔧 *Bash* · Check how the player start index is passed
+
+> 🔧 *Bash* · Log player inputs in the browser
+
+> 🔧 *Bash* · Log the route arguments
+
+### 🤖 Claude
+
+Found it. In the shortcut link code, two different values had the same name `d`, so a design object ended up where the step number should be. Fixing that and removing my debug lines:
+
+> 🔧 *Bash* · Fix the name clash, remove debug, retake screenshots
+
+> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-start.png
+
+> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-pts.png
+
+> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-cutline.png
+
+> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-det.png
+
+> 🔧 *Edit* · D:\New folder\tailors-workbench\src\views\mark-steps.js
+
+> 🔧 *Bash* · Move chips to a list, run tests, screenshot trousers step
+
+> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-tr2.png
+
+### 🤖 Claude
+
+That's clear now. Committing:
+
+> 🔧 *Bash* · Update README, refresh transcript, commit

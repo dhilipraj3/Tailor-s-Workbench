@@ -11,7 +11,6 @@ import { makeSteps, layoutScene, syncLegacy } from './make-steps.js';
 import { IC } from './icons.js';
 
 let cleanup = null;
-let fabricW = 58;
 
 export function projectCtx(p) {
   const who = person(p.personId);
@@ -35,7 +34,7 @@ function allowanceRows(ctx) {
   return [...rows.values()].map((r) => ({ ...r, ex: [Math.max(...r.all), Math.min(...r.all)] })).sort((a, b) => b.ex[0] - a.ex[0]);
 }
 
-export function renderProject(el, id, tab = 'pattern') {
+export function renderProject(el, id, tab = 'pattern', stepAt) {
   cleanup?.(); cleanup = null;
   const p = getProject(id);
   if (!p) { el.innerHTML = `<p class="empty">This project was deleted. <a href="#/">Choose a design</a></p>`; return; }
@@ -49,11 +48,13 @@ export function renderProject(el, id, tab = 'pattern') {
     <nav class="tabs">${tabs.map(([k, ic, l]) => `<a class="tab" href="#/project/${p.id}/${k}" aria-selected="${tab === k}">${ic}<span>${l}</span></a>`).join('')}</nav>
     <div id="tabbody"></div></div>`;
   const body = el.querySelector('#tabbody');
+  const fabricW = () => p.fabricW || 58;
   if (tab === 'pattern') {
     const rows = allowanceRows(ctx);
     body.innerHTML = `
+      <a class="nopr" href="#/project/${p.id}/make">${IC.scissors}<span><b>No printer needed</b>The Make it tab shows how to chalk every piece straight onto the fabric, point by point.</span></a>
       <div class="actions">
-        <button class="cta" id="pdf-a4">${IC.print} Print at home <small>A4 pages</small></button>
+        <button class="cta" id="pdf-a4">${IC.print} Print at home <small>optional · A4 pages</small></button>
         <button class="btn big2" id="pdf-full">${IC.file} Print shop <small>one big sheet</small></button>
         <button class="btn big2" id="svg">${IC.download} SVG file</button>
       </div>
@@ -72,12 +73,12 @@ export function renderProject(el, id, tab = 'pattern') {
     body.querySelector('#svg').onclick = () => download(sheetSvg(ctx, { person: who.name }), `${d.id}-${who.name}.svg`, 'image/svg+xml');
   } else if (tab === 'fabric') {
     const draw = () => {
-      const { svg, lay } = layoutScene(ctx, fabricW, false);
+      const { svg, lay } = layoutScene(ctx, fabricW(), false);
       const lining = layoutFabric(ctx, 44, 'lining');
       const sup = ctx.garment.supplies(ctx.m, ctx.options);
-      body.innerHTML = `<div class="chips">${[36, 44, 58].map((w) => `<button class="chip" data-w="${w}" aria-pressed="${fabricW === w}">${w}″ · ${Math.round(w * 2.54)} cm</button>`).join('')}</div>
-        <div class="fab-big"><span class="m">${lay.metres}<small>m</small></span><span>of ${fabricW}″ fabric${lining.placed.length ? ` · plus ${lining.metres} m pocket fabric` : ''}</span></div>
-        <div class="levels">${EXTRA_LEVELS.map((x) => { const m = layoutFabric(buildCtx(p.designId, p.options, who.m, x.id), fabricW).metres;
+      body.innerHTML = `<div class="chips">${[36, 44, 58].map((w) => `<button class="chip" data-w="${w}" aria-pressed="${fabricW() === w}">${w}″ · ${Math.round(w * 2.54)} cm</button>`).join('')}</div>
+        <div class="fab-big"><span class="m">${lay.metres}<small>m</small></span><span>of ${fabricW()}″ fabric${lining.placed.length ? ` · plus ${lining.metres} m pocket fabric` : ''}</span></div>
+        <div class="levels">${EXTRA_LEVELS.map((x) => { const m = layoutFabric(buildCtx(p.designId, p.options, who.m, x.id), fabricW()).metres;
           return `<span class="lvlc ${x.id === p.extra ? 'cur' : ''}"><i style="height:${8 + x.scale * 8}px"></i>${x.label}<b>${m} m</b></span>`; }).join('')}</div>
         ${lay.open ? '<p class="warn">Some pieces are wider than the folded fabric. Cut them from open (unfolded) fabric.</p>' : ''}
         <div class="stage">${stageSvg(svg)}</div>
@@ -85,12 +86,12 @@ export function renderProject(el, id, tab = 'pattern') {
         <div class="sup">${sup.map((s) => `<div class="supi"><b>${esc(s.qty)}</b><span>${esc(s.say)}</span></div>`).join('')}</div>`;
     };
     draw();
-    body.onclick = (e) => { const b = e.target.closest('[data-w]'); if (b) { fabricW = +b.dataset.w; draw(); } };
+    body.onclick = (e) => { const b = e.target.closest('[data-w]'); if (b) { p.fabricW = +b.dataset.w; save(); draw(); } };
   } else {
-    const steps = makeSteps(ctx);
+    const steps = makeSteps(ctx, fabricW());
     if (p.total !== steps.length) { p.total = steps.length; p.done = p.done.filter((x) => x < steps.length); save(); }
     cleanup = mountPlayer(body, {
-      steps, start: p.step || 0, done: p.done, finishIcon: IC.star,
+      steps, start: stepAt ?? p.step ?? 0, done: p.done, finishIcon: IC.star,
       onIndex: (i) => { p.step = i; for (let j = 0; j < i; j++) if (!p.done.includes(j)) p.done.push(j); save(); },
       onFinish: () => { for (let j = 0; j < steps.length; j++) if (!p.done.includes(j)) p.done.push(j); save(); location.hash = '#/'; },
     });

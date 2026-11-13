@@ -38,6 +38,9 @@ describe('every design in the catalogue', () => {
         expect(st.cap.split(' ').length, `${d.id} "${st.cap}" caption ≤ 5 words`).toBeLessThanOrEqual(5);
       }
       expect(sheetSvg(ctx, {})).not.toMatch(/NaN/);
+      // every main-fabric piece is chalked on the fabric, with a start point and a cut step
+      for (const g of ctx.pieces.filter((x) => x.piece.fabric === 'main')) expect(steps.some((st) => st.cap === 'Start: ' + g.piece.name), g.piece.name + ' has marking steps').toBe(true);
+      for (const w of [36, 44]) for (const st of makeSteps(ctx, w)) expect(stageSvg(st.svg())).not.toMatch(/NaN|undefined/);
     });
   }
 });

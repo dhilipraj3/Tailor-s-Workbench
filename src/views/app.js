@@ -31,14 +31,14 @@ export function route() {
   document.getElementById('app').innerHTML = shell();
   const el = document.getElementById('view');
   const [path, query] = location.hash.replace(/^#\/?/, '').split('?');
-  const [a, b, c] = path.split('/');
+  const [a, b, c, d] = path.split('/');
   if (a === 'start' && DESIGNS.some((d) => d.id === b)) {
     // deep link: #/start/<design>[/<tab>] makes a project for the first person and opens it
-    const d = DESIGNS.find((x) => x.id === b), p = { id: uid(), designId: d.id, options: { ...d.options }, personId: store.profiles[0].id, extra: 'standard', created: Date.now(), step: 0, done: [] };
-    store.projects.push(p); save(); location.replace(`#/project/${p.id}/${c || 'pattern'}`); return;
+    const des = DESIGNS.find((x) => x.id === b), p = { id: uid(), designId: des.id, options: { ...des.options }, personId: store.profiles[0].id, extra: 'standard', created: Date.now(), step: 0, done: [] };
+    store.projects.push(p); save(); location.replace(`#/project/${p.id}/${c || 'pattern'}${d ? '/' + d : ''}`); return;
   }
   if (a === 'design') renderDesign(el, b, new URLSearchParams(query || '').get('p'));
-  else if (a === 'project') renderProject(el, b, c || 'pattern');
+  else if (a === 'project') renderProject(el, b, c || 'pattern', d === undefined ? undefined : +d);
   else if (a === 'people' && b) renderPerson(el, b);
   else if (a === 'people') renderPeople(el);
   else if (a === 'help' && HELP[b]) {

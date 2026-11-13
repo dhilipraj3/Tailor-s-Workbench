@@ -7,13 +7,21 @@ import { IC } from './icons.js';
 export const sayOf = (st) => (typeof st.say === 'function' ? st.say() : st.say);
 
 export function mountPlayer(el, { steps, start = 0, done = [], onIndex, onFinish, finishIcon }) {
-  let i = Math.min(Math.max(0, start), steps.length - 1);
+  let i = Math.min(Math.max(0, Number.isFinite(+start) ? +start : 0), steps.length - 1);
   const draw = (voice) => {
     const st = steps[i], last = i === steps.length - 1;
-    el.innerHTML = `<div class="player">
-      <div class="dots" aria-label="Step ${i + 1} of ${steps.length}">${steps.map((_, j) => `<button class="dot ${j === i ? 'cur' : done.includes(j) ? 'on' : ''}" data-go="${j}" aria-label="Step ${j + 1}"></button>`).join('')}</div>
+    // sections (Buy / Prepare / Mark & cut / Sew): tabs on top, dots only for the current section
+    const secs = [];
+    steps.forEach((s, j) => { const n = s.sec || ''; if (!secs.length || secs[secs.length - 1].n !== n) secs.push({ n, a: j, b: j }); else secs[secs.length - 1].b = j; });
+    const cur = secs.find((s) => i >= s.a && i <= s.b) || secs[0];
+    const secBar = secs.length > 1 ? `<div class="secs">${secs.map((s) => {
+      const doneN = steps.slice(s.a, s.b + 1).filter((_, k) => done.includes(s.a + k)).length, tot = s.b - s.a + 1;
+      return `<button class="sec-t ${s === cur ? 'cur' : ''} ${doneN === tot ? 'full' : ''}" data-go="${s.a}"><b>${s.n}</b><span class="sbar"><i style="width:${(doneN / tot) * 100}%"></i></span></button>`;
+    }).join('')}</div>` : '';
+    el.innerHTML = `<div class="player">${secBar}
+      <div class="dots" aria-label="Step ${i - cur.a + 1} of ${cur.b - cur.a + 1}">${steps.slice(cur.a, cur.b + 1).map((_, k) => { const j = cur.a + k; return `<button class="dot ${j === i ? 'cur' : done.includes(j) ? 'on' : ''}" data-go="${j}" aria-label="Step ${k + 1}"></button>`; }).join('')}</div>
       <div class="stage" id="stage" title="Tap to play again">${stageSvg(st.svg())}</div>
-      <div class="cap"><span class="n">${i + 1}/${steps.length}</span><span>${st.cap}</span></div>
+      <div class="cap"><span class="n">${i - cur.a + 1}/${cur.b - cur.a + 1}</span><span>${st.cap}</span></div>
       <div class="ctrls">
         <button class="big" id="b-prev" aria-label="Back" ${i === 0 ? 'disabled' : ''}>${IC.prev}</button>
         <button class="big round" id="b-replay" aria-label="Play again">${IC.replay}</button>

@@ -6,6 +6,7 @@ import { cutSteps } from '../chapters/cut.js';
 import { TOOLICONS } from '../chapters/tools.js';
 import { layoutFabric } from '../engine/project';
 import { bottomWidth } from '../garments/trousers';
+import { markSteps } from './mark-steps.js';
 
 /** Old picture scenes read a few values from the shared state; keep them in sync with the project. */
 export function syncLegacy(ctx) {
@@ -40,20 +41,21 @@ export function layoutScene(ctx, widthIn, animate = true) {
   return { svg: fab + pcs + label, lay };
 }
 
-export function makeSteps(ctx) {
+export function makeSteps(ctx, widthIn = 58) {
   syncLegacy(ctx);
   const old = cutSteps(), w = [36, 44, 58].map((x) => [x, layoutFabric(ctx, x).metres]);
   const sup = ctx.garment.supplies(ctx.m, ctx.options);
   const steps = [
-    { cap: 'Buy the fabric', say: () => `For this design, buy ${w[2][1]} metres of wide fabric, ${w[2][0]} inches. Or ${w[1][1]} metres if it is ${w[1][0]} inches wide, or ${w[0][1]} metres if it is ${w[0][0]} inches wide.`,
+    { sec: 'Buy', cap: 'Buy the fabric', say: () => `For this design, buy ${w[2][1]} metres of wide fabric, ${w[2][0]} inches. Or ${w[1][1]} metres if it is ${w[1][0]} inches wide, or ${w[0][1]} metres if it is ${w[0][0]} inches wide.`,
       svg: () => w.map(([wd, m], i) => { const x = 130 + i * 230, h = wd * 3.4, y = 420 - h, c = ctx.garment.id === 'shirt' ? ['fr', 'fw'] : ['pr', 'pw'];
         return H.pop(`<rect x="${x}" y="${y}" width="120" height="${h}" rx="8" class="${c[0]}"/><ellipse cx="${x + 60}" cy="${y}" rx="60" ry="12" class="${c[1]}"/>`, 0.2 + i * 0.3) + H.chip(x + 60, y - 40, wd + '″ wide', 0.5 + i * 0.3) + H.chip(x + 60, 460, m + ' m', 0.8 + i * 0.3); }).join('') },
-    { cap: 'Get the extras', say: () => 'You also need: ' + sup.map((x) => x.say).join(', ') + '.',
+    { sec: 'Buy', cap: 'Get the extras', say: () => 'You also need: ' + sup.map((x) => x.say).join(', ') + '.',
       svg: () => { const g = 760 / sup.length; return sup.map((it, i) => { const x = 20 + g * (i + 0.5), fn = SUP[it.icon];
         return H.pop(`<g class="tapp" data-say="${it.say}"><rect x="${x - g / 2 + 6}" y="130" width="${g - 12}" height="230" rx="18" class="tilebg"/>${fn ? fn(x, 230) : ''}</g>`, 0.2 + i * 0.25) + H.word(x, 330, it.qty, 0.4 + i * 0.25); }).join(''); } },
-    old[2], old[3],
-    { cap: 'Lay out the pieces', say: 'Lay the paper pattern pieces on the folded fabric like this. Pieces marked "on fold" go against the fold. Keep every grain arrow straight along the fabric.', svg: () => layoutScene(ctx, 58).svg },
-    old[5], old[6], old[7], old[8],
+    { ...old[2], sec: 'Prepare' }, { ...old[3], sec: 'Prepare' },
+    { sec: 'Prepare', cap: 'Where each piece goes', say: () => `This is how all the pieces fit on ${widthIn} inch fabric, folded in half along its length. Next we chalk each piece in its place. If you printed the paper pattern instead, lay the paper pieces like this and pin them.`, svg: () => layoutScene(ctx, widthIn).svg },
+    ...markSteps(ctx, widthIn),
+    { ...old[8], sec: 'Mark & cut' },
   ];
-  return [...steps, ...ctx.garment.steps(ctx.options)];
+  return [...steps, ...ctx.garment.steps(ctx.options).map((st) => ({ ...st, sec: 'Sew' }))];
 }
