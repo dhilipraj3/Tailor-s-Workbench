@@ -22,10 +22,10 @@ function toolsGrid(){
 }
 const TOOLS=[
  {cap:'Your tools',say:'These are the tools you need. Tap any picture to hear its name.',svg:toolsGrid},
- {cap:'Two sides of fabric',say:'Fabric has two sides. The good side is bright. It goes on the outside. The wrong side is the back, shown with stripes in these pictures.',svg:()=>
+ {cap:'Two sides of fabric',say:'Fabric has two sides. The good side is bright. It goes on the outside. The wrong side is the back. It looks a little paler and duller.',svg:()=>
    H.pop(`<rect x="90" y="70" width="270" height="250" rx="12" class="fr"/>`,.1)+H.word(225,360,'GOOD SIDE',.4)+H.ok(225,195,.6)+
    H.pop(`<rect x="440" y="70" width="270" height="250" rx="12" class="fw"/>`,1)+H.word(575,360,'WRONG SIDE',1.3)},
- {cap:'Picture signs',say:'Watch for these signs. A dotted yellow line means sew. A white line means draw with chalk. Scissors mean cut. A white arrow means fold or move.',svg:()=>{
+ {cap:'Picture signs',say:'Watch for these signs. A line of thread stitches means sew. A white chalk line means draw. Scissors mean cut. A white arrow means fold or move.',svg:()=>{
    const row=(y,inner,w,d)=>H.fade(inner+`<text x="560" y="${y+8}" class="wordt" text-anchor="start">${w}</text>`,d);
    return row(80,H.stitch('M120 80 L480 80',.3,1.6),'SEW',0)+row(180,H.draw('M120 180 L480 180','chalkl',1.4,1),'DRAW',1.2)+row(280,H.cut('M120 280 L480 280',2.2,1.6),'CUT',2)+row(380,H.arrow('M120 400 Q 300 330 480 400',3.6),'FOLD / MOVE',3.6);}},
  {cap:'Stay safe',say:'Always ask a grown-up to help with the hot iron. Keep your fingers away from the needle: hold the fabric at the sides, never in front of the needle.',svg:()=>

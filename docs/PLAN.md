@@ -11,11 +11,22 @@
 - Make-it steps matched to the options (mandarin collar, half sleeve, box pleat, pleats, turn-ups, welt and side pockets…)
 - Offline-first service worker, installable; TypeScript engine; 27 tests covering every option combination
 
-## Phase B: next
-Men: kurta, pyjama, shorts · Women: blouse, kurti, salwar, churidar, palazzo, A-line skirt, simple dress · Kids: frock, shorts, shirt
+## Phase B: done (v0.4)
+- Base garments: tunic (kurta / kurti / blouse), easy pants (pyjama, shorts, palazzo, churidar, salwar), skirt, dress
+- 28 catalogue designs for men, women and kids; people are man / woman / child with matching size charts
+- Chalk-on-fabric marking for every piece (no printer needed), including open-fabric pieces
+- Realistic visuals: woven fabric, cutting mat, thread, chalk, metal tools, shaded dress form
 
-## Phase C
-More languages (Hindi first), hand-drafting guide from the new engine, free website hosting
+## Phase C: done (v0.5)
+- Hosting ready: relative paths, GitHub Pages workflow (.github/workflows/deploy.yml) and netlify.toml
+- Hand-drafting is covered by the chalk-on-fabric guide
+- Languages: postponed (not needed for now)
+
+## Next ideas
+- Tailor review of all drafts with test garments
+- Real fabric photos / textures per fabric type
+- Fit adjustments (sloped shoulders, belly, long/short body)
+- Accounts and sync, class mode
 
 ---
 
