@@ -15,13 +15,56 @@ export function waistPreset(w: number): Measurements {
   return { waist: w, hip: w + 6, rise: r4((w + 6) / 8 + 5.5), outseam: r4(40 + (w - 28) * 0.125) };
 }
 
+/* ---------- who a profile is for, and their ready-made sizes ---------- */
+export type Kind = 'man' | 'woman' | 'child';
+
+const WOMEN: Record<string, number[]> = {
+  //       bust waist hip shoulder neck sleeve wrist height
+  XS: [32, 26, 35, 14, 13, 22, 5.75, 62],
+  S: [34, 28, 37, 14.5, 13.5, 22.5, 6, 63],
+  M: [36, 30, 39, 15, 14, 23, 6.25, 64],
+  L: [38, 32, 41, 15.5, 14.5, 23.25, 6.5, 64],
+  XL: [40, 34, 43, 16, 15, 23.5, 6.75, 65],
+  XXL: [42, 36, 45, 16.5, 15.5, 23.75, 7, 65],
+};
+const KIDS: Record<string, number[]> = {
+  //  age: chest waist hip shoulder neck sleeve wrist height
+  '2': [21, 20, 22, 9, 10.5, 12, 5, 35],
+  '4': [23, 21, 24, 10, 11, 14, 5, 41],
+  '6': [25, 22, 26, 10.5, 11.5, 16, 5.5, 46],
+  '8': [27, 23, 28, 11.5, 12, 18, 5.5, 50],
+  '10': [29, 24, 30, 12, 12.5, 20, 6, 55],
+  '12': [31, 25, 32, 13, 13, 22, 6, 60],
+};
+export const SIZE_CHOICES: Record<Kind, string[]> = { man: Object.keys(SHIRT_SIZES), woman: Object.keys(WOMEN), child: Object.keys(KIDS) };
+
+/** Full measurement set for a ready-made size (men also choose a trouser waist). */
+export function presetFor(kind: Kind, size: string, waist = 34): Measurements {
+  if (kind === 'man') {
+    const t = SHIRT_SIZES[size] || SHIRT_SIZES.L;
+    return { ...t, ...waistPreset(waist), height: 68, bicep: r4(t.chest * 0.32) };
+  }
+  const row = (kind === 'woman' ? WOMEN[size] || WOMEN.M : KIDS[size] || KIDS['6']);
+  const [chest, w, hip, shoulder, neck, sleeve, wrist, height] = row;
+  const child = kind === 'child';
+  return {
+    chest, waist: w, hip, shoulder, neck, sleeve, wrist, height,
+    bicep: r4(chest * (child ? 0.34 : 0.3)),
+    shirtLength: r4(height * (child ? 0.4 : 0.38)),
+    rise: r4(hip / 8 + (child ? 3.5 : 5.75)),
+    outseam: r4(height * 0.6 - 1),
+  };
+}
+
 export interface MeasureDef { key: string; label: string; say: string; group: 'top' | 'bottom' }
 export const MEASURES: MeasureDef[] = [
-  { key: 'chest', label: 'Chest', group: 'top', say: 'Chest. Put the tape around the fullest part of the chest, under the arms. Keep it level.' },
+  { key: 'height', label: 'Height', group: 'top', say: 'Height. Stand straight against a wall without shoes, and measure from the floor to the top of the head.' },
+  { key: 'bicep', label: 'Upper arm', group: 'top', say: 'Upper arm. Put the tape around the widest part of the upper arm.' },
+  { key: 'chest', label: 'Chest / bust', group: 'top', say: 'Chest. Put the tape around the fullest part of the chest, under the arms. Keep it level.' },
   { key: 'neck', label: 'Neck', group: 'top', say: 'Neck. Put the tape around the bottom of the neck, with one finger under it.' },
   { key: 'shoulder', label: 'Shoulders', group: 'top', say: 'Shoulders. Measure across the back, from one shoulder bone to the other.' },
   { key: 'sleeve', label: 'Sleeve', group: 'top', say: 'Sleeve. Measure from the shoulder bone down the arm to the wrist bone.' },
-  { key: 'shirtLength', label: 'Shirt length', group: 'top', say: 'Shirt length. From the bone at the back of the neck down to where the shirt should end.' },
+  { key: 'shirtLength', label: 'Shirt / top length', group: 'top', say: 'Shirt length. From the bone at the back of the neck down to where the shirt should end.' },
   { key: 'wrist', label: 'Wrist', group: 'top', say: 'Wrist. Put the tape around the wrist bone.' },
   { key: 'waist', label: 'Waist', group: 'bottom', say: 'Waist. Put the tape where you wear your trousers. Snug, not tight.' },
   { key: 'hip', label: 'Hip', group: 'bottom', say: 'Hip. Put the tape around the fullest part of your bottom, with feet together.' },

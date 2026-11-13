@@ -42,7 +42,7 @@ export function renderProject(el, id, tab = 'pattern', stepAt) {
   syncLegacy(ctx);
   const tabs = [['pattern', IC.pattern, 'Pattern'], ['fabric', IC.fabric, 'Fabric'], ['make', IC.scissors, 'Make it']];
   el.innerHTML = `<div class="proj">
-    <header class="proj-head">${sketchSvg(d.garment, p.options)}<div><h1 class="h1">${esc(d.name)}</h1>
+    <header class="proj-head">${sketchSvg(d.garment, p.options, null, '', d.color)}<div><h1 class="h1">${esc(d.name)}</h1>
       <span class="row">${avatar(who, 28)} ${esc(who.name)} · ${EXTRA_LEVELS.find((x) => x.id === p.extra)?.label} extra cloth</span></div>
       <a class="btn" href="#/design/${d.id}?p=${p.id}">${IC.edit} Change</a></header>
     <nav class="tabs">${tabs.map(([k, ic, l]) => `<a class="tab" href="#/project/${p.id}/${k}" aria-selected="${tab === k}">${ic}<span>${l}</span></a>`).join('')}</nav>

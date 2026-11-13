@@ -13,10 +13,10 @@ const SKETCH_DEFS = `<defs><filter id="clothS" x="-6%" y="-4%" width="112%" heig
   <feDropShadow in="c" dx="1" dy="2" stdDeviation="1.6" flood-color="#000" flood-opacity=".22"/></filter></defs>`;
 
 /** Flat technical sketch of a design with options; crop = [x,y,w,h] to zoom on a detail. */
-export function sketchSvg(garmentId, options, crop, cls = '') {
+export function sketchSvg(garmentId, options, crop, cls = '', color = '') {
   const g = GARMENTS[garmentId];
   const vb = crop ? crop.join(' ') : g.viewBox;
-  return `<svg class="sketch ${garmentId} ${cls}" viewBox="${vb}" aria-hidden="true">${SKETCH_DEFS}${g.sketch(options)}</svg>`;
+  return `<svg class="sketch ${garmentId} ${cls}" viewBox="${vb}" aria-hidden="true"${color ? ` style="--skf:${color}"` : ''}>${SKETCH_DEFS}${g.sketch(options)}</svg>`;
 }
 
 export const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);

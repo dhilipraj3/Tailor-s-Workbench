@@ -1,0 +1,21 @@
+import fs from 'fs';
+let s = fs.readFileSync('src/views/mark-steps.js', 'utf8');
+const R = (a, b, all = false) => { if (!s.includes(a)) throw new Error('missing: ' + a.slice(0, 70)); s = all ? s.split(a).join(b) : s.replace(a, b); };
+R("  if (v.W0 <= 0.01) { const y = v.M([0, 0])[1]; o += `<path d=\"M${a[0]} ${y} L${b[0]} ${y}\" class=\"foldl\"/>` + `<text x=\"${a[0] + 8}\" y=\"${y - 10}\" class=\"wordt\" style=\"text-anchor:start;font-size:20px\">FOLD</text>`; }",
+  "  if (v.W0 <= 0.01) { const y = v.M([0, 0])[1]; o += (lay.openFab ? '' : `<path d=\"M${a[0]} ${y} L${b[0]} ${y}\" class=\"foldl\"/>`) + `<text x=\"${a[0] + 8}\" y=\"${y - 10}\" class=\"wordt\" style=\"text-anchor:start;font-size:20px\">${lay.openFab ? 'SELVEDGE' : 'FOLD'}</text>`; }");
+R("function along(dl, dw) {\n  if (dl && dw) return `go ${sn(dl)} along the fabric and ${sn(dw)} away from the fold`;\n  if (dl) return `go ${sn(dl)} straight along the fabric`;\n  if (dw) return `go ${sn(dw)} straight away from the fold`;",
+  "function along(dl, dw, edge = 'the fold') {\n  if (dl && dw) return `go ${sn(dl)} along the fabric and ${sn(dw)} away from ${edge}`;\n  if (dl) return `go ${sn(dl)} straight along the fabric`;\n  if (dw) return `go ${sn(dw)} straight away from ${edge}`;");
+R("function pieceSteps(ctx, pls, lay, cls) {\n  const pl = pls[0],", "function pieceSteps(ctx, pls, layIn, cls) {\n  const pl = pls[0], lay = pl.open ? { ...layIn, halfIn: layIn.widthIn - 0.5, openFab: true } : layIn, edge = pl.open ? 'the selvedge' : 'the fold',");
+R("`From S, ${along(q.rel[0], q.rel[1])}.", "`From S, ${along(q.rel[0], q.rel[1], edge)}.");
+R("const startSay = `Next: the ${lname}${piece.n > 1 ? `. You need ${piece.n}` : ''}. Find its start point S: measure ${sn(S[0])} along the fabric from the end, and ${S[1] < 0.06 ? 'stay right on the fold' : sn(S[1]) + ' away from the fold'}. Mark a small cross.`;",
+  "const startSay = `Next: the ${lname}${piece.n > 1 ? `. You need ${piece.n}` : ''}.${pl.open ? ' This piece is too wide for folded fabric, so open the end of the fabric out flat and cut it from one layer.' : ''} Find its start point S: measure ${sn(S[0])} along the fabric from the end, and ${S[1] < 0.06 ? 'stay right on ' + edge : sn(S[1]) + ' away from ' + edge}. Mark a small cross.`;");
+R("say: `Pin the two layers together inside the shape. Cut along the outer line, through both layers.${fold} You get ${piece.fold ? 'one whole' : 'two matching'} ${lname}${piece.fold ? '' : ' pieces'}. Write the name on the wrong side with chalk.`",
+  "say: pl.open ? `Cut along the outer line through the single layer. Write the name on the wrong side with chalk.` : `Pin the two layers together inside the shape. Cut along the outer line, through both layers.${fold} You get ${piece.fold ? 'one whole' : 'two matching'} ${lname}${piece.fold ? '' : ' pieces'}. Write the name on the wrong side with chalk.`");
+fs.writeFileSync('src/views/mark-steps.js', s);
+
+let m = fs.readFileSync('src/views/make-steps.js', 'utf8');
+const RM = (a, b) => { if (!m.includes(a)) throw new Error('make missing: ' + a.slice(0, 70)); m = m.replace(a, b); };
+RM("  const s = Math.min(740 / lay.lengthIn, 330 / lay.halfIn), ox = 30, oy = 110;\n  const fab = `<rect x=\"${ox}\" y=\"${oy}\" width=\"${(lay.lengthIn * s).toFixed(1)}\" height=\"${(lay.halfIn * s).toFixed(1)}\" class=\"${cls}\"/>` +\n    `<path d=\"M${ox} ${oy} L${ox + lay.lengthIn * s} ${oy}\" class=\"foldl\"/>`;",
+  "  const openW = lay.openStart != null ? lay.widthIn - 0.5 : lay.halfIn;\n  const s = Math.min(740 / lay.lengthIn, 330 / openW), ox = 30, oy = 110;\n  const foldEnd = lay.openStart != null ? lay.openStart - 1 : lay.lengthIn;\n  const fab = `<rect x=\"${ox}\" y=\"${oy}\" width=\"${(foldEnd * s).toFixed(1)}\" height=\"${(lay.halfIn * s).toFixed(1)}\" class=\"${cls}\"/>` +\n    `<path d=\"M${ox} ${oy} L${ox + foldEnd * s} ${oy}\" class=\"foldl\"/>` +\n    (lay.openStart != null ? `<rect x=\"${(ox + (lay.openStart - 1) * s).toFixed(1)}\" y=\"${oy}\" width=\"${((lay.lengthIn - lay.openStart + 1) * s).toFixed(1)}\" height=\"${(openW * s).toFixed(1)}\" class=\"${cls}\"/>` + `<text x=\"${(ox + lay.openStart * s).toFixed(1)}\" y=\"${oy - 16}\" class=\"wordt\" style=\"text-anchor:start;font-size:18px\">OPEN</text>` : '');");
+fs.writeFileSync('src/views/make-steps.js', m);
+console.log('open fabric handled');

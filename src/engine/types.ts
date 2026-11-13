@@ -43,7 +43,7 @@ export interface Supply { icon: string; qty: string; say: string }
 export interface Step { cap: string; say: string | (() => string); svg: () => string; field?: string }
 
 export interface Garment {
-  id: 'shirt' | 'trousers';
+  id: string;
   name: string;
   measureKeys: string[];
   options: OptionGroup[];
@@ -57,11 +57,15 @@ export interface Garment {
 
 export interface Design {
   id: string;
-  garment: Garment['id'];
+  garment: string;
   name: string;
   tags: string[];
   options: Options;
   /** 1 easy … 5 hard */
   level: number;
   hours: number;
+  /** who it is made for (picks the default person) */
+  for?: 'man' | 'woman' | 'child';
+  /** fabric colour for the sketch */
+  color?: string;
 }

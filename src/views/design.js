@@ -1,6 +1,6 @@
 import { DESIGNS, GARMENTS } from '../garments/index';
 import { EXTRA_LEVELS } from '../engine/sizes';
-import { store, save, uid, project as getProject } from '../core/store.js';
+import { store, save, uid, project as getProject, personFor } from '../core/store.js';
 import { speak } from '../core/speech.js';
 import { sketchSvg, levelDots, esc, avatar } from './common.js';
 import { IC } from './icons.js';
@@ -17,22 +17,22 @@ export function renderDesign(el, designId, editProjectId) {
   const design = DESIGNS.find((d) => d.id === designId) || DESIGNS[0];
   const g = GARMENTS[design.garment];
   const editing = editProjectId ? getProject(editProjectId) : null;
-  const st = { options: { ...(editing?.options || design.options) }, personId: editing?.personId || store.profiles[0].id, extra: editing?.extra || 'standard' };
+  const st = { options: { ...(editing?.options || design.options) }, personId: editing?.personId || personFor(design.for || 'man')?.id || 'new', extra: editing?.extra || 'standard' };
   const draw = () => {
     el.innerHTML = `<div class="design">
       <div class="design-preview">
-        <div class="preview-card">${sketchSvg(g.id, st.options, null, 'hero')}</div>
+        <div class="preview-card">${sketchSvg(g.id, st.options, null, 'hero', design.color)}</div>
         <h1 class="h1">${esc(design.name)}</h1>
         <div class="meta">${levelDots(design.level)}<span class="hrs">⏱ about ${design.hours} hours</span></div>
       </div>
       <div class="design-opts">
         ${g.options.map((grp) => `<section class="optgrp"><h3>${grp.label}</h3><div class="tiles">${grp.values.map((v) => {
           const sel = st.options[grp.id] === v.id;
-          const pic = SPECIAL[grp.id] ? SPECIAL[grp.id](grp.id === 'backPockets' ? +v.id : v.id, g.id) : sketchSvg(g.id, { ...st.options, [grp.id]: v.id }, grp.crop);
+          const pic = SPECIAL[grp.id] ? SPECIAL[grp.id](grp.id === 'backPockets' ? +v.id : v.id, g.id) : sketchSvg(g.id, { ...st.options, [grp.id]: v.id }, grp.crop, '', design.color);
           return `<button class="tile" data-opt="${grp.id}" data-val="${v.id}" aria-pressed="${sel}">${pic}<span>${v.label}</span></button>`;
         }).join('')}</div></section>`).join('')}
         <section class="optgrp"><h3>Who is it for?</h3><div class="tiles people">${store.profiles.map((p) => `<button class="tile person" data-person="${p.id}" aria-pressed="${st.personId === p.id}">${avatar(p, 54)}<span>${esc(p.name)}</span></button>`).join('')}
-          <a class="tile person add" href="#/people/new">${IC.plus}<span>Add</span></a></div></section>
+          ${!personFor(design.for || 'man') ? `<button class="tile person" data-person="new" aria-pressed="${st.personId === 'new'}"><span class="avatar" style="--c:#8a8f94;width:54px;height:54px;font-size:24px">+</span><span>New ${({ man: 'man', woman: 'woman', child: 'child' })[design.for || 'man']}</span></button>` : ''}<a class="tile person add" href="#/people/new">${IC.plus}<span>Add</span></a></div></section>
         <section class="optgrp"><h3>Extra cloth for later</h3><div class="tiles">${EXTRA_LEVELS.map((x) => `<button class="tile extra" data-extra="${x.id}" aria-pressed="${st.extra === x.id}">
           <svg viewBox="0 0 80 50" aria-hidden="true"><rect x="10" y="${32 - x.scale * 8}" width="60" height="${10 + x.scale * 8}" rx="3" fill="rgba(242,140,40,.55)"/><rect x="10" y="32" width="60" height="10" rx="2" fill="rgba(31,111,214,.35)"/><path d="M10 42 H70" stroke="currentColor" stroke-width="2.5" stroke-dasharray="5 3"/></svg><span>${x.label}</span></button>`).join('')}</div></section>
         <button class="cta" id="start">${editing ? IC.check + ' Save changes' : IC.scissors + ' Start making'}</button>
@@ -45,6 +45,7 @@ export function renderDesign(el, designId, editProjectId) {
     else if (b.dataset.person) { st.personId = b.dataset.person; draw(); }
     else if (b.dataset.extra) { st.extra = b.dataset.extra; draw(); speak(EXTRA_LEVELS.find((x) => x.id === st.extra).say); }
     else if (b.id === 'start') {
+      if (st.personId === 'new') st.personId = personFor(design.for || 'man', true).id;
       let p = editing;
       if (p) Object.assign(p, { options: st.options, personId: st.personId, extra: st.extra, step: 0, done: [] });
       else { p = { id: uid(), designId: design.id, options: st.options, personId: st.personId, extra: st.extra, created: Date.now(), step: 0, done: [] }; store.projects.push(p); }

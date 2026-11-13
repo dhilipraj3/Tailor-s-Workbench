@@ -25,7 +25,7 @@ function viewOf(L0, L1, W0, W1, lay) {
 function fabricBg(v, lay, cls) {
   const a = v.M([Math.max(0, v.L0), Math.max(0, v.W0)]), b = v.M([v.L1, Math.min(lay.halfIn, v.W1)]);
   let o = `<rect x="${a[0].toFixed(1)}" y="${a[1].toFixed(1)}" width="${(b[0] - a[0]).toFixed(1)}" height="${(b[1] - a[1]).toFixed(1)}" class="${cls}"/>`;
-  if (v.W0 <= 0.01) { const y = v.M([0, 0])[1]; o += `<path d="M${a[0]} ${y} L${b[0]} ${y}" class="foldl"/>` + `<text x="${a[0] + 8}" y="${y - 10}" class="wordt" style="text-anchor:start;font-size:20px">FOLD</text>`; }
+  if (v.W0 <= 0.01) { const y = v.M([0, 0])[1]; o += (lay.openFab ? '' : `<path d="M${a[0]} ${y} L${b[0]} ${y}" class="foldl"/>`) + `<text x="${a[0] + 8}" y="${y - 10}" class="wordt" style="text-anchor:start;font-size:20px">${lay.openFab ? 'SELVEDGE' : 'FOLD'}</text>`; }
   if (v.L0 <= 0.01) { const x = v.M([0, 0])[0]; o += `<path d="M${x} ${a[1]} L${x} ${b[1]}" stroke="#fff" stroke-width="3"/>`; }
   if (v.W1 >= lay.halfIn - 0.01) { const y = v.M([0, lay.halfIn])[1]; o += `<text x="${a[0] + 8}" y="${y + 24}" class="wordt" style="text-anchor:start;font-size:18px;opacity:.8">SELVEDGES</text>`; }
   return o;
@@ -36,10 +36,10 @@ const dot = ([x, y], r = 6, c = '#ffffff') => `<circle cx="${x.toFixed(1)}" cy="
 const label = ([x, y], t, c = '#ffffff') => `<text x="${(x + 9).toFixed(1)}" y="${(y - 9).toFixed(1)}" style="font:800 20px var(--f-body)" fill="${c}">${t}</text>`;
 const arrowChip = (dl, dw) => `${dl ? '→' + f(dl) : ''}${dl && dw ? ' ' : ''}${dw ? '↓' + f(dw) : ''}` || 'S';
 
-function along(dl, dw) {
-  if (dl && dw) return `go ${sn(dl)} along the fabric and ${sn(dw)} away from the fold`;
+function along(dl, dw, edge = 'the fold') {
+  if (dl && dw) return `go ${sn(dl)} along the fabric and ${sn(dw)} away from ${edge}`;
   if (dl) return `go ${sn(dl)} straight along the fabric`;
-  if (dw) return `go ${sn(dw)} straight away from the fold`;
+  if (dw) return `go ${sn(dw)} straight away from ${edge}`;
   return 'stay on S';
 }
 
@@ -55,8 +55,8 @@ function allowances(piece, scale) {
   return [...rows.values()].map((r) => ({ name: r.name, hi: Math.max(...r.all), lo: Math.min(...r.all) }));
 }
 
-function pieceSteps(ctx, pls, lay, cls) {
-  const pl = pls[0], g = pl.g, piece = g.piece, F = (p) => toFabric(pl, p);
+function pieceSteps(ctx, pls, layIn, cls) {
+  const pl = pls[0], lay = pl.open ? { ...layIn, halfIn: layIn.widthIn - 0.5, openFab: true } : layIn, edge = pl.open ? 'the selvedge' : 'the fold', g = pl.g, piece = g.piece, F = (p) => toFabric(pl, p);
   const stitch = g.stitch.map(F), cut = g.cut.map(F), sa = g.sa.map(F);
   const Ls = stitch.map((p) => p[0]), Ws = stitch.map((p) => p[1]);
   const S = [Math.floor(Math.min(...Ls) * 8) / 8, Math.floor(Math.min(...Ws) * 8) / 8];
@@ -72,7 +72,7 @@ function pieceSteps(ctx, pls, lay, cls) {
 
   // 1. where this piece starts on the fabric
   const big = viewOf(0, Math.max(Lmax, 10), 0, lay.halfIn, lay);
-  const startSay = `Next: the ${lname}${piece.n > 1 ? `. You need ${piece.n}` : ''}. Find its start point S: measure ${sn(S[0])} along the fabric from the end, and ${S[1] < 0.06 ? 'stay right on the fold' : sn(S[1]) + ' away from the fold'}. Mark a small cross.`;
+  const startSay = `Next: the ${lname}${piece.n > 1 ? `. You need ${piece.n}` : ''}.${pl.open ? ' This piece is too wide for folded fabric, so open the end of the fabric out flat and cut it from one layer.' : ''} Find its start point S: measure ${sn(S[0])} along the fabric from the end, and ${S[1] < 0.06 ? 'stay right on ' + edge : sn(S[1]) + ' away from ' + edge}. Mark a small cross.`;
   steps.push({ sec, cap: `Start: ${name}`, say: startSay, svg: () => {
     const bS = big.M(S), b0 = big.M([0, S[1]]), bF = big.M([S[0], 0]);
     return fabricBg(big, lay, cls) + `<path d="${big.D(stitch)}" fill="rgba(255,216,74,.18)" stroke="#ffd84a" stroke-width="2" stroke-dasharray="6 5"/>` +
@@ -95,7 +95,7 @@ function pieceSteps(ctx, pls, lay, cls) {
     const drawn = (upto) => pts.slice(0, upto).map((q) => dot(v.M(q.F), q.guide ? 4 : 6, q.guide ? '#9fd3ff' : '#fff') + label(v.M(q.F), q.name, q.guide ? '#9fd3ff' : '#fff')).join('');
     for (let i = 0; i < pts.length; i += 2) {
       const grp = pts.slice(i, i + 2);
-      const say = grp.map((q) => `From S, ${along(q.rel[0], q.rel[1])}. Mark ${q.guide ? 'a small curve guide dot' : 'point'} ${q.name}.`).join(' ');
+      const say = grp.map((q) => `From S, ${along(q.rel[0], q.rel[1], edge)}. Mark ${q.guide ? 'a small curve guide dot' : 'point'} ${q.name}.`).join(' ');
       steps.push({ sec, cap: `Mark point${grp.length > 1 ? 's' : ''} ${grp.map((q) => q.name).join(' and ')}`, say, svg: () => {
         let o = bg() + ghost + cross(Sm) + label(Sm, 'S', '#ffd84a') + drawn(i);
         grp.forEach((q, k) => {
@@ -148,7 +148,7 @@ function pieceSteps(ctx, pls, lay, cls) {
 
   // 6. cut
   const fold = piece.fold ? ' Do not cut along the fold.' : '';
-  steps.push({ sec, cap: 'Cut it out', say: `Pin the two layers together inside the shape. Cut along the outer line, through both layers.${fold} You get ${piece.fold ? 'one whole' : 'two matching'} ${lname}${piece.fold ? '' : ' pieces'}. Write the name on the wrong side with chalk.`, svg: () =>
+  steps.push({ sec, cap: 'Cut it out', say: pl.open ? `Cut along the outer line through the single layer. Write the name on the wrong side with chalk.` : `Pin the two layers together inside the shape. Cut along the outer line, through both layers.${fold} You get ${piece.fold ? 'one whole' : 'two matching'} ${lname}${piece.fold ? '' : ' pieces'}. Write the name on the wrong side with chalk.`, svg: () =>
     bg() + `<path d="${v.D(cut)}" class="chalkl"/><path d="${v.D(stitch)}" class="chalkd"/>` +
     H.pins([0.2, 0.45, 0.7].map((t) => v.M(stitch[Math.floor(stitch.length * t)])).map(([x, y]) => [x, y]), 0.2) + H.cut(v.D(cut), 1, 4) + H.ok(720, 440, 5.2) });
 
@@ -167,7 +167,7 @@ function pieceSteps(ctx, pls, lay, cls) {
 
 export function markSteps(ctx, widthIn = 58) {
   const lay = layoutFabric(ctx, widthIn);
-  const cls = ctx.garment.id === 'shirt' ? 'fw' : 'pw';
+  const cls = ['shirt', 'tunic', 'dress', 'skirt'].includes(ctx.garment.id) ? 'fw' : 'pw';
   const groups = new Map();
   for (const pl of lay.placed) { const id = pl.g.piece.id; if (!groups.has(id)) groups.set(id, []); groups.get(id).push(pl); }
   const intro = { sec: 'Mark & cut', cap: 'Chalk it on fabric', say: `No printer needed. We will draw every piece straight onto the folded fabric with chalk, using the measuring tape. Lay the folded fabric flat, wrong side up, with the fold away from you and the cut end on your left. Each piece starts from a point S, measured along the fabric and away from the fold.`, svg: () => {

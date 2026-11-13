@@ -33,3 +33,7 @@
 .sketch.trousers .skl{stroke:rgba(255,255,255,.55)}
 .sketch.trousers .skc{stroke:rgba(255,255,255,.6);opacity:.7}
 .sketch .skb{fill:#f2efe6;stroke:rgba(0,0,0,.35);stroke-width:.5}
+.sketch .sk{fill:var(--skf,#c9bfa9)}.sketch .sk2{fill:color-mix(in srgb,var(--skf,#c9bfa9) 82%,#000)}
+.sketch.shirt .sk{fill:var(--skf,#a8c0e0)}.sketch.shirt .sk2{fill:color-mix(in srgb,var(--skf,#a8c0e0) 85%,#000)}
+.sketch.trousers .sk{fill:var(--skf,#6a7380)}.sketch.trousers .sk2{fill:color-mix(in srgb,var(--skf,#6a7380) 85%,#000)}
+.sketch.pants .skl,.sketch.skirt .skl,.sketch.dress .skl,.sketch.tunic .skl{stroke:rgba(20,30,40,.55)}

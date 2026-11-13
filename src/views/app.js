@@ -1,5 +1,5 @@
 // App shell + router.  Routes: #/  #/design/<id>[?p=<project>]  #/project/<id>/<tab>  #/people  #/people/<id>  #/help[/<set>]
-import { store, save, uid } from '../core/store.js';
+import { store, save, uid, personFor } from '../core/store.js';
 import { DESIGNS } from '../garments/index';
 import { canSpeak, speak } from '../core/speech.js';
 import { TOOLS } from '../chapters/tools.js';
@@ -34,7 +34,7 @@ export function route() {
   const [a, b, c, d] = path.split('/');
   if (a === 'start' && DESIGNS.some((d) => d.id === b)) {
     // deep link: #/start/<design>[/<tab>] makes a project for the first person and opens it
-    const des = DESIGNS.find((x) => x.id === b), p = { id: uid(), designId: des.id, options: { ...des.options }, personId: store.profiles[0].id, extra: 'standard', created: Date.now(), step: 0, done: [] };
+    const des = DESIGNS.find((x) => x.id === b), p = { id: uid(), designId: des.id, options: { ...des.options }, personId: personFor(des.for || 'man', true).id, extra: 'standard', created: Date.now(), step: 0, done: [] };
     store.projects.push(p); save(); location.replace(`#/project/${p.id}/${c || 'pattern'}${d ? '/' + d : ''}`); return;
   }
   if (a === 'design') renderDesign(el, b, new URLSearchParams(query || '').get('p'));

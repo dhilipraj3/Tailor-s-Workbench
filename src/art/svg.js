@@ -70,6 +70,16 @@ function figure(ox,oy,s,o={}){
   if(o.pants) g+=`<path d="${p('M29 90 L71 90 Q72 104 70 114 L68 187 L52 187 L50.5 120 L49.5 120 L48 187 L32 187 L30 114 Q28 104 29 90 Z')}" class="${o.pants}"/><path d="${p('M29 90 L71 90 L71 95 L29 95 Z')}" class="${o.pants}" style="filter:brightness(.85)"/><path d="${p('M40 96 L40 186 M60 96 L60 186')}" stroke="rgba(255,255,255,.18)" stroke-width="1"/>`;
   if(o.shirt) g+=`<path d="${p(arm)}" class="${o.shirt}"/><path d="${p(mirror(arm))}" class="${o.shirt}"/><path d="${p('M28 33 Q50 28 72 33 Q78 35 77 44 Q75 60 71 74 Q69 86 71 102 L29 102 Q31 86 29 74 Q25 60 23 44 Q22 35 28 33 Z')}" class="${o.shirt}"/>
    <path d="${p('M43 28 L50 38 L57 28 L55 25 Q50 28 45 25 Z')}" fill="#f4f1ea" stroke="rgba(0,0,0,.25)" stroke-width="1"/><path d="${p('M50 38 L50 102')}" stroke="rgba(0,0,0,.25)" stroke-width="1.2"/>${[46,58,70,82,94].map(y=>`<circle cx="${ox+50*s}" cy="${oy+y*s}" r="${1.1*s}" fill="url(#pearlG)"/>`).join('')}`;
+  if(o.skirt){
+    const y=o.skirt.to, w=(y-150)*0.1;
+    g+=`<path d="${p(`M29 90 L71 90 Q78 ${(90+y)/2} ${84+w} ${y} Q50 ${y+4} ${16-w} ${y} Q22 ${(90+y)/2} 29 90 Z`)}" class="${o.skirt.cls}"/>`;
+  }
+  if(o.top){
+    const y=o.top.to, wide=y>100, armT=o.top.sleeves==='short'?'M72 34 Q79 35 80 44 L81 56 L72 58 Z':arm;
+    g+=`<path d="${p(armT)}" class="${o.top.cls}"/><path d="${p(mirror(armT))}" class="${o.top.cls}"/>`+
+      `<path d="${p(`M28 33 Q50 28 72 33 Q78 35 77 44 Q75 60 71 74 Q70 86 ${wide?75:71} ${y} Q50 ${y+2} ${wide?25:29} ${y} Q30 86 29 74 Q25 60 23 44 Q22 35 28 33 Z`)}" class="${o.top.cls}"/>`+
+      `<path d="${p('M44 30 Q50 40 56 30')}" fill="none" stroke="rgba(0,0,0,.35)" stroke-width="1.2"/>`;
+  }
   return g+'</g>';
 }
 // Realistic look: a printed cutting mat, woven fabric with soft folds and light,

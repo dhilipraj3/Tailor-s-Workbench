@@ -33,10 +33,10 @@ export function buildCtx(designId: string, options: Options, m: Measurements, ex
 
 /* ---------- fabric layout on folded fabric ---------- */
 export interface Tf { x0: number; y0: number; fx: number; fy: number; mx: number; my: number; ox: number; oy: number }
-export interface Placed { g: PieceGeo; x: number; y: number; w: number; h: number; poly: Pt[]; tf: Tf }
+export interface Placed { g: PieceGeo; x: number; y: number; w: number; h: number; poly: Pt[]; tf: Tf; open?: boolean }
 /** piece-local point → fabric point [along the fabric from its end, away from the fold] */
 export const toFabric = (p: Placed, [px, py]: Pt): Pt => [(py - p.tf.y0) * p.tf.fx - p.tf.mx + p.tf.ox, (px - p.tf.x0) * p.tf.fy - p.tf.my + p.tf.oy];
-export interface Layout { widthIn: number; halfIn: number; lengthIn: number; metres: number; placed: Placed[]; open: number }
+export interface Layout { widthIn: number; halfIn: number; lengthIn: number; metres: number; placed: Placed[]; open: number; openStart: number | null }
 
 type Item = { g: PieceGeo; w: number; h: number; fold: boolean };
 const ORDERS: ((a: Item, b: Item) => number)[] = [
@@ -117,7 +117,7 @@ function packOnce(items: Item[], widthIn: number): Layout {
     return true;
   };
   for (const it of items) {
-    if (it.h > half) { open += it.w; continue; }
+    if (it.h > half) continue; // handled below, on open fabric
     let best: { m: Mask; x: number; y: number } | null = null;
     const ms = orientations(it);
     for (let x = 0; x < maxCols - 200 && !best; x++) {
@@ -139,9 +139,30 @@ function packOnce(items: Item[], widthIn: number): Layout {
     placed.push({ g: it.g, x: x * CELL, y: y * CELL, w: m.w, h: m.h, poly: m.poly.map(([px, py]) => [px + x * CELL, py + y * CELL] as Pt),
       tf: { x0: it.g.box[0], y0: it.g.box[1], fx: m.fx, fy: m.fy, mx: m.mx, my: m.my, ox: x * CELL, oy: y * CELL } });
   }
+  // Pieces wider than the folded fabric are cut from a single layer of open fabric, after the folded part.
+  const wide = items.filter((it) => it.h > half);
+  const openStart = wide.length ? used + 2 : used, full = widthIn - 0.5;
+  let ox = openStart, oy = 0, colW = 0;
+  open = 0;
+  // single layer: cut exactly as many as the piece needs (a fold piece is opened out to its full shape)
+  const left = new Map<string, number>();
+  for (const it of wide) {
+    const m = orientations(it)[0];
+    if (!left.has(it.g.piece.id)) left.set(it.g.piece.id, it.g.piece.n);
+    const take = Math.min(it.fold ? 1 : 2, left.get(it.g.piece.id)!);
+    left.set(it.g.piece.id, left.get(it.g.piece.id)! - take);
+    for (let copy = 0; copy < take; copy++) {
+      if (m.h > full) { open += m.w; continue; }
+      if (oy + m.h > full) { ox += colW + 0.3; oy = 0; colW = 0; }
+      placed.push({ g: it.g, x: ox, y: oy, w: m.w, h: m.h, open: true, poly: m.poly.map(([px, py]) => [px + ox, py + oy] as Pt),
+        tf: { x0: it.g.box[0], y0: it.g.box[1], fx: m.fx, fy: m.fy, mx: m.mx, my: m.my, ox, oy } });
+      oy += m.h + 0.3; colW = Math.max(colW, m.w);
+    }
+  }
+  if (wide.length) used = ox + colW;
   const lengthIn = used + open * 2 + 2;
   const metres = Math.ceil(((lengthIn * 1.05 * 2.54) / 100) * 10) / 10;
-  return { widthIn, halfIn: half, lengthIn, metres, placed, open };
+  return { widthIn, halfIn: half, lengthIn, metres, placed, open, openStart: wide.length ? openStart : null };
 }
 
 /* ---------- printable sheet: every piece once, grain vertical ---------- */

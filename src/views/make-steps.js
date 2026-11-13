@@ -12,7 +12,7 @@ import { markSteps } from './mark-steps.js';
 export function syncLegacy(ctx) {
   const m = ctx.m;
   S.unit = store.unit;
-  S.garment = ctx.garment.id === 'shirt' ? 'shirt' : 'trousers';
+  S.garment = ['shirt', 'tunic', 'dress', 'skirt'].includes(ctx.garment.id) ? 'shirt' : 'trousers';
   S.fit = ctx.options.fit || 'regular';
   S.shirt = { chest: m.chest, neck: m.neck, shoulder: m.shoulder, sleeve: m.sleeve, length: m.shirtLength, wrist: m.wrist };
   S.pant = { waist: m.waist, hip: m.hip, rise: m.rise, outseam: m.outseam, bottom: bottomWidth(m, ctx.options) };
@@ -27,16 +27,21 @@ const SUP = {
 };
 
 export function layoutScene(ctx, widthIn, animate = true) {
-  const lay = layoutFabric(ctx, widthIn), isS = ctx.garment.id === 'shirt';
-  const s = Math.min(740 / lay.lengthIn, 330 / lay.halfIn), ox = 30, oy = 110;
-  const fab = `<rect x="${ox}" y="${oy}" width="${(lay.lengthIn * s).toFixed(1)}" height="${(lay.halfIn * s).toFixed(1)}" class="${isS ? 'fw' : 'pw'}"/>` +
-    `<path d="M${ox} ${oy} L${ox + lay.lengthIn * s} ${oy}" class="foldl"/>`;
+  const lay = layoutFabric(ctx, widthIn), isS = ['shirt', 'tunic', 'dress', 'skirt'].includes(ctx.garment.id);
+  const cls = isS ? 'fw' : 'pw', hasOpen = lay.openStart != null, openW = hasOpen ? lay.widthIn - 0.5 : lay.halfIn;
+  const s = Math.min(740 / lay.lengthIn, 330 / openW), ox = 30, oy = 110, foldEnd = hasOpen ? lay.openStart - 1 : lay.lengthIn;
+  // folded part (two layers, fold on top), then — if needed — open single-layer fabric for very wide pieces
+  const hasFold = foldEnd > 1;
+  const fab = (hasFold ? `<rect x="${ox}" y="${oy}" width="${(foldEnd * s).toFixed(1)}" height="${(lay.halfIn * s).toFixed(1)}" class="${cls}"/>` +
+    `<path d="M${ox} ${oy} L${ox + foldEnd * s} ${oy}" class="foldl"/>` : '') +
+    (hasOpen ? `<rect x="${(ox + foldEnd * s).toFixed(1)}" y="${oy}" width="${((lay.lengthIn - foldEnd) * s).toFixed(1)}" height="${(openW * s).toFixed(1)}" class="${cls}"/>` +
+      `<text x="${(ox + (foldEnd + 1) * s).toFixed(1)}" y="${oy - 16}" class="wordt" style="text-anchor:start;font-size:18px">OPEN</text>` : '');
   const pcs = lay.placed.map((p, i) => {
     const d = 'M' + p.poly.map(([x, y]) => `${(ox + x * s).toFixed(1)} ${(oy + y * s).toFixed(1)}`).join(' L') + ' Z';
     const shape = `<path d="${d}" class="paperpc"/>`;
     return animate ? H.move(shape, 0, -380, 0.2 + i * 0.12, 0.8) : shape;
   }).join('');
-  const label = H.word(ox + 50, oy - 16, 'FOLD', 0) +
+  const label = (hasFold ? H.word(ox + 50, oy - 16, 'FOLD', 0) : '') +
     H.chip(640, 60, `${lay.metres} m`, animate ? 0.4 : 0) + H.chip(470, 60, `${widthIn}″ wide`, animate ? 0.2 : 0);
   return { svg: fab + pcs + label, lay };
 }
@@ -47,7 +52,7 @@ export function makeSteps(ctx, widthIn = 58) {
   const sup = ctx.garment.supplies(ctx.m, ctx.options);
   const steps = [
     { sec: 'Buy', cap: 'Buy the fabric', say: () => `For this design, buy ${w[2][1]} metres of wide fabric, ${w[2][0]} inches. Or ${w[1][1]} metres if it is ${w[1][0]} inches wide, or ${w[0][1]} metres if it is ${w[0][0]} inches wide.`,
-      svg: () => w.map(([wd, m], i) => { const x = 130 + i * 230, h = wd * 3.4, y = 420 - h, c = ctx.garment.id === 'shirt' ? ['fr', 'fw'] : ['pr', 'pw'];
+      svg: () => w.map(([wd, m], i) => { const x = 130 + i * 230, h = wd * 3.4, y = 420 - h, c = ['shirt', 'tunic', 'dress', 'skirt'].includes(ctx.garment.id) ? ['fr', 'fw'] : ['pr', 'pw'];
         return H.pop(`<rect x="${x}" y="${y}" width="120" height="${h}" rx="8" class="${c[0]}"/><ellipse cx="${x + 60}" cy="${y}" rx="60" ry="12" class="${c[1]}"/>`, 0.2 + i * 0.3) + H.chip(x + 60, y - 40, wd + '″ wide', 0.5 + i * 0.3) + H.chip(x + 60, 460, m + ' m', 0.8 + i * 0.3); }).join('') },
     { sec: 'Buy', cap: 'Get the extras', say: () => 'You also need: ' + sup.map((x) => x.say).join(', ') + '.',
       svg: () => { const g = 760 / sup.length; return sup.map((it, i) => { const x = 20 + g * (i + 0.5), fn = SUP[it.icon];
