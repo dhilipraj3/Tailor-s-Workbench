@@ -94,11 +94,8 @@ function pieceSteps(ctx, pls, layIn, cls) {
     pts.forEach((q, i) => { q.F = F(q.p); q.rel = [r8(q.F[0] - S[0]), r8(q.F[1] - S[1])]; q.name = LETTERS[i % LETTERS.length] + (i >= LETTERS.length ? '2' : ''); });
     const drawn = (upto) => pts.slice(0, upto).map((q) => dot(v.M(q.F), q.guide ? 4 : 6, q.guide ? '#9fd3ff' : '#fff') + label(v.M(q.F), q.name, q.guide ? '#9fd3ff' : '#fff')).join('');
     // one point per step, so the two measurements can sit right on their own chalk lines
-    const tag = (x, y, txt, d0) => {
-      const w = txt.length * 10.5 + 18;
-      return H.pop(`<rect x="${(x - w / 2).toFixed(1)}" y="${(y - 14).toFixed(1)}" width="${w.toFixed(1)}" height="28" rx="9" class="chipbg"/><text x="${x.toFixed(1)}" y="${(y + 1).toFixed(1)}" class="chipt" style="font-size:16px">${txt}</text>`, d0);
-    };
-    const clampX = (x, w) => Math.min(800 - w / 2 - 6, Math.max(w / 2 + 6, x));
+    // measurement written straight on the fabric, following its line (rot -90 = reads up a vertical line)
+    const tag = (x, y, txt, d0, rot = 0) => H.fade(`<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="central"${rot ? ` transform="rotate(${rot} ${x.toFixed(1)} ${y.toFixed(1)})"` : ''} style="font:700 19px var(--f-mono);paint-order:stroke;stroke:rgba(255,255,255,.85);stroke-width:4px;stroke-linejoin:round" fill="#1b2326">${txt}</text>`, d0);
     pts.forEach((q, i) => {
       const say = `From S, ${along(q.rel[0], q.rel[1], edge)}. Mark ${q.guide ? 'a small curve guide dot' : 'point'} ${q.name}.`;
       steps.push({ sec, cap: `Mark point ${q.name}`, say, svg: () => {
@@ -106,15 +103,13 @@ function pieceSteps(ctx, pls, layIn, cls) {
         const corner = v.M([q.F[0], S[1]]), P = v.M(q.F);
         o += H.draw(`M${Sm[0]} ${Sm[1]} L${corner[0]} ${corner[1]} L${P[0]} ${P[1]}`, 'chalkd', 0.3, 1.2);
         if (q.rel[0]) {
-          // "along the fabric": centred on the horizontal line, or just above it when the line is short
-          const t = `→ ${f(q.rel[0])}`, w = t.length * 10.5 + 18, len = Math.abs(corner[0] - Sm[0]);
-          o += tag(clampX((Sm[0] + corner[0]) / 2, w), Sm[1] - (len > w + 20 ? 0 : 24), t, 0.9);
+          // "along the fabric": written just above the horizontal line, centred on it
+          o += tag((Sm[0] + corner[0]) / 2, Sm[1] - 15, f(q.rel[0]), 0.9);
         }
         if (q.rel[1]) {
-          // "away from the fold": centred on the vertical line, or beside it when the line is short
-          const t = `↓ ${f(q.rel[1])}`, w = t.length * 10.5 + 18, len = Math.abs(P[1] - corner[1]);
-          const beside = len < 44, side = corner[0] > 680 ? -1 : 1;
-          o += tag(clampX(corner[0] + (beside ? side * (w / 2 + 12) : 0), w), (corner[1] + P[1]) / 2, t, 1.4);
+          // "away from the fold": written up the vertical line, beside it
+          const side = corner[0] > 760 ? -1 : 1;
+          o += tag(corner[0] + side * 15, (corner[1] + P[1]) / 2, f(q.rel[1]), 1.4, -90);
         }
         o += H.pop(dot(P, q.guide ? 5 : 8, q.guide ? '#9fd3ff' : '#ffd84a') + label(P, q.name, '#ffd84a'), 1.6);
         return o;
