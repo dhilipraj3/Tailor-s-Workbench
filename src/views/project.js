@@ -34,7 +34,7 @@ function allowanceRows(ctx) {
   return [...rows.values()].map((r) => ({ ...r, ex: [Math.max(...r.all), Math.min(...r.all)] })).sort((a, b) => b.ex[0] - a.ex[0]);
 }
 
-export function renderProject(el, id, tab = 'pattern', stepAt) {
+export function renderProject(el, id, tab = 'pattern', stepAt, atTime) {
   cleanup?.(); cleanup = null;
   const p = getProject(id);
   if (!p) { el.innerHTML = `<p class="empty">This project was deleted. <a href="#/">Choose a design</a></p>`; return; }
@@ -91,7 +91,7 @@ export function renderProject(el, id, tab = 'pattern', stepAt) {
     const steps = makeSteps(ctx, fabricW());
     if (p.total !== steps.length) { p.total = steps.length; p.done = p.done.filter((x) => x < steps.length); save(); }
     cleanup = mountPlayer(body, {
-      steps, start: stepAt ?? p.step ?? 0, done: p.done, finishIcon: IC.star,
+      steps, start: stepAt ?? p.step ?? 0, atTime: atTime == null ? null : +atTime, done: p.done, finishIcon: IC.star,
       onIndex: (i) => { p.step = i; for (let j = 0; j < i; j++) if (!p.done.includes(j)) p.done.push(j); save(); },
       onFinish: () => { for (let j = 0; j < steps.length; j++) if (!p.done.includes(j)) p.done.push(j); save(); location.hash = '#/'; },
     });

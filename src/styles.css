@@ -146,3 +146,14 @@ h1{font-family:var(--f-display);font-size:2.2rem;line-height:1;margin:14px 0 0;t
 @keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.drw,.fi,.fo,.mv,.flipx,.flipy,.rot,.slide,.pul,.pop{animation-duration:.01s!important;animation-iteration-count:1!important}}
 .redmk{fill:none;stroke:#ff8a65;stroke-width:3.5;stroke-dasharray:9 6;stroke-linecap:round}
+/* assembly animations */
+.mflip{transform-box:view-box;transform-origin:var(--ox) var(--oy);animation:mflip var(--t) var(--d) both ease-in-out}
+@keyframes mflip{from{transform:translate(var(--fx),var(--fy)) scaleX(-1)}to{transform:none}}
+.halfA{animation:halfA var(--t) var(--d) both}
+.halfB{animation:halfB var(--t) var(--d) both}
+@keyframes halfA{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes halfB{0%,49%{opacity:0}50%,100%{opacity:1}}
+.seamglow{animation:seamglow 1.2s var(--d) infinite alternate}
+@keyframes seamglow{from{opacity:.95}to{opacity:.45}}
+.elasticband{fill:none;stroke:#f6f3ea;stroke-width:9;stroke-linecap:round;filter:url(#thread)}
+.stringband{fill:none;stroke:#e9dfc6;stroke-width:4;stroke-linecap:round;filter:url(#thread)}

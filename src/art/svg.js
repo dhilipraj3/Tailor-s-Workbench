@@ -123,6 +123,7 @@ const REAL_DEFS=`
   <linearGradient id="spoolG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f5d9a"/><stop offset=".45" stop-color="#6d9be0"/><stop offset="1" stop-color="#244a7e"/></linearGradient>
   <linearGradient id="rulerG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf6e6"/><stop offset="1" stop-color="#dccfa8"/></linearGradient>
   <linearGradient id="chalkB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#cfe2fb"/><stop offset=".6" stop-color="#8fb9ee"/><stop offset="1" stop-color="#6c9bd6"/></linearGradient>
+  <pattern id="wrongTex" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2" height="7" fill="rgba(255,255,255,.28)"/></pattern>
   <marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fff"/></marker>`;
 const MAT=`<rect width="800" height="500" fill="url(#matG)"/><rect width="800" height="500" fill="url(#mg)"/><rect width="800" height="500" fill="url(#mg5)"/>
   <path d="M0 500 L500 0 M300 500 L800 0" stroke="rgba(255,236,170,.10)" stroke-width="1"/>

@@ -35,10 +35,10 @@ export function route() {
   if (a === 'start' && DESIGNS.some((d) => d.id === b)) {
     // deep link: #/start/<design>[/<tab>] makes a project for the first person and opens it
     const des = DESIGNS.find((x) => x.id === b), p = { id: uid(), designId: des.id, options: { ...des.options }, personId: personFor(des.for || 'man', true).id, extra: 'standard', created: Date.now(), step: 0, done: [] };
-    store.projects.push(p); save(); location.replace(`#/project/${p.id}/${c || 'pattern'}${d ? '/' + d : ''}`); return;
+    store.projects.push(p); save(); location.replace(`#/project/${p.id}/${c || 'pattern'}${d ? '/' + d : ''}${query ? '?' + query : ''}`); return;
   }
   if (a === 'design') renderDesign(el, b, new URLSearchParams(query || '').get('p'));
-  else if (a === 'project') renderProject(el, b, c || 'pattern', d === undefined ? undefined : +d);
+  else if (a === 'project') renderProject(el, b, c || 'pattern', d === undefined ? undefined : +d, new URLSearchParams(query || '').get('t'));
   else if (a === 'people' && b) renderPerson(el, b);
   else if (a === 'people') renderPeople(el);
   else if (a === 'help' && HELP[b]) {

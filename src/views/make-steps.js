@@ -7,6 +7,9 @@ import { TOOLICONS } from '../chapters/tools.js';
 import { layoutFabric } from '../engine/project';
 import { bottomWidth } from '../garments/trousers';
 import { markSteps } from './mark-steps.js';
+import { assemblePants } from '../assembly/pants.js';
+
+const ASSEMBLY = { pants: assemblePants };
 
 /** Old picture scenes read a few values from the shared state; keep them in sync with the project. */
 export function syncLegacy(ctx) {
@@ -62,5 +65,7 @@ export function makeSteps(ctx, widthIn = 58) {
     ...markSteps(ctx, widthIn),
     { ...old[8], sec: 'Mark & cut' },
   ];
-  return [...steps, ...ctx.garment.steps(ctx.options).map((st) => ({ ...st, sec: 'Sew' }))];
+  // continuous assembly from the real pieces where available, otherwise the picture steps
+  const sew = (ASSEMBLY[ctx.garment.id]?.(ctx)) || ctx.garment.steps(ctx.options);
+  return [...steps, ...sew.map((st) => ({ ...st, sec: 'Sew' }))];
 }
