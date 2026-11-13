@@ -12,7 +12,7 @@ Every instruction is a picture, an animation or a voice.
 | Garments | Formal shirt (S–XXL, slim/regular), formal trousers (waist 28–44) |
 | Sizes | Ready-made size fills every measurement. Each one can be changed with − / + |
 | Chapters | Tools → Machine → Measure → Draw pattern → Cut → Sew |
-| Pictures | 79 animated steps for the shirt, 76 for trousers, all drawn in code (SVG) |
+| Pictures | 84 animated steps for the shirt, 74 for trousers, all drawn in code (SVG) |
 | Pattern | Drafted from the measurements, drawn line by line with real numbers, inch or cm |
 | Voice | Browser text-to-speech, English only |
 | App | Vite project, installable on a phone, works offline after the first visit |

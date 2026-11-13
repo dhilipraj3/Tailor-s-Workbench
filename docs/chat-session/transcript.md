@@ -214,3 +214,27 @@ The space in "New folder" broke the save path, so the file went to the wrong pla
 The safety check blocked deleting that stray folder, so I'll leave it for you. It's an empty folder at `D:\New%20folder` that my bug created, and you can delete it. Continuing with the export:
 
 > 🔧 *Bash* · Re-export chat into the project folder
+
+### 🤖 Claude
+
+The chat is saved. Next I'll write the plan for the advanced version and update the README.
+
+> 🔧 *Write* · D:\New folder\tailors-workbench\docs\PLAN.md
+
+> 🔧 *Write* · D:\New folder\tailors-workbench\README.md
+
+> 🔧 *Bash* · Run tests and commit the web app
+
+### 🤖 Claude
+
+The README update didn't save because the tool needs the file to be read first. I'll fix that, and also check the step counts I wrote in the plan:
+
+> 🔧 *Read* · D:\New folder\tailors-workbench\README.md
+
+> 🔧 *Bash* · Count steps per garment
+
+> 🔧 *Edit* · D:\New folder\tailors-workbench\docs\PLAN.md
+
+> 🔧 *Write* · D:\New folder\tailors-workbench\README.md
+
+> 🔧 *Bash* · Commit README, plan fix, and fresh transcript
