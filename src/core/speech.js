@@ -1,7 +1,7 @@
 // speech
 
 
-const canSpeak='speechSynthesis' in window;
+const canSpeak=typeof window!=='undefined'&&'speechSynthesis' in window;
 let speakingBtn=null;
 function speak(text){
   if(!canSpeak)return;

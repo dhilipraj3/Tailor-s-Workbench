@@ -1,9 +1,9 @@
 // SEW chapter
 import { f, sn } from '../core/units.js';
 import { TR, P, st, H, ICON, SH, figure } from '../art/svg.js';
-import { machine } from './machine.js';
+
 import { FIG } from './measure.js';
-import { pp } from '../drafting/pattern.js';
+const pp=p=>`${(+p[0]).toFixed(1)} ${(+p[1]).toFixed(1)}`;
 
 const SEW_SHIRT=[
  {cap:'Iron on the stiff layer',say:'Lay the collar pieces and two cuffs wrong side up. Put the interfacing on top, glue side down. With a grown-up, press for ten seconds. Lift and press, do not slide.',svg:()=>

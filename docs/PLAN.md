@@ -1,5 +1,27 @@
 # Tailor's Workbench: plan for the advanced version
 
+> **Direction (13 Nov 2026):** this is a *make-it* app, not a course. Pick any design from the catalogue, customise it, and start making it for your own size. Every detail is included: a full-size pattern, extra cloth for later adjustment, fabric and step-by-step pictures with voice.
+
+## Phase A: done (v0.3)
+- Design engine: base garments + options → catalogue of 10 designs (6 shirts, 4 trousers)
+- Live customiser with picture tiles; family profiles; backup / restore
+- Per-seam sewing space **and extra cloth for future adjustment** (None / Standard / Generous / Growing child), drawn on the pattern and listed seam by seam
+- Full-size PDF: A4 tiles with page map and test squares, or one big sheet; SVG export
+- Shape-aware fabric planner (36″ / 44″ / 58″), comparing metres for each extra-cloth level
+- Make-it steps matched to the options (mandarin collar, half sleeve, box pleat, pleats, turn-ups, welt and side pockets…)
+- Offline-first service worker, installable; TypeScript engine; 27 tests covering every option combination
+
+## Phase B: next
+Men: kurta, pyjama, shorts · Women: blouse, kurti, salwar, churidar, palazzo, A-line skirt, simple dress · Kids: frock, shorts, shirt
+
+## Phase C
+More languages (Hindi first), hand-drafting guide from the new engine, free website hosting
+
+---
+
+*Original plan below, kept for reference.*
+
+
 **Goal:** a child (with a grown-up nearby) can make their own clothes from start to finish, with almost no reading.
 Every instruction is a picture, an animation or a voice.
 

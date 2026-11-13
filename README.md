@@ -1,44 +1,52 @@
 # Tailor's Workbench
 
-A picture-and-voice web app that teaches you to sew a **formal shirt** or **formal trousers** from scratch.
-It's designed so a child can follow it with a grown-up nearby. Every step is an animation, a few words and a spoken instruction.
+Pick a design, choose who it's for, and get everything needed to make it at home:
+a full-size printable pattern, the fabric to buy, and animated step-by-step instructions with voice.
+
+## What it does
+- **Design catalogue**: 10 men's shirt and trouser designs, each built from a base garment plus options.
+- **Customiser**: tap pictures to change the collar, sleeve, fit, pockets, hem, pleats, belt loops and turn-ups. The sketch updates live.
+- **People**: save sizes for each family member, from a ready-made size (S–XXL, waist 28–44) or their own measurements.
+- **Extra cloth for later adjustment**: every seam has its own sewing space plus optional extra cloth
+  (None / Standard / Generous / Growing child). It's drawn as an orange band on the pattern and listed seam by seam.
+- **Printable pattern**: full-size PDF on A4 pages (with page map, joining labels and test squares),
+  one big sheet for a print shop, or an SVG file.
+- **Fabric**: metres to buy for 36″, 44″ or 58″ fabric, worked out by laying the real piece shapes on folded fabric.
+  Also a shopping list and a cutting layout picture.
+- **Make it**: 25–30 animated steps per design, matched to the chosen options, with progress saved per project.
+- Works offline once loaded and can be installed on a phone. Backup and restore are on the People page.
 
 ## Run it
 You need Node.js 18 or newer.
 
 ```bash
 npm install
-npm run dev        # opens the app at http://localhost:5173
-npm test           # run the tests
-npm run build      # production build in dist/ (works offline, can be installed on a phone)
+npm run dev        # http://localhost:5173
+npm test           # all tests
+npx tsc -p .       # type-check
+npm run build      # production build in dist/
 npm run preview    # try the production build locally
 ```
 
 ## How it's organised
 ```
-index.html               app shell
-public/                  icon, web manifest, service worker (offline)
-src/main.js              starts the app
-src/styles.css           all styling
-src/core/                state & sizes, unit formatting (inch/cm, spoken numbers), speech
-src/art/svg.js           animation primitives (draw, stitch, cut, fold, move, iron…) and garment shapes
-src/drafting/pattern.js  pattern drafting from measurements and the paper-drawing renderer
-src/chapters/            Tools, Machine, Measure, Cut, Sew chapters (each step = caption + voice + picture)
-src/ui/app.js            home screen and step player
-tests/                   unit tests and a test that renders every picture step
-docs/PLAN.md             plan for the advanced version
-docs/chat-session/       the conversation this app was built in
-scripts/export-chat.mjs  regenerates the chat transcript
+src/engine/       geometry (seam allowance + extra cloth offsets), sizes, project context, fabric layout
+src/garments/     shirt.ts, trousers.ts (drafting, options, steps, supplies, sketch) and the design catalogue
+src/export/pdf.ts full-size PDF (A4 tiles or one sheet)
+src/views/        screens: catalogue, designer, project (pattern / fabric / make), people, help, step player
+src/chapters/     animated picture steps (tools, machine, cutting, sewing, option variants)
+src/art/svg.js    animation primitives and shapes used by the picture steps
+tests/            geometry, every design and option combination, PDF output
+docs/PLAN.md      roadmap
+docs/chat-session the conversation this app was built in
 ```
 
-### Adding a step
-Each step is one object in a chapter file:
-```js
-{ cap: 'Sew the sides',                       // ≤ 5 words, shown on screen
-  say: 'Turn the shirt inside out. Sew…',     // read aloud
-  svg: () => H.stitch('M10 10 L200 10', 0.4, 2) }  // the animated picture (800×500 stage)
-```
+### Adding a design option
+1. Add the option to the garment's `options` list (e.g. `src/garments/shirt.ts`).
+2. Handle it in `draft()` (pattern pieces), `steps()` (which picture steps), `sketch()` (the flat drawing) and, if needed, `supplies()`.
+3. Add a preset to `DESIGNS` in `src/garments/index.ts`.
+4. `npm test` checks every option combination automatically.
 
 ## Status
-v0.2. See [docs/PLAN.md](docs/PLAN.md) for the roadmap. A professional tailor hasn't reviewed the patterns yet,
-so always make a test version in cheap fabric first.
+v0.3 (Phase A). A professional tailor hasn't reviewed the patterns yet,
+so make a test version in cheap fabric first.

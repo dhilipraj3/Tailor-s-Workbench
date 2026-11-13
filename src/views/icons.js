@@ -1,0 +1,27 @@
+// Small UI icons (24×24, currentColor).
+const svg = (d, extra = '') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${d}</svg>`;
+export const IC = {
+  home: svg('<path d="M3 11 L12 3 L21 11 M5 9 V21 H19 V9"/>'),
+  grid: svg('<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'),
+  people: svg('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20 C3 15 15 15 15.5 20"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14 C19 14 21.5 15.5 21.5 19"/>'),
+  help: svg('<circle cx="12" cy="12" r="9.5"/><path d="M9.5 9.5 C9.5 6 14.5 6 14.5 9.5 C14.5 12 12 12 12 14.5"/><circle cx="12" cy="18" r=".6" fill="currentColor"/>'),
+  prev: svg('<path d="M15 4 L7 12 L15 20"/>', 'stroke-width="3"'),
+  next: svg('<path d="M9 4 L17 12 L9 20"/>', 'stroke-width="3"'),
+  replay: svg('<path d="M4 12 A8 8 0 1 0 7 5.8 M4 4 V9 H9"/>'),
+  say: svg('<path d="M4 9 H8 L13 5 V19 L8 15 H4 Z" fill="currentColor"/><path d="M16 9 Q18 12 16 15 M18.5 6.5 Q22 12 18.5 17.5"/>'),
+  mute: svg('<path d="M4 9 H8 L13 5 V19 L8 15 H4 Z" fill="currentColor"/><path d="M16 9 L21 15 M21 9 L16 15"/>'),
+  star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 L15 9 L22 9.5 L16.5 14 L18.5 21 L12 17 L5.5 21 L7.5 14 L2 9.5 L9 9 Z" fill="currentColor"/></svg>',
+  plus: svg('<path d="M12 5 V19 M5 12 H19"/>', 'stroke-width="3"'),
+  minus: svg('<path d="M5 12 H19"/>', 'stroke-width="3"'),
+  check: svg('<path d="M4 12 L10 18 L20 6"/>', 'stroke-width="3"'),
+  print: svg('<path d="M6 9 V3 H18 V9 M6 18 H4 V10 H20 V18 H18 M7 14 H17 V21 H7 Z"/>'),
+  file: svg('<path d="M6 2 H14 L19 7 V22 H6 Z M14 2 V7 H19"/>'),
+  scissors: svg('<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5 L20 18 M8.5 16.5 L20 6"/>'),
+  fabric: svg('<path d="M3 6 C8 3 16 9 21 6 V18 C16 21 8 15 3 18 Z"/>'),
+  needle: svg('<path d="M4 20 L18 6 M16 4 L20 8 M18 6 A1.5 1.5 0 1 1 18.01 6"/>'),
+  pattern: svg('<path d="M5 3 V21 H17 M5 3 H14 C13 8 15 10 19 11 L17 21"/>'),
+  edit: svg('<path d="M4 20 H8 L19 9 L15 5 L4 16 Z M13 7 L17 11"/>'),
+  trash: svg('<path d="M4 7 H20 M9 7 V4 H15 V7 M6 7 L7 21 H17 L18 7"/>'),
+  download: svg('<path d="M12 3 V15 M7 10 L12 15 L17 10 M4 20 H20"/>'),
+  upload: svg('<path d="M12 15 V3 M7 8 L12 3 L17 8 M4 20 H20"/>'),
+};
