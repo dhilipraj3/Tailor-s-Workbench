@@ -1,0 +1,765 @@
+<title>Tailor's Workbench</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Nunito:wght@600;800&family=JetBrains+Mono:wght@700&display=swap">
+<style>
+/* Layout: picture-book player. Home = garment + size picker + chapter path; Player = big animated stage (cutting mat), tiny caption, huge buttons */
+:root{
+  --bg:#eef2ef; --surface:#ffffff; --surface-2:#f4f7f5; --ink:#17262b; --muted:#5b6d6f; --line:#d3ddd9;
+  --accent:#f2c230; --accent-ink:#1b2326; --good:#2b8a57;
+  --mat:#1d5646; --mat-line:rgba(255,255,255,.08);
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Nunito","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1614; --surface:#17201d; --surface-2:#1c2723; --ink:#e5ece9; --muted:#9aaca7; --line:#2a3833;
+  --accent:#f2c230; --accent-ink:#1b2326; --good:#5cc28a; --mat:#163f34; --mat-line:rgba(255,255,255,.06); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1614; --surface:#17201d; --surface-2:#1c2723; --ink:#e5ece9; --muted:#9aaca7; --line:#2a3833;
+  --accent:#f2c230; --accent-ink:#1b2326; --good:#5cc28a; --mat:#163f34; --mat-line:rgba(255,255,255,.06); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.4}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 40px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.tape{height:22px;border-radius:6px;background:
+  repeating-linear-gradient(90deg,var(--accent-ink) 0 2px,transparent 2px 60px) 0 0/100% 14px no-repeat,
+  repeating-linear-gradient(90deg,var(--accent-ink) 0 1px,transparent 1px 12px) 0 0/100% 7px no-repeat,var(--accent)}
+h1{font-family:var(--f-display);font-size:2.2rem;line-height:1;margin:14px 0 0;text-transform:uppercase;letter-spacing:.03em}
+.label{font-family:var(--f-display);font-size:1.15rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+.garments{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.gcard{border:3px solid var(--line);background:var(--surface);border-radius:18px;padding:10px;display:grid;justify-items:center;gap:4px;font-family:var(--f-display);font-size:1.5rem;font-weight:700}
+.gcard svg{width:min(150px,100%);height:auto}
+.gcard[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent) inset}
+.sizes{display:flex;flex-wrap:wrap;gap:10px}
+.sz{border:3px solid var(--line);background:var(--surface);border-radius:14px;padding:6px 10px 4px;display:grid;justify-items:center;min-width:66px;font-family:var(--f-display);font-size:1.35rem;font-weight:700}
+.sz[aria-pressed="true"]{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+.sz svg{height:44px;width:auto;display:block}
+.toggles{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.tog{border:3px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;display:flex;gap:8px;align-items:center;font-weight:800}
+.tog[aria-pressed="true"]{border-color:var(--ink)}
+.tog svg{width:24px;height:24px}
+.path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:640px){.path{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ch{position:relative;border:3px solid var(--line);background:var(--surface);border-radius:20px;padding:12px 10px 12px;display:grid;justify-items:center;gap:6px;text-align:center}
+.ch .num{position:absolute;top:8px;left:10px;width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--f-mono);font-size:1rem}
+.ch.done .num{background:var(--good)}
+.ch.next{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent) inset}
+.ch svg.ci{width:96px;height:96px}
+.ch b{font-family:var(--f-display);font-size:1.45rem;line-height:1}
+.bar{width:80%;height:8px;border-radius:9px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--good)}
+/* player */
+.player{display:grid;gap:10px}
+.pbar{display:flex;align-items:center;gap:10px}
+.icon-btn{width:52px;height:52px;border-radius:50%;border:3px solid var(--line);background:var(--surface);display:grid;place-items:center;flex:none}
+.icon-btn svg{width:26px;height:26px}
+.ptitle{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-size:1.5rem;font-weight:700;min-width:0}
+.ptitle svg{width:40px;height:40px;flex:none}
+.dots{display:flex;flex-wrap:wrap;gap:5px;margin-left:auto;justify-content:flex-end;max-width:45%}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--good)}
+.dots i.cur{background:var(--accent);outline:2px solid var(--ink)}
+.stage{background:var(--mat);border-radius:18px;overflow:hidden;cursor:pointer}
+.stage svg{display:block;width:100%;height:auto;max-height:66vh}
+.cap{display:flex;align-items:center;gap:12px;font-family:var(--f-display);font-size:1.9rem;font-weight:700;line-height:1.05;min-height:52px}
+.cap .n{font-family:var(--f-mono);font-size:1rem;background:var(--ink);color:var(--bg);border-radius:10px;padding:4px 8px;flex:none}
+.ctrls{display:grid;grid-template-columns:1fr auto auto 1fr;gap:12px;align-items:center}
+.big{height:72px;border-radius:20px;border:3px solid var(--ink);background:var(--surface);display:grid;place-items:center}
+.big svg{width:40px;height:40px}
+.big.go{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.big.round{width:72px;border-radius:50%}
+.big:disabled{opacity:.3;cursor:default}
+.big.speaking{animation:pulse 1s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(242,194,48,.35)}}
+.stepper{display:flex;align-items:center;justify-content:center;gap:14px}
+.stepper button{width:64px;height:64px;border-radius:50%;border:3px solid var(--ink);background:var(--surface);font-size:2rem;font-weight:800;line-height:1}
+.stepper output{font-family:var(--f-mono);font-size:2rem;min-width:150px;text-align:center;background:var(--accent);color:var(--accent-ink);border-radius:14px;padding:6px 14px}
+
+/* stage art (stage is a fixed dark mat in both themes, so colours here are deliberate constants) */
+.matbg{fill:var(--mat)}
+.fr{fill:#4f86d1;stroke:#1d3c69;stroke-width:2.5;stroke-linejoin:round}
+.fr2{fill:#356bb7;stroke:#1d3c69;stroke-width:2.5;stroke-linejoin:round}
+.fw{fill:url(#hS);stroke:#1d3c69;stroke-width:2.5;stroke-linejoin:round}
+.pr{fill:#66717d;stroke:#252b31;stroke-width:2.5;stroke-linejoin:round}
+.pr2{fill:#535d68;stroke:#252b31;stroke-width:2.5;stroke-linejoin:round}
+.pw{fill:url(#hP);stroke:#252b31;stroke-width:2.5;stroke-linejoin:round}
+.lin{fill:#efece2;stroke:#8f8b7c;stroke-width:2}
+.intf{fill:url(#dots);stroke:#a7a290;stroke-width:2}
+.paperpc{fill:#e9d9b3;stroke:#7c6a45;stroke-width:2}
+.kraft{fill:#eadcbc}
+.mann{fill:#c9d5d1;stroke:#7d8f8a;stroke-width:2}
+.stitch{fill:none;stroke:#ffd84a;stroke-width:3.5;stroke-dasharray:9 6;stroke-linecap:round}
+.stitch.solid{stroke-dasharray:none;stroke-width:2.5}
+.chalkl{fill:none;stroke:#ffffff;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.chalkd{fill:none;stroke:#ffffff;stroke-width:3;stroke-dasharray:10 7;stroke-linecap:round}
+.cutl{fill:none;stroke:#ffffff;stroke-width:2.5;stroke-dasharray:4 7}
+.arrowl{fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round}
+.tapel{fill:none;stroke:#f2c230;stroke-width:7;stroke-linecap:round}
+.foldl{fill:none;stroke:#ffd84a;stroke-width:3;stroke-dasharray:14 8}
+.pencil{fill:none;stroke:#26282a;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.pencilg{fill:none;stroke:#7a6c4d;stroke-width:1.6;stroke-dasharray:7 6}
+.redm{fill:none;stroke:#c2410c;stroke-width:3;stroke-dasharray:9 6;stroke-linecap:round}
+.dimln{fill:none;stroke:#1f6fd6;stroke-width:2.5}
+.saband{fill:none;stroke:rgba(31,111,214,.28);stroke-linejoin:round}
+.ptdot{fill:#c2410c}
+.ptlet{fill:#1b2326;font:800 20px var(--f-body)}
+.chipbg{fill:#ffd84a;stroke:#1b2326;stroke-width:2}
+.chipt{fill:#1b2326;font:700 21px var(--f-mono);text-anchor:middle;dominant-baseline:central}
+.wordt{fill:#ffffff;font:700 24px var(--f-display);text-anchor:middle;letter-spacing:.04em}
+.wordk{fill:#1b2326;font:700 22px var(--f-display);text-anchor:middle;letter-spacing:.04em}
+.metal{fill:#d3dadd;stroke:#4f5a63;stroke-width:2}
+.needle{stroke:#eef2f4;stroke-width:3;stroke-linecap:round}
+.ironb{fill:#eef2f4;stroke:#4f5a63;stroke-width:2.5}
+.irons{fill:#f2c230;stroke:#4f5a63;stroke-width:2.5}
+.red{fill:#e5484d}
+.okc{fill:#2fae69;stroke:#fff;stroke-width:4}
+.noc{fill:#e5484d;stroke:#fff;stroke-width:4}
+.mark{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ring{fill:none;stroke:#ffd84a;stroke-width:4}
+.mach{fill:#f1f3f2;stroke:#3a464d;stroke-width:3;stroke-linejoin:round}
+.machd{fill:#cfd8d6;stroke:#3a464d;stroke-width:3}
+.thread{fill:none;stroke:#e5484d;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.steam{fill:none;stroke:rgba(255,255,255,.7);stroke-width:3;stroke-linecap:round}
+.tapp{cursor:pointer}
+.tapp:hover rect.tilebg{fill:rgba(255,255,255,.14)}
+.tilebg{fill:rgba(255,255,255,.07)}
+
+/* animation primitives */
+.drw{stroke-dasharray:1 1;stroke-dashoffset:1;animation:drw var(--t) var(--d) ease-in-out forwards}
+@keyframes drw{to{stroke-dashoffset:0}}
+.fi{opacity:0;animation:fi .45s var(--d) forwards}
+@keyframes fi{to{opacity:1}}
+.fo{animation:fo .45s var(--d) forwards}
+@keyframes fo{to{opacity:0}}
+.mv{animation:mv var(--t) var(--d) both cubic-bezier(.3,.7,.3,1)}
+@keyframes mv{from{transform:translate(var(--fx),var(--fy))}to{transform:none}}
+.flipx,.flipy,.rot{transform-box:view-box}
+.flipx{transform-origin:var(--o) 0;animation:flipx var(--t) var(--d) forwards ease-in-out}
+.flipy{transform-origin:0 var(--o);animation:flipy var(--t) var(--d) forwards ease-in-out}
+@keyframes flipx{to{transform:scaleX(-1)}}
+@keyframes flipy{to{transform:scaleY(-1)}}
+.rot{transform-origin:var(--ox) var(--oy);animation:rot var(--t) var(--d) forwards ease-in-out}
+@keyframes rot{to{transform:rotate(var(--r))}}
+.slide{animation:slide .9s var(--d) var(--n) alternate ease-in-out}
+@keyframes slide{to{transform:translate(var(--dx),var(--dy))}}
+.pul{transform-box:fill-box;transform-origin:center;animation:pul 1s var(--d) infinite}
+@keyframes pul{50%{transform:scale(1.25)}}
+.pop{transform-box:fill-box;transform-origin:center;animation:pop .5s var(--d) both cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.drw,.fi,.fo,.mv,.flipx,.flipy,.rot,.slide,.pul,.pop{animation-duration:.01s!important;animation-iteration-count:1!important}}
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+(function(){
+/* ================= state ================= */
+const KEY='tailorsWorkbench.v2';
+const SHIRT_SIZES={S:{chest:38,neck:15,shoulder:17,sleeve:24.5,length:29,wrist:6.5},M:{chest:40,neck:15.5,shoulder:17.5,sleeve:25,length:29.5,wrist:7},L:{chest:42,neck:16,shoulder:18,sleeve:25.5,length:30,wrist:7},XL:{chest:44,neck:16.5,shoulder:18.5,sleeve:26,length:30.5,wrist:7.5},XXL:{chest:46,neck:17.5,shoulder:19,sleeve:26.5,length:31,wrist:7.5}};
+const PANT_SIZES=[28,30,32,34,36,38,40,42,44];
+const r4=x=>Math.round(x*4)/4, r2=x=>Math.round(x*2)/2;
+const pantPreset=w=>({waist:w,hip:w+6,rise:r4((w+6)/8+5.5),outseam:r4(40+(w-28)*.125),bottom:r2(15.5+(w-28)*.2)});
+let S={garment:'shirt',unit:'in',shirtSize:'L',pantSize:34,fit:'regular',shirt:{...SHIRT_SIZES.L},pant:pantPreset(34),seen:{},voice:true,view:null};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.shirt&&s.pant)S={...S,...s,view:null};}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({...S,view:null}));}catch(e){}};
+
+/* ================= numbers ================= */
+const FR=['','⅛','¼','⅜','½','⅝','¾','⅞'];
+const FRW=['','one eighth','a quarter','three eighths','a half','five eighths','three quarters','seven eighths'];
+function split8(x){let w=Math.floor(x),e=Math.round((x-w)*8);if(e===8){w++;e=0;}return [w,e];}
+function f(x){if(S.unit==='cm')return (Math.round(x*25.4)/10).toFixed(1).replace(/\.0$/,'')+' cm';const[w,e]=split8(Math.abs(x));return ((w||!e)?w:'')+FR[e]+'″';}
+function sn(x){if(S.unit==='cm')return (Math.round(x*25.4)/10).toFixed(1).replace(/\.0$/,'')+' centimetres';const[w,e]=split8(Math.abs(x));
+  if(!e)return w+(w===1?' inch':' inches'); if(!w)return FRW[e]+' of an inch'; return w+' and '+FRW[e]+' inches';}
+
+/* ================= svg helpers ================= */
+let uid=0;
+const n1=v=>(+v).toFixed(1);
+const TR=(d,fn)=>d.replace(/(-?\d*\.?\d+)[ ,]+(-?\d*\.?\d+)/g,(m,a,b)=>{const p=fn(+a,+b);return n1(p[0])+' '+n1(p[1]);});
+const P=(d,ox,oy,s,sx=1)=>TR(d,(x,y)=>[ox+x*s*sx,oy+y*s]);
+const st=(d0,t)=>`style="--d:${d0}s;--t:${t}s"`;
+const H={
+  shape:(d,cls,extra='')=>`<path d="${d}" class="${cls}" ${extra}/>`,
+  draw:(d,cls,d0=0,t=1)=>`<path d="${d}" pathLength="1" class="${cls} drw" ${st(d0,t)}/>`,
+  follow:(d,d0,t,icon,auto)=>`<g visibility="hidden"><set attributeName="visibility" to="visible" begin="${d0}s" fill="freeze"/><set attributeName="visibility" to="hidden" begin="${(d0+t+.4).toFixed(2)}s" fill="freeze"/>${icon}<animateMotion dur="${t}s" begin="${d0}s" fill="freeze" path="${d}" ${auto?'rotate="auto"':''}/></g>`,
+  stitch:(d,d0=0,t=2,tool='foot',cls='stitch')=>{const id='mk'+(uid++);return `<mask id="${id}" maskUnits="userSpaceOnUse" x="-200" y="-200" width="1200" height="900"><path d="${d}" pathLength="1" fill="none" stroke="#fff" stroke-width="22" class="drw" ${st(d0,t)}/></mask><path d="${d}" class="${cls}" mask="url(#${id})"/>${tool?H.follow(d,d0,t,ICON[tool]()):''}`;},
+  cut:(d,d0=0,t=1.5)=>H.draw(d,'cutl',d0,t)+H.follow(d,d0,t,ICON.scissors(),true),
+  fade:(inner,d0=0)=>`<g class="fi" style="--d:${d0}s">${inner}</g>`,
+  out:(inner,d0=0)=>`<g class="fo" style="--d:${d0}s">${inner}</g>`,
+  move:(inner,dx,dy,d0=0,t=1)=>`<g class="mv" style="--fx:${dx}px;--fy:${dy}px;--d:${d0}s;--t:${t}s">${inner}</g>`,
+  flip:(inner,ax,o,d0=0,t=1)=>`<g class="flip${ax}" style="--o:${o}px;--d:${d0}s;--t:${t}s">${inner}</g>`,
+  rot:(inner,ox,oy,r,d0=0,t=1)=>`<g class="rot" style="--ox:${ox}px;--oy:${oy}px;--r:${r}deg;--d:${d0}s;--t:${t}s">${inner}</g>`,
+  pop:(inner,d0=0)=>`<g class="pop" style="--d:${d0}s">${inner}</g>`,
+  arrow:(d,d0=0)=>H.fade(`<path d="${d}" class="arrowl" marker-end="url(#ah)"/>`,d0),
+  chip:(x,y,txt,d0=0)=>{const w=String(txt).length*13+26;return H.pop(`<rect x="${x-w/2}" y="${y-19}" width="${w}" height="38" rx="12" class="chipbg"/><text x="${x}" y="${y+1}" class="chipt">${txt}</text>`,d0);},
+  word:(x,y,txt,d0=0)=>H.fade(`<text x="${x}" y="${y}" class="wordt">${txt}</text>`,d0),
+  ok:(x,y,d0=0)=>H.pop(`<circle cx="${x}" cy="${y}" r="34" class="okc"/><path d="M${x-15} ${y} l10 11 l20 -22" class="mark"/>`,d0),
+  no:(x,y,d0=0,r=34)=>H.pop(`<circle cx="${x}" cy="${y}" r="${r}" class="noc"/><path d="M${x-r*.38} ${y-r*.38} l${r*.76} ${r*.76} M${x+r*.38} ${y-r*.38} l${-r*.76} ${r*.76}" class="mark"/>`,d0),
+  pin:(x,y,d0=0)=>H.pop(`<line x1="${x-18}" y1="${y+12}" x2="${x+12}" y2="${y-8}" stroke="#e8ecef" stroke-width="3"/><circle cx="${x+14}" cy="${y-9}" r="7" class="red" stroke="#fff" stroke-width="1.5"/>`,d0),
+  pins:(pts,d0=0,gap=.15)=>pts.map((p,i)=>H.pin(p[0],p[1],d0+i*gap)).join(''),
+  iron:(x,y,d0=0,dx=120,dy=0,n=3)=>H.fade(`<g class="slide" style="--d:${d0}s;--dx:${dx}px;--dy:${dy}px;--n:${n}">${ICON.iron(x,y)}</g>`,d0),
+  ring:(x,y,r,d0=0)=>H.fade(`<circle cx="${x}" cy="${y}" r="${r}" class="ring pul" style="--d:${d0}s"/>`,d0),
+  dim:(a,b,val,d0=0,off=0)=>{const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy)||1,nx=-dy/L*off,ny=dx/L*off;
+     const A=[a[0]+nx,a[1]+ny],B=[b[0]+nx,b[1]+ny],tx=-dy/L*8,ty=dx/L*8;
+     return H.fade(`<path class="dimln" d="M${n1(A[0])} ${n1(A[1])} L${n1(B[0])} ${n1(B[1])} M${n1(A[0]-tx)} ${n1(A[1]-ty)} L${n1(A[0]+tx)} ${n1(A[1]+ty)} M${n1(B[0]-tx)} ${n1(B[1]-ty)} L${n1(B[0]+tx)} ${n1(B[1]+ty)}"/>`,d0)+H.chip((A[0]+B[0])/2,(A[1]+B[1])/2,typeof val==='number'?f(val):val,d0+.2);},
+  zz:(pts,amp=6,step=11)=>{const o=[];for(let k=0;k<pts.length-1;k++){const a=pts[k],b=pts[k+1],dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy),nx=-dy/L,ny=dx/L,n=Math.max(2,Math.round(L/step));for(let i=(k?1:0);i<=n;i++){const t=i/n,s=i%2?amp:-amp;o.push(n1(a[0]+dx*t+nx*s)+' '+n1(a[1]+dy*t+ny*s));}}return 'M'+o.join(' L');},
+};
+const ICON={
+  foot:()=>`<g><rect x="-6" y="-78" width="12" height="44" rx="3" class="metal"/><line x1="0" y1="-36" x2="0" y2="-2" class="needle"/><path d="M-26 -16 L20 -16 L28 -6 L-26 -6 Z" class="metal"/></g>`,
+  hand:()=>`<g transform="rotate(-35)"><line x1="0" y1="0" x2="0" y2="-46" class="needle"/><ellipse cx="0" cy="-42" rx="2" ry="4" fill="none" stroke="#4f5a63" stroke-width="1.5"/><path d="M0 -46 C 10 -70 30 -60 40 -80" fill="none" stroke="#e5484d" stroke-width="2.5"/></g>`,
+  scissors:()=>`<g><path d="M-8 -3 L34 -1 L-8 4 Z" class="metal" transform="rotate(-14)"/><path d="M-8 -4 L34 1 L-8 3 Z" class="metal" transform="rotate(14)"/><circle cx="-20" cy="-11" r="9" fill="none" stroke="#e5484d" stroke-width="5"/><circle cx="-20" cy="11" r="9" fill="none" stroke="#e5484d" stroke-width="5"/><circle r="3" fill="#4f5a63"/></g>`,
+  iron:(x,y)=>`<g transform="translate(${x} ${y})"><path d="M-62 0 Q -60 -34 -16 -38 L 48 -38 L 54 0 Z" class="ironb"/><path d="M-64 0 L56 0 L56 6 L-64 6 Z" class="irons"/><path d="M-24 -38 Q -16 -66 28 -62 L 36 -38" fill="none" stroke="#4f5a63" stroke-width="9" stroke-linecap="round"/><circle cx="10" cy="-20" r="6" class="red"/><path d="M-40 -48 q-6 -10 0 -20 M-26 -52 q-6 -10 0 -20" class="steam"/></g>`,
+  button:(x,y,r=11)=>`<g><circle cx="${x}" cy="${y}" r="${r}" fill="#f6f3ea" stroke="#5a5a52" stroke-width="2"/><circle cx="${x-r*.3}" cy="${y-r*.3}" r="1.8" fill="#5a5a52"/><circle cx="${x+r*.3}" cy="${y-r*.3}" r="1.8" fill="#5a5a52"/><circle cx="${x-r*.3}" cy="${y+r*.3}" r="1.8" fill="#5a5a52"/><circle cx="${x+r*.3}" cy="${y+r*.3}" r="1.8" fill="#5a5a52"/></g>`,
+  zip:(x,y,h)=>{let t='';for(let i=8;i<h-14;i+=7)t+=`<rect x="${x-4+(i%14?0:3)}" y="${y+i}" width="5" height="4" fill="#d3dadd"/>`;return `<g><rect x="${x-12}" y="${y}" width="24" height="${h}" rx="3" fill="#2a2f35"/>${t}<rect x="${x-7}" y="${y+h-24}" width="14" height="20" rx="3" class="metal"/></g>`;},
+  person:(x,y,s,c='#c9d5d1')=>`<g transform="translate(${x} ${y}) scale(${s})"><circle cx="0" cy="-30" r="12" fill="${c}"/><path d="M-18 -14 Q 0 -20 18 -14 L 16 30 L -16 30 Z" fill="${c}"/></g>`,
+};
+const SH={ // garment outlines in local units; P() places them on the stage
+  front:'M-5 14 L0 14 C 8 14 12 8 12 0 L 34 6 C 30 20 30 30 40 34 L 40 92 C 30 100 10 100 0 100 L -5 100 Z',
+  halfback:'M0 4 Q 8 4 12 0 L 34 6 C 30 20 30 30 40 34 L 40 92 C 30 100 10 100 0 100 Z',
+  backbody:'M10 16 L 74 16 C 73 24 74 30 84 34 L 84 92 C 70 100 14 100 0 92 L 0 34 C 10 30 11 24 10 16 Z',
+  yoke:'M30 2 Q 42 6 54 2 L 76 8 L 74 16 L 10 16 L 8 8 Z',
+  sleeve:'M0 30 C 12 30 18 0 35 0 C 52 0 58 30 70 30 L 58 110 L 12 110 Z',
+  leaf:'M0 6 Q 50 0 100 6 L 112 26 Q 50 18 -12 26 Z',
+  stand:'M2 0 Q 50 -4 98 0 Q 106 4 104 12 Q 50 16 -4 12 Q -6 4 2 0 Z',
+  cuff:'M0 0 L 80 0 L 80 22 Q 80 28 74 28 L 6 28 Q 0 28 0 22 Z',
+  body:'M58 6 Q 80 16 102 6 L 124 12 C 120 30 120 46 128 56 L 128 146 C 100 154 60 154 32 146 L 32 56 C 40 46 40 30 36 12 Z',
+  shirt:'M58 6 Q 80 16 102 6 L 124 12 L 160 74 L 144 84 L 124 56 L 124 146 C 100 154 60 154 36 146 L 36 56 L 16 84 L 0 74 L 36 12 Z',
+  collar:'M58 6 L 80 22 L 102 6 L 98 -2 Q 80 4 62 -2 Z',
+  pfront:'M0 0 L32 0 L34 20 C 34 28 38 31 46 32 L 40 70 L 38 150 L 12 150 L 8 70 L 0 34 Z',
+  pback:'M0 0 L30 -4 L38 22 C 40 32 46 36 56 36 L 48 72 L 46 150 L 14 150 L 10 72 L 0 34 Z',
+  pants:'M4 0 L86 0 L92 64 L86 160 L56 160 L45 58 L34 160 L4 160 L-2 64 Z',
+};
+function figure(ox,oy,s,o={}){
+  const c='mann',sc=o.shirt||c,pc=o.pants||c;
+  return `<g><circle cx="${ox+50*s}" cy="${oy+14*s}" r="${12*s}" class="${c}"/><path d="${P('M45 24 L55 24 L55 34 L45 34 Z',ox,oy,s)}" class="${c}"/>
+   <path d="${P('M30 100 L70 100 L68 190 L54 190 L50 116 L46 190 L32 190 Z',ox,oy,s)}" class="${pc}"/>
+   <path d="${P('M26 34 L14 96 L20 98 L32 50 Z',ox,oy,s)}" class="${sc}"/><path d="${P('M74 34 L86 96 L80 98 L68 50 Z',ox,oy,s)}" class="${sc}"/>
+   <path d="${P('M26 34 L74 34 L70 100 L30 100 Z',ox,oy,s)}" class="${sc}"/>
+   ${o.shirt?`<path d="${P('M50 34 L50 100',ox,oy,s)}" stroke="#1d3c69" stroke-width="2"/><path d="${P('M42 30 L50 40 L58 30',ox,oy,s)}" fill="#ffffff" stroke="#1d3c69" stroke-width="2"/>`:''}
+   ${o.pants?`<path d="${P('M30 100 L70 100 L70 105 L30 105 Z',ox,oy,s)}" class="pr2"/>`:''}
+   <circle cx="${ox+16*s}" cy="${oy+100*s}" r="${4*s}" class="${c}"/><circle cx="${ox+84*s}" cy="${oy+100*s}" r="${4*s}" class="${c}"/></g>`;
+}
+function stageSvg(inner,bg=true){
+  return `<svg viewBox="0 0 800 500" role="img" aria-label="Step picture"><defs>
+  <pattern id="hS" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="9" height="9" fill="#b9cfee"/><rect width="3.5" height="9" fill="#93b2e0"/></pattern>
+  <pattern id="hP" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="9" height="9" fill="#a9b1ba"/><rect width="3.5" height="9" fill="#8e97a1"/></pattern>
+  <pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#f4f1e6"/><circle cx="5" cy="5" r="1.6" fill="#c2bca8"/></pattern>
+  <pattern id="mg" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0 L0 0 0 40" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/></pattern>
+  <marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#fff"/></marker>
+  </defs>${bg?'<rect width="800" height="500" class="matbg"/><rect width="800" height="500" fill="url(#mg)"/>':''}${inner}</svg>`;
+}
+
+/* ================= TOOLS chapter ================= */
+const TOOLICONS=[
+ ['Tape','measuring tape',(x,y)=>`<circle cx="${x}" cy="${y}" r="30" fill="#f2c230" stroke="#1b2326" stroke-width="3"/><circle cx="${x}" cy="${y}" r="10" fill="#1b2326"/><path d="M${x+28} ${y+14} L${x+62} ${y+26} L${x+58} ${y+38} L${x+24} ${y+26} Z" fill="#f2c230" stroke="#1b2326" stroke-width="2"/>`],
+ ['Scissors','fabric scissors',(x,y)=>`<g transform="translate(${x} ${y}) scale(1.6) rotate(-30)">${ICON.scissors()}</g>`],
+ ['Chalk','tailor\'s chalk',(x,y)=>`<path d="M${x-34} ${y+22} L${x+34} ${y+22} L${x} ${y-30} Z" fill="#7db3f0" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>`],
+ ['Pins','pins and pin cushion',(x,y)=>`<ellipse cx="${x}" cy="${y+10}" rx="34" ry="22" fill="#e5484d"/>${[[-14,-14],[4,-20],[18,-10]].map(([a,b])=>`<line x1="${x+a}" y1="${y+b+16}" x2="${x+a+6}" y2="${y+b-6}" stroke="#eee" stroke-width="3"/><circle cx="${x+a+6}" cy="${y+b-8}" r="5" fill="#f2c230"/>`).join('')}`],
+ ['Ruler','long ruler',(x,y)=>`<rect x="${x-60}" y="${y-12}" width="120" height="26" rx="3" fill="#f0e6c8" stroke="#1b2326" stroke-width="2"/>${Array.from({length:11},(_,i)=>`<line x1="${x-54+i*11}" y1="${y-12}" x2="${x-54+i*11}" y2="${y-(i%2?4:0)}" stroke="#1b2326" stroke-width="2"/>`).join('')}`],
+ ['Paper','big paper for the pattern',(x,y)=>`<rect x="${x-40}" y="${y-30}" width="80" height="60" fill="#eadcbc" stroke="#7c6a45" stroke-width="2"/><path d="M${x-40} ${y-10} H${x+40} M${x-40} ${y+10} H${x+40} M${x-14} ${y-30} V${y+30} M${x+14} ${y-30} V${y+30}" stroke="#c7b48c" stroke-width="1.5"/>`],
+ ['Iron','iron',(x,y)=>`<g transform="translate(${x} ${y+16}) scale(.75)">${ICON.iron(0,0)}</g>`],
+ ['Thread','thread spool',(x,y)=>`<rect x="${x-26}" y="${y-34}" width="52" height="10" rx="3" fill="#d6c3a0" stroke="#7c6a45" stroke-width="2"/><rect x="${x-20}" y="${y-24}" width="40" height="48" fill="#4f86d1"/><path d="M${x-20} ${y-14} H${x+20} M${x-20} ${y-2} H${x+20} M${x-20} ${y+10} H${x+20}" stroke="#356bb7" stroke-width="2"/><rect x="${x-26}" y="${y+24}" width="52" height="10" rx="3" fill="#d6c3a0" stroke="#7c6a45" stroke-width="2"/>`],
+ ['Needle','machine needle',(x,y)=>`<rect x="${x-7}" y="${y-36}" width="14" height="24" rx="2" class="metal"/><path d="M${x-3} ${y-12} L${x+3} ${y-12} L${x+1} ${y+34} L${x-1} ${y+34} Z" fill="#eef2f4" stroke="#4f5a63" stroke-width="1.5"/>`],
+ ['Ripper','seam ripper (undo stitches)',(x,y)=>`<rect x="${x-10}" y="${y}" width="20" height="40" rx="8" fill="#e5484d"/><path d="M${x} ${y} L${x} ${y-24} M${x} ${y-24} q -10 -4 -6 -16 M${x} ${y-24} q 8 -10 4 -20" fill="none" stroke="#d3dadd" stroke-width="4" stroke-linecap="round"/>`],
+ ['Stiff layer','interfacing',(x,y)=>`<rect x="${x-40}" y="${y-28}" width="80" height="56" rx="4" class="intf"/>`],
+ ['Buttons','buttons',(x,y)=>ICON.button(x-22,y-8,15)+ICON.button(x+18,y-12,12)+ICON.button(x,y+18,13)],
+];
+function toolsGrid(){
+  let o='';TOOLICONS.forEach((t,i)=>{const c=i%4,r=Math.floor(i/4),x=110+c*193,y=90+r*158;
+   o+=H.pop(`<g class="tapp" data-say="${t[1]}"><rect x="${x-86}" y="${y-62}" width="172" height="146" rx="18" class="tilebg"/>${t[2](x,y)}<text x="${x}" y="${y+70}" class="wordt">${t[0]}</text></g>`,.15+i*.18);});
+  return o;
+}
+const TOOLS=[
+ {cap:'Your tools',say:'These are the tools you need. Tap any picture to hear its name.',svg:toolsGrid},
+ {cap:'Two sides of fabric',say:'Fabric has two sides. The good side is bright. It goes on the outside. The wrong side is the back, shown with stripes in these pictures.',svg:()=>
+   H.pop(`<rect x="90" y="70" width="270" height="250" rx="12" class="fr"/>`,.1)+H.word(225,360,'GOOD SIDE',.4)+H.ok(225,195,.6)+
+   H.pop(`<rect x="440" y="70" width="270" height="250" rx="12" class="fw"/>`,1)+H.word(575,360,'WRONG SIDE',1.3)},
+ {cap:'Picture signs',say:'Watch for these signs. A dotted yellow line means sew. A white line means draw with chalk. Scissors mean cut. A white arrow means fold or move.',svg:()=>{
+   const row=(y,inner,w,d)=>H.fade(inner+`<text x="560" y="${y+8}" class="wordt" text-anchor="start">${w}</text>`,d);
+   return row(80,H.stitch('M120 80 L480 80',.3,1.6),'SEW',0)+row(180,H.draw('M120 180 L480 180','chalkl',1.4,1),'DRAW',1.2)+row(280,H.cut('M120 280 L480 280',2.2,1.6),'CUT',2)+row(380,H.arrow('M120 400 Q 300 330 480 400',3.6),'FOLD / MOVE',3.6);}},
+ {cap:'Stay safe',say:'Always ask a grown-up to help with the hot iron. Keep your fingers away from the needle: hold the fabric at the sides, never in front of the needle.',svg:()=>
+   ICON.iron(220,250)+H.fade(ICON.person(150,380,1.6)+ICON.person(210,394,1.1),.3)+H.ok(300,120,.8)+
+   `<g>${'<g transform="translate(560 300)">'+ICON.foot()+'</g>'}</g>`+H.fade(`<circle cx="560" cy="300" r="46" fill="rgba(229,72,77,.3)" stroke="#e5484d" stroke-width="4"/>`,1.2)+H.no(560,400,1.6,26)+
+   H.fade(`<rect x="430" y="270" width="60" height="40" rx="18" class="mann"/><rect x="630" y="270" width="60" height="40" rx="18" class="mann"/>`,2)+H.ok(460,220,2.4)+H.ok(660,220,2.6)},
+];
+
+/* ================= MACHINE chapter ================= */
+function machine(ox,oy,s){
+  const p=d=>P(d,ox,oy,s);
+  return `<path d="${p('M-30 170 L310 170 L310 196 L-30 196 Z')}" class="machd"/>
+   <path d="${p('M0 0 L270 0 Q 290 0 290 20 L 290 170 L 220 170 L 220 60 L 70 60 L 70 120 L 0 120 Z')}" class="mach"/>
+   <circle cx="${ox+300*s}" cy="${oy+60*s}" r="${28*s}" class="machd"/>
+   <path d="${p('M190 0 L190 -24')}" stroke="#3a464d" stroke-width="5"/><rect x="${ox+178*s}" y="${oy-44*s}" width="${24*s}" height="${22*s}" rx="4" fill="#e5484d"/>
+   <path d="${p('M30 120 L30 150')}" class="needle"/><path d="${p('M14 140 L50 140 L54 150 L14 150 Z')}" class="metal"/>`;
+}
+const MACHINE=[
+ {cap:'Put the thread on',say:'Put the thread on the spool pin. Follow the numbers on your machine: across the top, down, round the U, up to the hook, and down to the needle.',svg:()=>{
+   const ox=190,oy=110,s=1.4,p=d=>P(d,ox,oy,s);
+   const path=p('M190 -33 L 110 8 L 50 20 L 50 100 L 20 100 L 20 14 L 34 14 L 34 110 L 30 140');
+   const nums=[[110,8],[50,60],[20,60],[27,14],[30,138]];
+   return machine(ox,oy,s)+H.draw(path,'thread',.5,4)+nums.map((q,i)=>H.pop(`<circle cx="${ox+q[0]*s}" cy="${oy+q[1]*s}" r="15" fill="#f2c230" stroke="#1b2326" stroke-width="2"/><text x="${ox+q[0]*s}" y="${oy+q[1]*s+1}" class="chipt" style="font-size:16px">${i+1}</text>`,.5+i*.8)).join('');}},
+ {cap:'Put the bobbin in',say:'Wind thread on the small bobbin. Drop it in under the needle plate so the thread pulls the right way. Pull a tail of thread out.',svg:()=>
+   `<rect x="170" y="110" width="460" height="300" rx="18" class="metal"/><circle cx="400" cy="260" r="90" fill="#9aa5ab" stroke="#4f5a63" stroke-width="3"/>`+
+   H.move(`<circle cx="400" cy="260" r="56" fill="#f6f3ea" stroke="#4f5a63" stroke-width="3"/><circle cx="400" cy="260" r="40" fill="#e5484d"/><circle cx="400" cy="260" r="10" fill="#f6f3ea"/>`,260,-200,.3,1.4)+
+   H.draw('M440 250 Q 500 220 560 160','thread',2,1)+H.arrow('M570 150 L640 90',2.8)},
+ {cap:'Stitch length 2.5',say:'Turn the stitch length dial to two and a half. This is the best size for most seams.',svg:()=>
+   `<circle cx="300" cy="250" r="140" fill="#f1f3f2" stroke="#3a464d" stroke-width="5"/>`+[0,1,2,3,4,5].map(i=>{const a=(-210+i*48)*Math.PI/180;return `<text x="${300+Math.cos(a)*105}" y="${250+Math.sin(a)*105+8}" style="font:700 28px var(--f-mono)" fill="#1b2326" text-anchor="middle">${i}</text>`;}).join('')+
+   `<g class="rot" style="--ox:300px;--oy:250px;--r:120deg;--d:.4s;--t:1.4s"><path d="M300 250 L${300+Math.cos(-210*Math.PI/180)*80} ${250+Math.sin(-210*Math.PI/180)*80}" stroke="#e5484d" stroke-width="10" stroke-linecap="round"/></g><circle cx="300" cy="250" r="16" fill="#3a464d"/>`+
+   H.chip(610,250,'2.5 mm',1.8)+H.stitch('M520 360 L720 360',2.2,1.2,null)},
+ {cap:'Lock the start',say:'At the start of every seam, sew three stitches forward, three stitches backward, then forward again. This locks the thread. Do the same at the end.',svg:()=>
+   `<rect x="80" y="170" width="640" height="160" rx="8" class="fr"/>`+H.stitch('M150 250 L250 250',.3,.9)+H.arrow('M250 210 L160 210',1.3)+H.stitch('M250 256 L160 256',1.5,.9)+H.arrow('M170 300 L300 300',2.6)+H.stitch('M160 250 L680 250',2.8,3)},
+ {cap:'Follow the guide line',say:`Keep the edge of the fabric on the guide line of the needle plate, ${sn(S.garment==='shirt'?.375:.625)} from the needle. Watch the edge, not the needle.`,svg:()=>{
+   const g=S.garment==='shirt'?60:100;
+   return `<rect x="380" y="20" width="320" height="460" class="metal"/>`+[60,100,140].map((x,i)=>`<line x1="${300+x}" y1="20" x2="${300+x}" y2="480" stroke="#4f5a63" stroke-width="${x===g?5:2}"/>`).join('')+
+   H.move(`<rect x="60" y="40" width="${240+g}" height="420" class="fr"/>`,-120,0,.2,1)+H.ring(300+g,250,30,1.3)+H.stitch('M300 470 L300 40',1.8,3.5)+H.chip(300+g/2,60,f(S.garment==='shirt'?.375:.625),1.3);}},
+ {cap:'Turning a corner',say:'At a corner, stop with the needle down in the fabric. Lift the presser foot. Turn the fabric. Put the foot down and keep sewing.',svg:()=>
+   `<rect x="170" y="80" width="460" height="340" class="fr"/>`+H.stitch('M210 120 L590 120',.2,2)+H.ring(590,120,26,2.3)+H.chip(470,180,'needle ↓',2.4)+H.chip(470,230,'foot ↑',3)+H.arrow('M650 170 Q 690 120 650 70',3.4)+H.stitch('M590 120 L590 380',4.2,2)},
+ {cap:'Practise on paper',say:'Before using fabric, practise with no thread on paper. Follow the lines. Straight, then curves, then corners. Do it until it feels easy.',svg:()=>
+   `<rect x="70" y="40" width="660" height="420" rx="6" fill="#f6f3ea"/>`+[`M120 110 L680 110`,`M120 230 C 230 150 330 310 440 230 C 550 150 600 290 680 230`,`M120 360 L300 360 L300 420 L480 420 L480 320 L680 320`].map((d,i)=>`<path d="${d}" fill="none" stroke="#c9c2ad" stroke-width="3"/>`+H.stitch(d,.3+i*3,2.8,'foot','stitch solid')).join('')},
+ {cap:'Press every seam',say:'After every seam, press it flat with the iron, then press it open. Pressing makes your clothes look neat.',svg:()=>
+   `<rect x="100" y="160" width="300" height="200" class="fw"/><rect x="400" y="160" width="300" height="200" class="fw"/>`+H.stitch('M400 160 L400 360',0,0,null)+
+   `<rect x="370" y="160" width="30" height="200" class="fr2"/>`+
+   H.flip(`<rect x="370" y="160" width="30" height="200" class="fr2"/>`,'x',400,.6,1)+H.iron(330,170,1.8,140)},
+];
+
+/* ================= MEASURE chapter ================= */
+const FIG={ox:290,oy:34,s:2.3};
+const fp=(d)=>P(d,FIG.ox,FIG.oy,FIG.s);
+const fe=(cx,cy,rx,ry)=>`M${n1(FIG.ox+(cx-rx)*FIG.s)} ${n1(FIG.oy+cy*FIG.s)} A${n1(rx*FIG.s)} ${n1(ry*FIG.s)} 0 1 0 ${n1(FIG.ox+(cx+rx)*FIG.s)} ${n1(FIG.oy+cy*FIG.s)} A${n1(rx*FIG.s)} ${n1(ry*FIG.s)} 0 1 0 ${n1(FIG.ox+(cx-rx)*FIG.s)} ${n1(FIG.oy+cy*FIG.s)}`;
+function measScene(tape,key){return ()=>{const m=S.garment==='shirt'?S.shirt:S.pant;return figure(FIG.ox,FIG.oy,FIG.s)+H.draw(tape,'tapel',.3,1.6)+H.chip(660,250,f(m[key]),1.6);};}
+const MEASURE_SHIRT=[
+ {cap:'Ask a helper',say:'You can use your ready-made size. It is already filled in. Or ask a helper to measure you. Stand straight and relax.',svg:()=>figure(FIG.ox,FIG.oy,FIG.s)+H.fade(ICON.person(150,420,2.2)+`<path d="M190 330 Q 260 320 300 300" class="tapel"/>`,.4)+H.chip(660,250,'Size '+S.shirtSize,.8)},
+ {cap:'Chest',field:'chest',say:'Chest. Put the tape around the fullest part of the chest, under the arms. Keep it level.',svg:measScene(fe(50,48,28,5),'chest')},
+ {cap:'Neck',field:'neck',say:'Neck. Put the tape around the bottom of the neck, with one finger under it.',svg:measScene(fe(50,29,7,2.4),'neck')},
+ {cap:'Shoulders',field:'shoulder',say:'Shoulders. Measure across the back, from one shoulder bone to the other.',svg:measScene(fp('M26 35 Q 50 30 74 35'),'shoulder')},
+ {cap:'Sleeve',field:'sleeve',say:'Sleeve. Measure from the shoulder bone, down the arm to the wrist bone.',svg:measScene(fp('M74 35 L 80 66 L 84 97'),'sleeve')},
+ {cap:'Shirt length',field:'length',say:'Shirt length. Measure from the bone at the back of the neck down to where the shirt should end.',svg:measScene(fp('M50 30 L 50 112'),'length')},
+ {cap:'Wrist',field:'wrist',say:'Wrist. Put the tape around the wrist bone.',svg:measScene(fe(84,95,4.5,1.8),'wrist')},
+];
+const MEASURE_PANT=[
+ {cap:'Ask a helper',say:'Your ready-made waist size is already filled in. Or ask a helper to measure you. Stand straight and relax.',svg:()=>figure(FIG.ox,FIG.oy,FIG.s)+H.fade(ICON.person(150,420,2.2)+`<path d="M190 330 Q 260 320 300 300" class="tapel"/>`,.4)+H.chip(660,250,'Size '+S.pantSize,.8)},
+ {cap:'Waist',field:'waist',say:'Waist. Put the tape where you wear your trousers. Snug, not tight.',svg:measScene(fe(50,92,21,4),'waist')},
+ {cap:'Hip',field:'hip',say:'Hip. Put the tape around the fullest part of your bottom, with feet together.',svg:measScene(fe(50,106,23,4.5),'hip')},
+ {cap:'Seat depth',field:'rise',say:'Seat depth. Sit on a flat chair. Measure down your side from the waist to the chair.',svg:measScene(fp('M73 92 L 73 117'),'rise')},
+ {cap:'Length',field:'outseam',say:'Length. Measure down the side, from the waist to where the trousers should end.',svg:measScene(fp('M72 92 L 69 188'),'outseam')},
+ {cap:'Bottom',field:'bottom',say:'Bottom. This is how wide the trouser leg is at the bottom, all the way around.',svg:measScene(fe(61,186,7.5,2.2),'bottom')},
+];
+
+/* ================= PATTERN drafting ================= */
+const pp=p=>`${n1(p[0])} ${n1(p[1])}`;
+function shirtDraft(){
+  const m=S.shirt,fit=S.fit,C=m.chest,N=m.neck,Sh=m.shoulder,SL=m.sleeve,L=m.length,Wr=m.wrist;
+  const E=fit==='slim'?3.5:5,G=C+E,nw=N/6+.25,armY=G/6+3,yk=4,bx=G/4+.25,fx=G/4-.25,sup=fit==='slim'?1:.25;
+  const waistY=L*.55+.75,hemY=L+.75,sideHemY=hemY-3;
+  const out=[];
+  {const O=[0,0],A=[0,.75],B=[nw,0],C2=[Sh/2,1.75],D=[0,armY],E2=[bx,armY],F=[bx-sup,waistY],Gp=[bx-sup*.5,sideHemY],Hh=[0,hemY],Y=[0,yk];
+   const neck=`M${pp(A)} Q ${pp([nw*.85,.75])} ${pp(B)}`,arm=`M${pp(C2)} C ${pp([Sh/2-.55,armY*.55])} ${pp([Sh/2-.35,armY])} ${pp(E2)}`,hem=`M${pp(Gp)} C ${pp([Gp[0]-1.2,hemY])} ${pp([Gp[0]*.45,hemY])} ${pp(Hh)}`;
+   const outline=`M${pp(A)} Q ${pp([nw*.85,.75])} ${pp(B)} L ${pp(C2)} C ${pp([Sh/2-.55,armY*.55])} ${pp([Sh/2-.35,armY])} ${pp(E2)} L ${pp(F)} L ${pp(Gp)} C ${pp([Gp[0]-1.2,hemY])} ${pp([Gp[0]*.45,hemY])} ${pp(Hh)} Z`;
+   out.push({name:'Back',cut:'fold',box:[-2.2,-1.6,bx+1.2,hemY+.8],outline,steps:[
+    {cap:'Draw an L',say:'Take a big paper. Draw a long line down the left side and a line across the top. The corner is point O.',els:[['g',O,[0,hemY+.5]],['g',O,[bx+.8,0]],['p','O',O]]},
+    {cap:'Point A',say:`From O, measure ${sn(.75)} down. Mark A.`,els:[['m',O,A,40],['p','A',A]]},
+    {cap:'Point B and the neck',say:`From O, measure ${sn(nw)} across. Mark B. Draw a gentle curve from A to B.`,els:[['m',O,B,-34],['p','B',B],['c',neck]]},
+    {cap:'Shoulder point C',say:`Measure ${sn(Sh/2)} across from O, then ${sn(1.75)} down. Mark C. Join B to C.`,els:[['m',O,[Sh/2,0],-34],['m',[Sh/2,0],C2,-34],['p','C',C2],['l',B,C2]]},
+    {cap:'Chest line D',say:`From O, measure ${sn(armY)} down. Mark D and draw a line across.`,els:[['m',O,D,40],['p','D',D],['g',D,[bx+.6,armY]]]},
+    {cap:'Underarm point E',say:`From D, measure ${sn(bx)} across. Mark E.`,els:[['m',D,E2,-34],['p','E',E2]]},
+    {cap:'Draw the armhole',say:'Draw a smooth curve from C down to E. It bends in a little, then sweeps out.',els:[['c',arm]]},
+    {cap:'Yoke line',say:`Measure ${sn(yk)} down from O. Draw a red line across. The top part is the yoke. Trace it on another paper later.`,els:[['m',O,Y,40],['p','Y',Y],['y',Y,[Sh/2-.2,yk]]]},
+    {cap:'Waist point F',say:`Measure ${sn(waistY)} down from O, then ${sn(F[0])} across. Mark F.`,els:[['m',O,[0,waistY],40],['g',[0,waistY],F],['m',[0,waistY],F,-34],['p','F',F]]},
+    {cap:'Bottom H and G',say:`Measure ${sn(hemY)} down from O. Mark H. On the side, mark G ${sn(3)} above the bottom line.`,els:[['m',O,Hh,40],['p','H',Hh],['g',Hh,[Gp[0]+.5,hemY]],['m',Gp,[Gp[0],hemY],-34],['p','G',Gp]]},
+    {cap:'Side and bottom',say:'Join E to F to G. Then draw a curve from G to H, like a smile.',els:[['l',E2,F],['l',F,Gp],['c',hem]]},
+    {cap:'Fold and grain',say:'The left line goes on the fold of the fabric. Draw the double arrow. It must run along the fabric.',els:[['fold',0,yk+1,hemY-2],['gr',bx*.6,armY+2,hemY-5]]},
+    {cap:'Add sewing space',say:`Draw a line ${sn(.375)} outside the shape, but not on the fold. This is the sewing space. Cut on this outside line.`,els:[['sa',outline,.375,0]]},
+   ]});}
+  {const fnd=N/6+.75,csx=Sh/2-.25,O=[0,0],A=[0,fnd],B=[nw,0],C2=[csx,2],D=[0,armY],E2=[fx,armY],F=[fx-sup,waistY],Gp=[fx-sup*.5,sideHemY],Hh=[0,hemY],X=[-.75,fnd];
+   const neck=`M${pp(A)} C ${pp([nw*.6,fnd])} ${pp([nw,fnd*.5])} ${pp(B)}`,arm=`M${pp(C2)} C ${pp([csx-.75,armY*.6])} ${pp([csx-.55,armY])} ${pp(E2)}`,hem=`M${pp(Gp)} C ${pp([Gp[0]-1.2,hemY])} ${pp([Gp[0]*.45,hemY])} ${pp(Hh)}`;
+   const outline=`M${pp(X)} L ${pp(A)} C ${pp([nw*.6,fnd])} ${pp([nw,fnd*.5])} ${pp(B)} L ${pp(C2)} C ${pp([csx-.75,armY*.6])} ${pp([csx-.55,armY])} ${pp(E2)} L ${pp(F)} L ${pp(Gp)} C ${pp([Gp[0]-1.2,hemY])} ${pp([Gp[0]*.45,hemY])} ${pp(Hh)} L ${pp([-.75,hemY])} Z`;
+   const btns=[];for(let y=fnd+3;y<hemY-5;y+=3.5)btns.push(['btn',[0,y]]);
+   const px0=2.25,px1=7.25,py=armY-3.25,pocket=`M${px0} ${py} L${px1} ${py} L${px1} ${py+5} L${(px0+px1)/2} ${py+5.6} L${px0} ${py+5} Z`;
+   out.push({name:'Front',cut:'2',box:[-2.6,-1.6,fx+1.2,hemY+.8],outline,steps:[
+    {cap:'Draw an L',say:'On a new paper, draw a long line down and a line across the top. The corner is O.',els:[['g',O,[0,hemY+.5]],['g',O,[fx+.8,0]],['p','O',O]]},
+    {cap:'Front neck',say:`Measure ${sn(nw)} across from O and mark B. Measure ${sn(fnd)} down and mark A. Draw a deep curve from A to B.`,els:[['m',O,B,-34],['m',O,A,40],['p','A',A],['p','B',B],['c',neck]]},
+    {cap:'Shoulder point C',say:`Measure ${sn(csx)} across and ${sn(2)} down. Mark C. Join B to C.`,els:[['m',O,[csx,0],-34],['m',[csx,0],C2,-34],['p','C',C2],['l',B,C2]]},
+    {cap:'Chest line D to E',say:`Measure ${sn(armY)} down to D. Then ${sn(fx)} across to E.`,els:[['m',O,D,40],['p','D',D],['g',D,[fx+.6,armY]],['m',D,E2,-34],['p','E',E2]]},
+    {cap:'Draw the armhole',say:'Draw a curve from C to E. The front curve goes in a bit more than the back.',els:[['c',arm]]},
+    {cap:'Waist and bottom',say:`Mark F at the waist, ${sn(F[0])} across. Mark H at the bottom, ${sn(hemY)} down. Mark G ${sn(3)} above the bottom on the side.`,els:[['m',[0,waistY],F,-34],['p','F',F],['m',O,Hh,40],['p','H',Hh],['p','G',Gp]]},
+    {cap:'Side and bottom',say:'Join E to F to G. Draw the smile curve from G to H.',els:[['l',E2,F],['l',F,Gp],['c',hem]]},
+    {cap:'Button strip',say:`Draw a line ${sn(.75)} outside the front line. This is where the buttons go. Add ${sn(1.5)} more to fold under.`,els:[['m',X,A,-34],['p','X',X],['l',X,[-.75,hemY]],['l',X,A],['l',[-.75,hemY],Hh]]},
+    {cap:'Button marks',say:`Mark ${btns.length} buttons on the front line, ${sn(3.5)} apart.`,els:[...btns,['m',[0,fnd+3],[0,fnd+6.5],-34]]},
+    {cap:'Pocket mark',say:'Draw the pocket shape on the left front only.',els:[['yc',pocket]]},
+    {cap:'Grain and sewing space',say:`Draw the double arrow. Then draw a line ${sn(.375)} outside all around. Cut on that line. Cut two fronts.`,els:[['gr',fx*.62,py+7,hemY-5],['sa',outline,.375,null]]},
+   ]});}
+  {const bw=G*(fit==='slim'?.35:.37),cap=G/8-.5,SLp=SL-2,cuffL=Wr+2.5,hemW=cuffL+1.5,A=[0,0],B=[-bw/2,cap],C2=[bw/2,cap],D=[-hemW/2,SLp],E2=[hemW/2,SLp];
+   const capc=`M${pp(B)} C ${pp([-bw*.3,cap])} ${pp([-bw*.24,0])} ${pp(A)} C ${pp([bw*.24,0])} ${pp([bw*.3,cap])} ${pp(C2)}`;
+   const outline=capc+` L ${pp(E2)} L ${pp(D)} Z`,sx=hemW/4;
+   out.push({name:'Sleeve',cut:'2',box:[-bw/2-1.5,-1.4,bw/2+1.5,SLp+1],outline,steps:[
+    {cap:'Middle line',say:'Draw a long straight line down the middle of the paper. The top is A.',els:[['g',A,[0,SLp+.5]],['p','A',A]]},
+    {cap:'Wide line',say:`Measure ${sn(cap)} down from A and draw a line across. Mark B and C, ${sn(bw/2)} on each side.`,els:[['m',A,[0,cap],-40],['g',[-bw/2-.5,cap],[bw/2+.5,cap]],['m',B,[0,cap],34],['m',[0,cap],C2,34],['p','B',B],['p','C',C2]]},
+    {cap:'Sleeve length',say:`Measure ${sn(SLp)} down from A. Draw the bottom line. Mark D and E, ${sn(hemW/2)} on each side.`,els:[['m',A,[0,SLp],-40],['g',[-hemW/2-.5,SLp],[hemW/2+.5,SLp]],['m',D,[0,SLp],-34],['m',[0,SLp],E2,-34],['p','D',D],['p','E',E2]]},
+    {cap:'Round top',say:'Draw a round hill from B up to A and down to C.',els:[['c',capc]]},
+    {cap:'Sides',say:'Join B to D and C to E with straight lines.',els:[['l',B,D],['l',C2,E2],['l',D,E2]]},
+    {cap:'Cuff opening',say:`Mark a red line ${sn(5.5)} long at the bottom, for the opening. Mark two small folds next to it.`,els:[['y',[sx,SLp-5.5],[sx,SLp]],['y',[sx+.8,SLp],[sx+1.1,SLp-.8]],['y',[sx+1.9,SLp],[sx+2.2,SLp-.8]]]},
+    {cap:'Grain and sewing space',say:`Draw the arrow down the middle. Add ${sn(.375)} sewing space all around. Cut two sleeves.`,els:[['gr',0,cap+2,SLp-7],['sa',outline,.375,null]]},
+   ]});}
+  {const hs=N/2+.75,cl=N/2-.25,cuffL=Wr+2.5,ly=3,cy=6.8;
+   const stand=`M0 0 L${N/4} 0 Q ${hs-.4} .05 ${hs} .55 Q ${hs+.05} 1.25 ${hs-.6} 1.25 L 0 1.25 Z`;
+   const leaf=`M0 ${ly} Q ${cl*.6} ${ly} ${cl+.9} ${ly-.5} L ${cl} ${ly+1.5} Q ${cl*.5} ${ly+1.9} 0 ${ly+1.875} Z`;
+   const cuff=`M0 ${cy} L ${cuffL} ${cy} L ${cuffL} ${cy+2} Q ${cuffL} ${cy+2.5} ${cuffL-.5} ${cy+2.5} L .5 ${cy+2.5} Q 0 ${cy+2.5} 0 ${cy+2} Z`;
+   out.push({name:'Collar & cuff',cut:'small',box:[-1.6,-1.6,Math.max(hs,cuffL)+1.3,cy+3.4],outline:stand+' '+leaf+' '+cuff,steps:[
+    {cap:'Collar stand',say:`Draw a band ${sn(hs)} long and ${sn(1.25)} tall. Round off one end. The straight end goes on the fold.`,els:[['m',[0,0],[hs,0],-34],['m',[0,0],[0,1.25],40],['c',stand],['fold',0,0,1.25]]},
+    {cap:'Collar',say:`Draw the collar: ${sn(cl)} long at the neck edge, ${sn(1.875)} tall. Make a point at the end. The straight end goes on the fold.`,els:[['m',[0,ly+1.875],[cl,ly+1.5],-34],['c',leaf],['fold',0,ly,ly+1.875]]},
+    {cap:'Cuff',say:`Draw the cuff: ${sn(cuffL)} long and ${sn(2.5)} tall, with round corners. Cut four.`,els:[['m',[0,cy],[cuffL,cy],-34],['m',[0,cy],[0,cy+2.5],40],['c',cuff]]},
+    {cap:'Sewing space',say:`Add ${sn(.375)} all around each small piece.`,els:[['sa',stand,.375,null],['sa',leaf,.375,null],['sa',cuff,.375,null]]},
+   ]});}
+  return out;
+}
+function pantDraft(){
+  const m=S.pant,W=m.waist,Hp=m.hip,O=m.outseam,Bt=m.bottom,R=m.rise,L=O-1.5,hipY=R*.66,kneeY=R+(L-R)/2-2,out=[];
+  {const Fh=Hp/4,ext=Hp/16,cr=(Fh+ext)/2,hh=(Bt/2-.5)/2,kh=hh+.5;
+   const A=[0,0],B=[0,R],C=[0,hipY],D=[0,kneeY],E=[0,L],F=[Fh,hipY],G=[Fh+ext,R],Hc=[cr,R],I=[Fh-.5,0],J=[I[0]-(W/4+.25),0],K=[cr+kh,kneeY],Lk=[cr-kh,kneeY],M=[cr+hh,L],N=[cr-hh,L];
+   const crotch=`M${pp(F)} C ${pp([Fh,R-.9])} ${pp([Fh+.5,R])} ${pp(G)}`,side=`M${pp(J)} Q ${pp([0,hipY*.35])} ${pp(C)} C ${pp([0,hipY+1])} ${pp([0,R-1])} ${pp([.25,R])} L ${pp(Lk)} L ${pp(N)}`;
+   const outline=`M${pp(J)} L ${pp(I)} L ${pp(F)} C ${pp([Fh,R-.9])} ${pp([Fh+.5,R])} ${pp(G)} L ${pp(K)} L ${pp(M)} L ${pp(N)} L ${pp(Lk)} L ${pp([.25,R])} C ${pp([0,R-1])} ${pp([0,hipY+1])} ${pp(C)} Q ${pp([0,hipY*.35])} ${pp(J)} Z`;
+   const cfAt=y=>y<=hipY?I[0]+.5*y/hipY:Fh;
+   const fly=`M${pp([I[0]-1.5,0])} L ${pp([cfAt(6.4)-1.5,6.4])} Q ${pp([cfAt(7.5)-1.5,7.6])} ${pp([cfAt(7.6),7.6])}`;
+   out.push({name:'Trouser front',cut:'2',box:[-3,-1.5,Fh+ext+1.5,L+1],outline,steps:[
+    {cap:'Draw an L',say:'Take a long paper. Draw a long line down the left and a line across the top. The top is the waist. The corner is A.',els:[['g',A,[0,L+.5]],['g',A,[Fh+ext+.5,0]],['p','A',A]]},
+    {cap:'Hip C and crotch B',say:`Measure ${sn(hipY)} down and mark C. Measure ${sn(R)} down and mark B. Draw lines across at both.`,els:[['m',A,C,40],['m',A,B,80],['p','C',C],['p','B',B],['g',C,[Fh+.4,hipY]],['g',B,[Fh+ext+.4,R]]]},
+    {cap:'Knee D and bottom E',say:`Measure ${sn(kneeY)} down for the knee, D. Measure ${sn(L)} down for the bottom, E. Draw lines across.`,els:[['m',A,D,40],['m',A,E,80],['p','D',D],['p','E',E],['g',D,[Fh+ext,kneeY]],['g',E,[Fh+ext,L]]]},
+    {cap:'Front middle F',say:`On the hip line, measure ${sn(Fh)} across from C. Mark F.`,els:[['m',C,F,-34],['p','F',F]]},
+    {cap:'Crotch point G',say:`On the crotch line, go ${sn(ext)} further. Mark G.`,els:[['m',[Fh,R],G,-34],['p','G',G],['g',[Fh,hipY],[Fh,R]]]},
+    {cap:'Crease line',say:'Find the middle between B and G. Mark H. Draw a red line straight down through H to the bottom. This is the crease line.',els:[['p','H',Hc],['y',[cr,-.5],[cr,L+.5]]]},
+    {cap:'Waist I and J',say:`At the top, come in ${sn(.5)} from F's line and mark I. From I, measure ${sn(W/4+.25)} towards the side. Mark J.`,els:[['p','I',I],['m',J,I,-34],['p','J',J]]},
+    {cap:'Knee and bottom width',say:`At the knee, mark K and L, ${sn(kh)} on each side of the crease. At the bottom, mark M and N, ${sn(hh)} on each side.`,els:[['m',[cr,kneeY],K,-34],['m',Lk,[cr,kneeY],-34],['m',N,[cr,L],-34],['m',[cr,L],M,-34],['p','K',K],['p','L',Lk],['p','M',M],['p','N',N]]},
+    {cap:'Front curve',say:'Join I to F. Then draw a curve from F down to G.',els:[['l',I,F],['c',crotch]]},
+    {cap:'Inside leg',say:'Join G to K to M.',els:[['l',G,K],['l',K,M],['l',M,N]]},
+    {cap:'Side line',say:'Draw the side: from J, curve through C, then go down through L to N.',els:[['c',side]]},
+    {cap:'Pocket and zip marks',say:'Draw the slanted pocket line at the side, and the J-shaped zip line near the front.',els:[['y',[J[0]+1.5,0],[0,6.5]],['yc',fly]]},
+    {cap:'Sewing space',say:`Add ${sn(.625)} all around, and ${sn(1.5)} at the bottom. Cut two fronts.`,els:[['sa',outline,.625,null]]},
+   ]});}
+  {const Bh=Hp/4+1,ext=Hp/10,drop=.375,crB=(Bh+ext)/2-.5,hb=(Bt/2+.5)/2,kb=hb+.5;
+   const A=[0,0],B=[0,R],C=[0,hipY],D=[0,kneeY],E=[0,L],F=[Bh,hipY],G=[Bh+ext,R+drop],Hc=[crB,R],I=[Bh-1.75,-1],J=[I[0]-(W/4+.75),0],K=[crB+kb,kneeY],Lk=[crB-kb,kneeY],M=[crB+hb,L],N=[crB-hb,L];
+   const seat=`M${pp(F)} C ${pp([Bh+.15,R-.4])} ${pp([Bh+.9,R+drop])} ${pp(G)}`,side=`M${pp(J)} Q ${pp([Math.min(0,J[0]),hipY*.35])} ${pp(C)} C ${pp([0,hipY+1])} ${pp([0,R-1])} ${pp([.25,R])} L ${pp(Lk)} L ${pp(N)}`;
+   const outline=`M${pp(J)} L ${pp(I)} L ${pp(F)} C ${pp([Bh+.15,R-.4])} ${pp([Bh+.9,R+drop])} ${pp(G)} L ${pp(K)} L ${pp(M)} L ${pp(N)} L ${pp(Lk)} L ${pp([.25,R])} C ${pp([0,R-1])} ${pp([0,hipY+1])} ${pp(C)} Q ${pp([Math.min(0,J[0]),hipY*.35])} ${pp(J)} Z`;
+   const mx=(I[0]+J[0])/2,my=(I[1]+J[1])/2,sl=(I[1]-J[1])/(I[0]-J[0]);
+   out.push({name:'Trouser back',cut:'2',box:[-3,-2,Bh+ext+1.5,L+1],outline,steps:[
+    {cap:'Same lines as front',say:`Draw the L again. Mark the hip line at ${sn(hipY)} and the crotch line at ${sn(R)}.`,els:[['g',A,[0,L+.5]],['g',A,[Bh+ext+.5,0]],['m',A,C,40],['m',A,B,80],['p','A',A],['p','C',C],['p','B',B],['g',C,[Bh+.4,hipY]],['g',B,[Bh+ext+.4,R+drop]]]},
+    {cap:'Knee and bottom',say:`Mark the knee at ${sn(kneeY)} and the bottom at ${sn(L)}.`,els:[['m',A,D,40],['m',A,E,80],['p','D',D],['p','E',E],['g',D,[Bh+ext,kneeY]],['g',E,[Bh+ext,L]]]},
+    {cap:'Back middle F',say:`On the hip line, measure ${sn(Bh)} across. Mark F. The back is bigger than the front.`,els:[['m',C,F,-34],['p','F',F]]},
+    {cap:'Crotch point G',say:`Go ${sn(drop)} below the crotch line and ${sn(ext)} past F's line. Mark G.`,els:[['m',[Bh,R+drop],G,-34],['p','G',G],['g',[Bh,hipY],[Bh,R+drop]]]},
+    {cap:'Back waist I',say:`At the top, come in ${sn(1.75)} and go up ${sn(1)}. Mark I. Join I to F.`,els:[['p','I',I],['l',I,F]]},
+    {cap:'Waist J',say:`From I, measure ${sn(W/4+.75)} towards the side. Mark J. Join J to I.`,els:[['m',J,I,-34],['p','J',J],['l',J,I]]},
+    {cap:'Dart',say:`In the middle of the waist, draw a narrow V, ${sn(1)} wide and ${sn(4.5)} long. This is the dart.`,els:[['yc',`M${pp([mx-.5,my-.5*sl])} L ${pp([mx+.15,my+4.5])} L ${pp([mx+.5,my+.5*sl])}`]]},
+    {cap:'Crease line',say:'Find the middle between B and G, then move half an inch to the left. Draw the red crease line straight down.',els:[['p','H',Hc],['y',[crB,-.8],[crB,L+.5]]]},
+    {cap:'Knee and bottom width',say:`Mark K and L, ${sn(kb)} each side at the knee. Mark M and N, ${sn(hb)} each side at the bottom.`,els:[['m',[crB,kneeY],K,-34],['m',[crB,L],M,-34],['p','K',K],['p','L',Lk],['p','M',M],['p','N',N]]},
+    {cap:'Seat curve',say:'Draw a deep curve from F down to G.',els:[['c',seat]]},
+    {cap:'Inside leg and side',say:'Join G to K to M. Draw the side from J through C and L to N.',els:[['l',G,K],['l',K,M],['l',M,N],['c',side]]},
+    {cap:'Back pocket',say:`Draw a red line ${sn(5.5)} wide, ${sn(2.5)} below the waist, for the back pocket.`,els:[['y',[mx-2.75,my+2.5-2.75*sl],[mx+2.75,my+2.5+2.75*sl]]]},
+    {cap:'Sewing space',say:`Add ${sn(.625)} all around. Add ${sn(1)} on the seat curve, so you can change it later. Cut two backs.`,els:[['sa',outline,.625,null]]},
+   ]});}
+  {const len=W/2+2.5,band=`M0 0 L${len} 0 L${len} 3 L0 3 Z`;
+   out.push({name:'Waistband',cut:'2',box:[-1.6,-1.6,len+1,4.6],outline:band,steps:[
+    {cap:'Waistband',say:`Draw a long strip ${sn(len)} long and ${sn(3)} tall. Cut two.`,els:[['m',[0,0],[len,0],-34],['m',[0,0],[0,3],40],['c',band]]},
+    {cap:'Fold line',say:'Draw a red line along the middle. The band folds in half here.',els:[['y',[0,1.5],[len,1.5]]]},
+    {cap:'Overlap',say:`Mark ${sn(2)} at one end. This part overlaps for the hook.`,els:[['g',[len-2,0],[len-2,3]],['m',[len-2,3],[len,3],-34]]},
+   ]});}
+  return out;
+}
+function draftSvg(pc,idx){
+  const [x0,y0,x1,y1]=pc.box,w=x1-x0,h=y1-y0,s=Math.min(760/w,460/h),ox=20+(760-w*s)/2-x0*s,oy=20+(460-h*s)/2-y0*s;
+  const M=p=>[ox+p[0]*s,oy+p[1]*s],MD=d=>TR(d,(x,y)=>[ox+x*s,oy+y*s]),L2=(a,b)=>`M${pp(M(a))} L${pp(M(b))}`;
+  const gs=(S.unit==='in'?1:2/2.54)*s;
+  let o=`<rect x="8" y="8" width="784" height="484" rx="10" class="kraft"/><defs><pattern id="pg" x="${n1(ox)}" y="${n1(oy)}" width="${gs}" height="${gs}" patternUnits="userSpaceOnUse"><path d="M${gs} 0 L0 0 0 ${gs}" fill="none" stroke="rgba(110,85,40,.2)" stroke-width="1"/></pattern></defs><rect x="8" y="8" width="784" height="484" rx="10" fill="url(#pg)"/>`;
+  const el=(e,anim,d0)=>{const k=e[0];
+   const dr=(d,cls)=>anim?H.draw(d,cls,d0,.9):`<path d="${d}" class="${cls}"/>`;
+   switch(k){
+    case 'g':return dr(L2(e[1],e[2]),'pencilg');
+    case 'l':return dr(L2(e[1],e[2]),'pencil');
+    case 'c':return dr(MD(e[1]),'pencil');
+    case 'y':return dr(L2(e[1],e[2]),'redm');
+    case 'yc':return dr(MD(e[1]),'redm');
+    case 'p':{const q=M(e[2]);const g=`<circle cx="${n1(q[0])}" cy="${n1(q[1])}" r="6" class="ptdot"/><text x="${n1(q[0]+9)}" y="${n1(q[1]-9)}" class="ptlet">${e[1]}</text>`;return anim?H.pop(g,d0):g;}
+    case 'm':return anim?H.dim(M(e[1]),M(e[2]),Math.hypot(e[2][0]-e[1][0],e[2][1]-e[1][1]),d0,e[3]||0):'';
+    case 'btn':{const q=M(e[1]);const g=`<circle cx="${n1(q[0])}" cy="${n1(q[1])}" r="7" fill="none" stroke="#26282a" stroke-width="2.5"/>`;return anim?H.pop(g,d0):g;}
+    case 'gr':{const a=M([e[1],e[2]]),b=M([e[1],e[3]]);const g=`<path d="M${pp(a)} L${pp(b)} M${n1(a[0]-8)} ${n1(a[1]+14)} L${pp(a)} L${n1(a[0]+8)} ${n1(a[1]+14)} M${n1(b[0]-8)} ${n1(b[1]-14)} L${pp(b)} L${n1(b[0]+8)} ${n1(b[1]-14)}" class="pencil"/>`;return anim?H.fade(g,d0):g;}
+    case 'fold':{const a=M([e[1],e[2]]),b=M([e[1],e[3]]);const g=`<path d="M${n1(a[0])} ${n1(a[1])} L${n1(a[0]+16)} ${n1(a[1])} L${n1(b[0]+16)} ${n1(b[1])} L${n1(b[0])} ${n1(b[1])}" fill="none" stroke="#c2410c" stroke-width="3" marker-end="url(#ah)"/><text x="${n1(a[0]-12)}" y="${n1((a[1]+b[1])/2)}" class="ptlet" style="fill:#c2410c" text-anchor="middle" transform="rotate(-90 ${n1(a[0]-12)} ${n1((a[1]+b[1])/2)})">FOLD</text>`;return anim?H.fade(g,d0):g;}
+    case 'sa':{const g=`<path d="${MD(e[1])}" class="saband" style="stroke-width:${n1(e[2]*2*s)}px"/><path d="${MD(e[1])}" class="pencil" style="stroke-width:2"/>`;return anim?H.fade(g,d0)+H.chip(400,470,'+ '+f(e[2]),d0+.3):g;}
+   }return '';};
+  if(idx<0){o+=pc.steps.flatMap(st=>st.els).map(e=>el(e,false)).join('')+H.chip(690,60,pc.cut==='fold'?'FOLD':pc.cut==='small'?'×2 / ×4':'×'+pc.cut,.3);return o;}
+  pc.steps.slice(0,idx).forEach(st=>st.els.forEach(e=>{if(e[0]!=='sa')o+=el(e,false);}));
+  let d=.2;pc.steps[idx].els.forEach(e=>{o+=el(e,true,d);d+=e[0]==='p'?.3:.75;});
+  return o;
+}
+function patternSteps(){
+  const pcs=S.garment==='shirt'?shirtDraft():pantDraft(),steps=[];
+  pcs.forEach((pc,pi)=>{
+    steps.push({cap:pc.name,say:`Now let's draw the ${pc.name.toLowerCase()} pattern. ${pc.cut==='fold'?'It is cut on the fold.':pc.cut==='small'?'These are small pieces.':'You will cut two.'} Press next to start.`,svg:()=>draftSvg((S.garment==='shirt'?shirtDraft():pantDraft())[pi],-1)});
+    pc.steps.forEach((st,si)=>steps.push({cap:st.cap,say:st.say,svg:()=>draftSvg((S.garment==='shirt'?shirtDraft():pantDraft())[pi],si),sayFn:()=>(S.garment==='shirt'?shirtDraft():pantDraft())[pi].steps[si].say}));
+  });
+  return steps;
+}
+
+/* ================= CUT chapter ================= */
+function metres(){
+  const isS=S.garment==='shirt';
+  return [36,44,58].map(w=>{let n;
+    if(isS){const Lp=S.shirt.length+2,SLp=S.shirt.sleeve-1;n=w===36?2*Lp+SLp+14:w===44?2*Lp+10:Lp+SLp+12;}
+    else{const Op=S.pant.outseam+2,Hh=S.pant.hip,need=(Hh/4+Hh/16)+(Hh/4+1+Hh/10)+3;n=w===36?2*Op+14:w===44?2*Op+4:(need>w/2?2*Op+4:Op+8);}
+    return [w,Math.ceil(n*1.05*2.54/10)/10];});
+}
+function layout(){
+  const isS=S.garment==='shirt';
+  if(isS)return [
+    [TR(SH.halfback,(x,y)=>[80+y*2,120+x*2]),0],
+    [TR(SH.front,(x,y)=>[300+y*2,262+x*1.9]),.25],
+    [TR(SH.sleeve,(x,y)=>[520+y*1.8,140+x*1.8]),.5],
+    [TR(SH.leaf,(x,y)=>[110+x*1.2,340+y*1.2]),.75],
+    [TR(SH.cuff,(x,y)=>[560+x*.9,340+y*.9]),.9],[TR(SH.cuff,(x,y)=>[650+x*.9,340+y*.9]),1]];
+  return [
+    [TR(SH.pfront,(x,y)=>[80+y*2,134+x*1.9]),0],
+    [TR(SH.pback,(x,y)=>[80+y*2,250+x*2.6]),.3],
+    [`M420 140 L720 140 L720 175 L420 175 Z`,.6],[`M420 190 L720 190 L720 225 L420 225 Z`,.7],
+    [`M440 260 L560 260 L560 340 L440 340 Z`,.85],[`M580 260 L700 260 L700 340 L580 340 Z`,.95]];
+}
+const FAB=(isS)=>`<rect x="60" y="120" width="680" height="320" class="${isS?'fw':'pw'}"/><path d="M60 120 L740 120" class="foldl"/>`;
+function cutSteps(){
+  const isS=S.garment==='shirt',fr=isS?'fr':'pr',fw=isS?'fw':'pw';
+  return [
+  {cap:'How much fabric',say:()=>{const m=metres();return `Fabric comes in different widths. For your size, buy ${m[2][1]} metres of wide fabric, or ${m[1][1]} metres of medium fabric, or ${m[0][1]} metres of narrow fabric.`;},svg:()=>metres().map(([w,m],i)=>{const x=130+i*230,h=w*3.4,y=420-h;
+     return H.pop(`<rect x="${x}" y="${y}" width="120" height="${h}" rx="8" class="${fr}"/><ellipse cx="${x+60}" cy="${y}" rx="60" ry="12" class="${fw}"/>`,.2+i*.3)+H.chip(x+60,y-40,w+'″ wide',.5+i*.3)+H.chip(x+60,460,m+' m',.8+i*.3);}).join('')},
+  {cap:'Shopping list',say:isS?'You also need thread, buttons, and some interfacing for the collar and cuffs.':'You also need thread, a trouser zip, a hook and bar, a button, pocket fabric and a waistband strip.',svg:()=>{
+     const items=isS?[[TOOLICONS[7][2],'Thread'],[(x,y)=>ICON.button(x-22,y-8,15)+ICON.button(x+18,y-12,12)+ICON.button(x,y+18,13),'×'+(Math.floor((S.shirt.length+.75-5-(S.shirt.neck/6+.75+3))/3.5)+1+7)],[TOOLICONS[10][2],'0.5 m']]
+       :[[TOOLICONS[7][2],'Thread'],[(x,y)=>ICON.zip(x,y-50,100),'7″ zip'],[(x,y)=>`<path d="M${x-26} ${y} q0 -20 20 -20 h20" fill="none" stroke="#d3dadd" stroke-width="7"/><rect x="${x+8}" y="${y-8}" width="26" height="12" rx="4" fill="#d3dadd"/>`,'Hook'],[(x,y)=>`<rect x="${x-50}" y="${y-30}" width="100" height="60" class="lin"/>`,'Pocket cloth']];
+     const gap=700/items.length;return items.map(([fn,w],i)=>{const x=50+gap*(i+.5);return H.pop(`<rect x="${x-80}" y="130" width="160" height="220" rx="18" class="tilebg"/>${fn(x,230)}`,.2+i*.3)+H.word(x,320,w,.4+i*.3);}).join('');}},
+  {cap:'Wash, dry, iron',say:'Wash the fabric first, because it may shrink. Dry it, then iron it flat. Ask a grown-up to help with the iron.',svg:()=>
+    H.pop(`<rect x="70" y="140" width="170" height="210" rx="16" class="mach"/><circle cx="155" cy="260" r="62" fill="#8fb8e6" stroke="#3a464d" stroke-width="4"/><path d="M110 270 q 22 -16 45 0 t 45 0" fill="none" stroke="#fff" stroke-width="4"/>`,.1)+H.arrow('M255 250 L320 250',.6)+
+    H.pop(`<path d="M340 150 L520 150" stroke="#fff" stroke-width="3"/><path d="M360 150 L500 150 Q 510 240 480 330 Q 430 310 380 330 Q 350 240 360 150 Z" class="${fr}"/>`,.9)+H.arrow('M540 250 L600 250',1.4)+
+    H.pop(`<rect x="610" y="260" width="160" height="90" class="${fr}"/>`,1.7)+H.iron(690,270,2,40)},
+  {cap:'Fold the fabric',say:'Fold the fabric in half the long way, good sides inside. The two side edges, called selvedges, meet at the bottom.',svg:()=>
+    `<rect x="60" y="250" width="680" height="190" class="${fr}"/>`+H.out(H.flip(`<rect x="60" y="60" width="680" height="190" class="${fr}"/>`,'y',250,.5,1.4),1.9)+
+    H.fade(`<rect x="60" y="250" width="680" height="190" class="${fw}"/>`,1.9)+H.arrow('M760 90 Q 800 250 760 400',.4)+H.fade(`<path d="M60 250 L740 250" class="foldl"/>`,2.2)+H.word(400,238,'FOLD',2.3)+H.ring(400,440,24,2.6)},
+  {cap:'Lay out the pieces',say:isS?'Put the paper pieces on the fabric. The back goes against the fold. Leave a little space around every piece.':'Put the paper pieces on the fabric. Leave a little space around every piece.',svg:()=>FAB(isS)+layout().map(([d,dl])=>H.move(`<path d="${d}" class="paperpc"/>`,0,-420,.2+dl,1)).join('')},
+  {cap:'Straight with the edge',say:'Each paper has a double arrow. Measure from both ends of the arrow to the bottom edge. Both numbers must be the same, so the clothes hang straight.',svg:()=>FAB(isS)+layout().map(([d])=>`<path d="${d}" class="paperpc"/>`).join('')+
+    H.draw(isS?'M330 300 L470 300':'M110 175 L340 175','chalkl',.3,.8)+H.dim(isS?[340,300]:[120,175],isS?[340,440]:[120,440],isS?'4½':'5',1.2)+H.dim(isS?[460,300]:[330,175],isS?[460,440]:[330,440],isS?'4½':'5',1.8)+H.ok(660,80,2.6)},
+  {cap:'Pin and draw around',say:'Pin the paper to the fabric. Draw around each piece with chalk, adding the sewing space.',svg:()=>FAB(isS)+layout().map(([d],i)=>`<path d="${d}" class="paperpc"/>`+H.draw(d,'chalkl',1+i*.5,1.2)).join('')+H.pins(isS?[[120,150],[240,180],[330,280],[470,300],[560,160],[700,250]]:[[120,150],[320,180],[120,280],[330,320],[460,155],[600,300]],.2,.12)},
+  {cap:'Cut it out',say:'Cut on the chalk line with long smooth cuts. Cut through both layers at once. Keep the fabric flat on the table.',svg:()=>{const l=layout();return FAB(isS)+l.map(([d])=>`<path d="${d}" class="paperpc"/>`).join('')+H.cut(l[1][0],.3,4)+H.ok(680,80,4.6);}},
+  {cap:'Snip the notches',say:'Make tiny snips at the marks, like the middle of the back and the top of the sleeve. They help you match the pieces later.',svg:()=>{
+    const pcs=isS?[[TR(SH.halfback,(x,y)=>[160+x*3.2,40+y*3.2]),[[160,52],[290,120],[290,330]]],[TR(SH.sleeve,(x,y)=>[440+x*3,90+y*3]),[[545,90],[440,180],[650,180]]]]:[[TR(SH.pfront,(x,y)=>[200+x*2.6,40+y*2.6]),[[200,128],[290,40],[230,222]]],[TR(SH.pback,(x,y)=>[460+x*2.4,50+y*2.4]),[[460,132],[534,103],[484,223]]]];
+    return pcs.map(([d,ns],i)=>`<path d="${d}" class="${fr}"/>`+ns.map((n,j)=>H.pop(`<path d="M${n[0]-9} ${n[1]-9} L${n[0]} ${n[1]} L${n[0]+9} ${n[1]-9}" fill="none" stroke="#fff" stroke-width="4"/>`,.3+(i*3+j)*.35)+H.ring(n[0],n[1],18,.3+(i*3+j)*.35)).join('')).join('');}},
+  ];
+}
+
+/* ================= SEW chapter ================= */
+const SEW_SHIRT=[
+ {cap:'Iron on the stiff layer',say:'Lay the collar pieces and two cuffs wrong side up. Put the interfacing on top, glue side down. With a grown-up, press for ten seconds. Lift and press, do not slide.',svg:()=>
+   `<path d="${P(SH.leaf,200,90,3)}" class="fw"/>`+H.move(`<path d="${P(SH.leaf,200,90,3)}" class="intf"/>`,0,-180,.3,1)+
+   `<path d="${P(SH.cuff,220,300,2.6)}" class="fw"/>`+H.move(`<path d="${P(SH.cuff,220,300,2.6)}" class="intf"/>`,0,200,.8,1)+H.chip(500,340,'×2',1.4)+
+   H.iron(350,150,1.8,160)+H.ok(650,240,4.8)},
+ {cap:'Fold the front edge',say:`Fold the front edge over by ${sn(1.5)} and press it. Then sew two lines to hold it. Do this on both fronts.`,svg:()=>
+   `<path d="${P(SH.front,360,40,4)}" class="fw"/>`+H.flip(`<rect x="300" y="96" width="40" height="344" class="fw"/>`,'x',340,.5,1)+H.chip(320,60,f(1.5),0)+
+   H.stitch('M346 100 L346 436',1.8,1.6)+H.stitch('M374 100 L374 436',3.6,1.6)},
+ {cap:'Sew on the pocket',say:'Fold the top of the pocket down and sew it. Fold in the other edges. Pin it on the left front. Sew around the sides and the bottom.',svg:()=>
+   `<path d="${P(SH.front,420,60,3.6)}" class="fr"/>`+H.out(`<path d="M150 170 L230 170 L230 256 L190 266 L150 256 Z" class="fr2"/>`+H.flip(`<rect x="150" y="150" width="80" height="20" class="fr2"/>`,'y',170,.3,.8),1.7)+
+   H.move(`<path d="M450 172 L530 172 L530 256 L490 266 L450 256 Z" class="fr2"/><path d="M450 182 L530 182" class="stitch"/>`,-300,0,1.7,1)+H.pins([[455,180],[525,180]],2.6)+H.stitch('M450 174 L450 256 L490 266 L530 256 L530 174',3,2.4)},
+ {cap:'Join back and yoke',say:'Put the yoke on top of the back, good sides together. Put the second yoke underneath. Sew along the top edge of the back. Then flip the yokes up.',svg:()=>{
+   const s=3.4,ox=258,oy=90,down=TR(SH.yoke,(x,y)=>[ox+x*s,oy+(32-y)*s]),up=P(SH.yoke,ox,oy,s);
+   return `<path d="${P(SH.backbody,ox,oy,s)}" class="fr"/>`+H.out(H.move(`<path d="${down}" class="fw"/>`,0,-170,.2,1),3.8)+H.stitch(`M${ox+10*s} ${oy+16*s} L${ox+74*s} ${oy+16*s}`,1.4,2.2)+H.fade(`<path d="${up}" class="fr2"/>`,3.8)+H.arrow(`M${ox+100*s} ${oy+30*s} Q ${ox+108*s} ${oy+16*s} ${ox+100*s} ${oy+4*s}`,3.6)+H.ok(660,300,4.6);}},
+ {cap:'Sew the shoulders',say:'Lay the two fronts on the back, good sides together. Match the shoulders to the yoke. Sew both shoulder seams.',svg:()=>{
+   const s=3.4,ox=258,oy=90;
+   return `<path d="${P(SH.backbody,ox,oy,s)}" class="fr"/><path d="${P(SH.yoke,ox,oy,s)}" class="fr2"/>`+
+   H.move(`<path d="${P(SH.front,400.8,96.8,s)}" class="fw" opacity=".95"/>`,260,0,.2,1)+H.move(`<path d="${P(SH.front,400.8,96.8,s,-1)}" class="fw" opacity=".95"/>`,-260,0,.5,1)+
+   H.stitch('M441.6 97 L516.4 117',1.8,1.2)+H.stitch('M360 97 L285.2 117',3.2,1.2);}},
+ {cap:'Sew the collar',say:'Put the two collar pieces together, good sides facing. Sew around the ends and the long outside edge. Leave the neck edge open. Snip off the corners.',svg:()=>{
+   const p=d=>P(d,220,170,3);
+   return `<path d="${p(SH.leaf)}" class="fr"/>`+H.move(`<path d="${p(SH.leaf)}" class="fw"/>`,0,-200,.2,1)+H.stitch(p('M2 9 L -7 23 Q 50 15 107 23 L 98 9'),1.4,3)+H.cut(p('M-4 27 L-13 17'),4.7,.5)+H.cut(p('M104 27 L113 17'),5.4,.5);}},
+ {cap:'Turn and press',say:'Turn the collar right side out. Push the points out gently with a chopstick. Press it flat. Sew a line close to the edge.',svg:()=>{
+   const p=d=>P(d,220,170,3);
+   return H.out(`<path d="${p(SH.leaf)}" class="fw"/>`,.4)+H.fade(`<path d="${p(SH.leaf)}" class="fr"/>`,.4)+H.move(`<path d="M590 260 L700 320" stroke="#d6b98a" stroke-width="9" stroke-linecap="round"/>`,60,30,1,.8)+H.iron(400,190,1.9,120,0,2)+H.stitch(p('M4 10 L -4 22 Q 50 14 104 22 L 97 10'),3.7,2.4);}},
+ {cap:'Add the collar stand',say:'Put the collar between the two stand pieces, like a sandwich. Sew along the top and round the ends. Turn it right side out.',svg:()=>{
+   const s=3,ox=240,oy=260,st=P(SH.stand,ox,oy,s),leaf=TR(SH.leaf,(x,y)=>[ox+x*s,oy-6-(y-3)*s]);
+   return `<path d="${st}" class="fr"/><path d="${leaf}" class="fr2"/>`+H.move(`<path d="${st}" class="fw" opacity=".95"/>`,0,200,.8,1)+H.stitch(P('M-4 12 Q -6 4 2 0 Q 50 -4 98 0 Q 106 4 104 12',ox,oy,s),2.1,3);}},
+ {cap:'Collar on the shirt',say:'Match the middle of the stand to the middle of the back neck. Pin it all around. Sew the stand to the neck. Fold the inside stand over and sew close to the edge.',svg:()=>
+   `<path d="${P(SH.body,240,150,2)}" class="fr"/>`+H.move(`<path d="M356 162 Q 400 182 444 162 L 450 144 Q 400 166 350 144 Z" class="fr2"/>`,0,-140,.3,1)+H.pins([[365,170],[400,176],[435,170]],1.4)+H.stitch('M356 162 Q 400 182 444 162',2,2)+H.ok(650,250,4.4)},
+ {cap:'Sleeve opening',say:'Cut the slit at the bottom of the sleeve. Wrap the small strip around one side and the big strip around the other side. Sew a little box at the top.',svg:()=>
+   `<path d="${P(SH.sleeve,300,40,3.4)}" class="fr"/>`+H.cut('M456 414 L456 326',.3,1)+H.fade(`<rect x="448" y="326" width="8" height="88" class="fr2"/>`,1.5)+H.fade(`<path d="M456 414 L456 312 L465 300 L474 312 L474 414 Z" class="fr2"/>`,2.1)+H.stitch('M471 414 L471 332 L459 332 L459 316 L471 316 L471 332',2.9,2.6)},
+ {cap:'Sew on the sleeves',say:'Match the top of the sleeve to the shoulder seam. Pin the sleeve all along the armhole. Sew with the sleeve on top. Do both sleeves.',svg:()=>{
+   const arm=P('M124 12 C 120 30 120 46 128 56',150,90,2.2),sl=TR(SH.sleeve,(x,y)=>[428+y*1.5,165+(x-35)*1.5]);
+   return `<path d="${P(SH.body,150,90,2.2)}" class="fr"/>`+H.move(`<path d="${sl}" class="fw"/>`,220,0,.2,1)+H.pins([[425,122],[420,150],[422,180],[430,205]],1.4)+H.stitch(arm,2.3,2.4);}},
+ {cap:'Sew the sides',say:'Turn the shirt inside out. Sew from the bottom of the shirt, up to the armpit, and along the sleeve, in one long line. Do both sides.',svg:()=>
+   `<path d="${P(SH.shirt,240,60,2)}" class="fw"/>`+H.stitch(P('M124 146 L124 56 L144 84',240,60,2),.4,2.4)+H.stitch(P('M36 146 L36 56 L16 84',240,60,2),3.2,2.4)},
+ {cap:'Pleats and cuffs',say:'Fold two small pleats at the bottom of the sleeve. Put the cuff on, good sides together, and sew. Fold it over and sew close to the edge.',svg:()=>
+   `<path d="M220 60 L580 60 L600 300 L200 300 Z" class="fr"/>`+H.draw('M480 230 L480 300 M500 230 L500 300 M530 230 L530 300 M550 230 L550 300','chalkl',.2,.8)+H.arrow('M470 270 Q 490 250 505 270',1)+H.arrow('M520 270 Q 540 250 555 270',1.2)+
+   H.move(`<path d="M206 300 L594 300 L594 360 Q 594 372 582 372 L218 372 Q 206 372 206 360 Z" class="fr2"/>`,0,140,1.8,1)+H.stitch('M206 304 L594 304',3,2)+H.stitch('M212 364 L588 364',5.2,2)},
+ {cap:'Hem the bottom',say:'Fold the bottom edge under a tiny bit, then fold it again. Sew slowly around the curve.',svg:()=>
+   `<path d="M100 60 L700 60 L700 260 C 640 260 560 400 400 400 C 240 400 160 260 100 260 Z" class="fr"/>`+H.fade(`<path d="M100 252 C 160 252 240 392 400 392 C 560 392 640 252 700 252" fill="none" stroke="#356bb7" stroke-width="16"/>`,.4)+H.arrow('M400 450 L400 410',.4)+
+   H.stitch('M100 246 C 160 246 240 386 400 386 C 560 386 640 246 700 246',1.4,3.4)},
+ {cap:'Buttonholes and buttons',say:'Make the buttonholes with your machine. Try one on a scrap first. Open each hole carefully with the seam ripper. Sew the buttons on the other side, across from each hole.',svg:()=>
+   `<rect x="270" y="30" width="110" height="440" class="fr"/><rect x="420" y="30" width="110" height="440" class="fr"/>`+[80,180,280,380].map((y,i)=>H.stitch(`M321 ${y-18} L339 ${y-18} L339 ${y+18} L321 ${y+18} Z`,.3+i*1,.8,'foot','stitch solid')).join('')+
+   [80,180,280,380].map((y,i)=>H.pop(ICON.button(475,y,15)+`<path d="M470 ${y-5} L480 ${y+5} M480 ${y-5} L470 ${y+5}" stroke="#e5484d" stroke-width="2"/>`,4.6+i*.4)).join('')},
+ {cap:'Press it',say:'Press the whole shirt: the collar, the yoke, the sleeves and the front.',svg:()=>
+   `<path d="${P(SH.shirt,240,60,2)}" class="fr"/><path d="${P(SH.collar,240,60,2)}" fill="#fff" stroke="#1d3c69" stroke-width="2"/><path d="M400 104 L400 356" stroke="#1d3c69" stroke-width="2"/>`+[130,170,210,250,290,330].map(y=>ICON.button(408,y,5)).join('')+H.iron(330,260,.3,160,0,4)},
+ {cap:'You made a shirt!',say:'Well done! You made your own shirt. Try it on. Next time will be even easier.',svg:()=>
+   figure(FIG.ox,FIG.oy,FIG.s,{shirt:'fr'})+[[180,120],[620,100],[650,330],[160,360],[560,200]].map((q,i)=>H.pop(`<path d="M${q[0]} ${q[1]-22} L${q[0]+7} ${q[1]-7} L${q[0]+23} ${q[1]-5} L${q[0]+11} ${q[1]+6} L${q[0]+14} ${q[1]+22} L${q[0]} ${q[1]+14} L${q[0]-14} ${q[1]+22} L${q[0]-11} ${q[1]+6} L${q[0]-23} ${q[1]-5} L${q[0]-7} ${q[1]-7} Z" fill="#f2c230"/>`,.3+i*.25)).join('')},
+];
+const SEW_PANT=[
+ {cap:'Stop fraying',say:'Sew a zigzag stitch along all the edges, except the waist. This stops threads from coming loose.',svg:()=>{
+   const q=(x,y)=>[300+x*2.8,30+y*2.8];
+   return `<path d="${P(SH.pfront,300,30,2.8)}" class="pr"/>`+H.stitch(H.zz([q(0,0),q(0,34),q(8,70),q(12,150)]),.3,3,'foot','stitch solid')+H.stitch(H.zz([q(46,32),q(40,70),q(38,150)]),3.6,3,'foot','stitch solid');}},
+ {cap:'Sew the darts',say:'On the back pieces, fold the dart so the two chalk lines meet. Sew from the wide end down to the point. Tie the threads in a knot.',svg:()=>
+   `<path d="M150 80 L650 60 L670 440 L130 440 Z" class="pw"/>`+H.draw('M380 72 L400 280 L420 71','chalkl',.2,1)+H.dim([440,70],[440,280],4.5,.6,-20)+
+   H.stitch('M380 72 L400 280',1.8,2)+H.pop(`<path d="M400 284 c -14 10 0 26 8 12 c 6 -12 -12 -12 -8 -2" fill="none" stroke="#ffd84a" stroke-width="3"/>`,4)},
+ {cap:'Front pockets',say:'Put the pocket bag on the front, good sides together. Sew along the slanted pocket line. Turn the bag to the inside, press, and sew close to the edge.',svg:()=>
+   `<path d="M240 60 L460 60 L470 380 Q 350 420 200 380 L 156 250 Z" class="lin"/><path d="M260 60 L650 60 L640 440 L160 440 L154 250 Z" class="pr"/>`+H.fade(`<path d="M240 60 L460 60 L470 380 Q 350 420 200 380 L 156 250 Z" class="lin" opacity=".55"/>`,.3)+
+   H.out(`<path d="M150 60 L260 60 L154 250 Z" class="pr"/>`,3.2)+H.stitch('M260 60 L154 250',1.2,1.8)+H.stitch('M274 60 L168 252',3.8,1.8)},
+ {cap:'Sew up to the zip mark',say:'Put the two fronts together, good sides facing. Sew the front curve from the bottom up to the zip mark. Stop there.',svg:()=>
+   `<path d="M150 40 L560 40 L580 300 C 590 360 620 380 660 390 L 640 460 L150 460 Z" class="pr"/>`+H.ring(576,252,20,.2)+H.stitch('M650 392 C 615 380 588 360 580 300 L 576 256',.8,2.2)+H.ok(660,180,3.4)},
+ {cap:'Sew in the zip',say:'Sew the zip strip to the left front. Lay the zip on it and sew down both sides of the zip tape. Use the zipper foot.',svg:()=>
+   `<rect x="180" y="40" width="240" height="430" class="pr"/><path d="M420 40 L420 470" stroke="#252b31" stroke-width="3"/>`+H.fade(`<rect x="420" y="40" width="80" height="260" class="pr2"/>`,.2)+H.move(ICON.zip(455,50,220),0,-300,.7,1)+H.stitch('M440 60 L440 268',1.9,1.4)+H.stitch('M470 60 L470 268',3.5,1.4)},
+ {cap:'Sew the J line',say:'From the outside, sew the curved J shape over the zip. Go slowly and keep the line smooth.',svg:()=>
+   `<path d="${P(SH.pants,170,40,5)}" class="pr"/><path d="${P('M45 0 L45 58',170,40,5)}" stroke="#252b31" stroke-width="3"/>`+H.draw('M380 50 L380 270 Q 380 320 395 325','chalkd',.2,1)+H.stitch('M380 50 L380 270 Q 380 320 395 325',1.4,2.6)},
+ {cap:'Sew the sides',say:'Put a front on a back, good sides together. Sew down the side from the waist to the bottom. Press the seam open.',svg:()=>{
+   const q=(x,y)=>pp([262+x*2.7,30+y*2.7]);
+   return `<path d="${P(SH.pback,260,30,2.7)}" class="pr"/>`+H.move(`<path d="${P(SH.pfront,262,30,2.7)}" class="pw" opacity=".95"/>`,260,0,.2,1)+H.stitch(`M${q(0,0)} L${q(0,34)} L${q(8,70)} L${q(12,150)}`,1.4,3)+H.iron(560,300,4.6,90,0,2);}},
+ {cap:'Sew the inside leg',say:'Now sew the inside leg seam, from the bottom up to the crotch. Match the knee marks. Do both legs.',svg:()=>{
+   const q=(x,y)=>pp([262+x*2.7,30+y*2.7]);
+   return `<path d="${P(SH.pback,260,30,2.7)}" class="pr"/><path d="${P(SH.pfront,262,30,2.7)}" class="pw" opacity=".95"/>`+H.stitch(`M${q(38,150)} L${q(40,70)} L${q(46,32)}`,.4,3);}},
+ {cap:'Join the two legs',say:'Turn one leg right side out and put it inside the other leg. Sew the curved seam from the front zip all the way to the back waist. Sew it twice.',svg:()=>
+   `<path d="M470 60 L600 60 L590 460 L480 460 Z" class="pw"/>`+H.out(H.move(`<path d="M480 60 L590 60 L580 460 L490 460 Z" class="pr"/>`,-300,0,.3,1.4),2.2)+H.arrow('M260 260 L420 260',.1)+
+   H.fade(`<path d="M260 60 L540 60 L520 460 L280 460 Z" class="pw"/>`,2.2)+H.stitch('M290 70 C 300 200 360 230 400 230 C 450 230 520 200 530 70',2.8,2.4)+H.stitch('M296 70 C 306 210 360 240 400 240 C 450 240 514 210 524 70',5.4,2.4)},
+ {cap:'Try them on',say:'Try the trousers on. If they are loose or tight, change the back seam or the side seams now, before the waistband.',svg:()=>
+   figure(FIG.ox,FIG.oy,FIG.s,{pants:'pr'})+H.arrow('M270 255 L310 255',.4)+H.arrow('M560 255 L520 255',.6)+H.arrow('M240 290 L190 290',1.2)+H.arrow('M590 290 L640 290',1.4)},
+ {cap:'Belt loops',say:'Fold the long strip in half and sew it. Cut it into seven pieces. Pin them around the waist: two at the front, two at the sides, three at the back.',svg:()=>
+   `<rect x="120" y="160" width="560" height="20" class="pr"/>`+H.flip(`<rect x="120" y="140" width="560" height="20" class="pr2"/>`,'y',160,.3,.8)+H.stitch('M120 170 L680 170',1.2,2)+
+   [200,280,360,440,520,600].map((x,i)=>H.cut(`M${x} 150 L${x} 190`,3.4+i*.35,.3)).join('')+`<rect x="150" y="320" width="500" height="140" class="pr"/><rect x="150" y="320" width="500" height="30" class="pr2"/>`+[180,250,330,400,470,550,620].map((x,i)=>H.pop(`<rect x="${x-8}" y="314" width="16" height="44" rx="3" class="pr2"/>`,5.8+i*.2)).join('')},
+ {cap:'Sew the waistband',say:'Sew the waistband to the top of the trousers. Fold it to the inside. From the outside, sew right in the seam line so it hides. Sew on the hook and bar.',svg:()=>
+   `<path d="${P('M4 0 L86 0 L88 30 L84 60 L2 60 L0 30 Z',170,160,5)}" class="pr"/>`+H.move(`<rect x="180" y="100" width="450" height="60" class="pr2"/>`,0,-140,.2,1)+H.stitch('M180 160 L630 160',1.3,2.4)+H.arrow('M660 170 Q 700 130 660 100',3.8)+
+   H.pop(`<rect x="600" y="120" width="22" height="10" rx="3" fill="#d3dadd"/><path d="M196 128 q0 -14 14 -14 h12" fill="none" stroke="#d3dadd" stroke-width="5"/>`,4.4)},
+ {cap:'Hem the legs',say:`Fold the bottom up ${sn(1.5)} and press. Sew it by hand with tiny stitches that do not show on the outside.`,svg:()=>
+   `<rect x="220" y="40" width="360" height="360" class="pw"/>`+H.flip(`<rect x="220" y="400" width="360" height="60" class="pr"/>`,'y',400,.3,1)+H.chip(640,370,f(1.5),.2)+H.stitch(H.zz([[236,344],[564,344]],7,22),1.6,3.6,'hand','stitch solid')},
+ {cap:'Press the creases',say:'Fold each leg along the crease line, with the inside and outside seams on top of each other. Press with a damp cloth from the bottom to the top.',svg:()=>
+   `<path d="${P(SH.pfront,330,30,2.8)}" class="pr"/>`+H.draw(P('M22 0 L25 150',330,30,2.8),'chalkd',.2,1.2)+H.iron(420,440,1.4,0,-320,2)},
+ {cap:'You made trousers!',say:'Well done! You made your own trousers. Put them on and wear them proudly.',svg:()=>
+   figure(FIG.ox,FIG.oy,FIG.s,{pants:'pr'})+[[180,120],[620,100],[650,330],[160,360],[560,200]].map((q,i)=>H.pop(`<path d="M${q[0]} ${q[1]-22} L${q[0]+7} ${q[1]-7} L${q[0]+23} ${q[1]-5} L${q[0]+11} ${q[1]+6} L${q[0]+14} ${q[1]+22} L${q[0]} ${q[1]+14} L${q[0]-14} ${q[1]+22} L${q[0]-11} ${q[1]+6} L${q[0]-23} ${q[1]-5} L${q[0]-7} ${q[1]-7} Z" fill="#f2c230"/>`,.3+i*.25)).join('')},
+];
+
+/* ================= chapters ================= */
+const CHI={ // chapter icons (96x96)
+  tools:`<rect width="96" height="96" rx="20" fill="var(--mat)"/><g transform="translate(48 50) scale(1.5) rotate(-35)">${ICON.scissors()}</g>`,
+  machine:`<rect width="96" height="96" rx="20" fill="var(--mat)"/><g transform="translate(-2 30) scale(.33)">${machine(30,40,1)}</g>`,
+  measure:`<rect width="96" height="96" rx="20" fill="var(--mat)"/><circle cx="44" cy="48" r="24" fill="#f2c230" stroke="#1b2326" stroke-width="3"/><circle cx="44" cy="48" r="8" fill="#1b2326"/><path d="M62 62 L86 70 L84 80 L58 72 Z" fill="#f2c230" stroke="#1b2326" stroke-width="2"/>`,
+  pattern:`<rect width="96" height="96" rx="20" fill="#eadcbc"/><path d="M22 18 L22 80 L70 80 M22 18 L60 18 C 56 40 62 50 74 54 L70 80" fill="none" stroke="#26282a" stroke-width="4"/><circle cx="22" cy="18" r="5" fill="#c2410c"/>`,
+  cut:`<rect width="96" height="96" rx="20" fill="var(--mat)"/><rect x="12" y="30" width="72" height="50" fill="#4f86d1"/><path d="M12 52 L84 52" stroke="#fff" stroke-width="3" stroke-dasharray="4 6"/><g transform="translate(58 52) scale(1.1)">${ICON.scissors()}</g>`,
+  sew:()=>S.garment==='shirt'?`<rect width="96" height="96" rx="20" fill="var(--mat)"/><path d="${P(SH.shirt,8,14,.5)}" class="fr"/><path d="M48 22 L48 86" stroke="#ffd84a" stroke-width="3" stroke-dasharray="5 4"/>`:`<rect width="96" height="96" rx="20" fill="var(--mat)"/><path d="${P(SH.pants,24,10,.5)}" class="pr"/><path d="M47 14 L47 40" stroke="#ffd84a" stroke-width="3" stroke-dasharray="5 4"/>`,
+};
+function chapters(){
+  const isS=S.garment==='shirt';
+  return [
+    {id:'tools',name:'Tools',shared:true,steps:TOOLS},
+    {id:'machine',name:'Machine',shared:true,steps:MACHINE},
+    {id:'measure',name:'Measure',steps:isS?MEASURE_SHIRT:MEASURE_PANT},
+    {id:'pattern',name:'Draw pattern',steps:patternSteps()},
+    {id:'cut',name:'Cut',steps:cutSteps()},
+    {id:'sew',name:isS?'Sew the shirt':'Sew the trousers',steps:isS?SEW_SHIRT:SEW_PANT},
+  ];
+}
+const seenKey=ch=>ch.shared?ch.id:S.garment+':'+ch.id;
+const chIcon=id=>`<svg class="ci" viewBox="0 0 96 96" aria-hidden="true">${typeof CHI[id]==='function'?CHI[id]():CHI[id]}</svg>`;
+
+/* ================= speech ================= */
+const canSpeak='speechSynthesis' in window;
+let speakingBtn=null;
+function speak(text){
+  if(!canSpeak)return;
+  try{speechSynthesis.cancel();if(!text)return;const u=new SpeechSynthesisUtterance(text);u.rate=.92;
+    u.onstart=()=>document.getElementById('b-say')?.classList.add('speaking');
+    u.onend=u.onerror=()=>document.getElementById('b-say')?.classList.remove('speaking');
+    speechSynthesis.speak(u);}catch(e){}
+}
+
+/* ================= UI ================= */
+const IC={
+  home:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 L12 3 L21 11 M5 9 V21 H19 V9"/></svg>`,
+  prev:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4 L7 12 L15 20"/></svg>`,
+  next:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 L17 12 L9 20"/></svg>`,
+  replay:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 A8 8 0 1 0 7 5.8 M4 4 V9 H9"/></svg>`,
+  say:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9 H8 L13 5 V19 L8 15 H4 Z" fill="currentColor"/><path d="M16 9 Q18 12 16 15 M18.5 6.5 Q22 12 18.5 17.5"/></svg>`,
+  mute:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9 H8 L13 5 V19 L8 15 H4 Z" fill="currentColor"/><path d="M16 9 L21 15 M21 9 L16 15"/></svg>`,
+  star:`<svg viewBox="0 0 24 24"><path d="M12 2 L15 9 L22 9.5 L16.5 14 L18.5 21 L12 17 L5.5 21 L7.5 14 L2 9.5 L9 9 Z" fill="currentColor"/></svg>`,
+};
+const app=document.getElementById('app');
+function renderHome(){
+  const isS=S.garment==='shirt',chs=chapters();
+  let nextIdx=chs.findIndex(c=>(S.seen[seenKey(c)]||0)<c.steps.length);if(nextIdx<0)nextIdx=-1;
+  const shirtIcon=(sc)=>`<svg viewBox="-4 -6 168 166" style="height:${44*sc}px"><path d="${SH.shirt}" fill="#4f86d1" stroke="#1d3c69" stroke-width="5"/><path d="${SH.collar}" fill="#fff" stroke="#1d3c69" stroke-width="4"/></svg>`;
+  const pantIcon=()=>`<svg viewBox="-6 -4 102 168"><path d="${SH.pants}" fill="#66717d" stroke="#252b31" stroke-width="5"/></svg>`;
+  app.innerHTML=`<div class="tape" aria-hidden="true"></div><h1>Tailor's Workbench</h1>
+  <div class="label">${IC.star.replace('<svg','<svg width="20" height="20" style="color:var(--accent)"')} What will you make?</div>
+  <div class="garments">
+    <button class="gcard" id="g-shirt" data-g="shirt" aria-pressed="${isS}" aria-label="Shirt"><svg viewBox="-4 -6 168 166"><path d="${SH.shirt}" fill="#4f86d1" stroke="#1d3c69" stroke-width="4"/><path d="${SH.collar}" fill="#fff" stroke="#1d3c69" stroke-width="3"/><path d="M80 22 L80 148" stroke="#1d3c69" stroke-width="2"/></svg>Shirt</button>
+    <button class="gcard" id="g-trousers" data-g="trousers" aria-pressed="${!isS}" aria-label="Trousers"><svg viewBox="-30 -4 150 168"><path d="${SH.pants}" fill="#66717d" stroke="#252b31" stroke-width="4"/><path d="M4 0 L86 0 L86 10 L4 10 Z" fill="#535d68"/></svg>Trousers</button>
+  </div>
+  <div class="label">Your size</div>
+  <div class="sizes">${isS?Object.keys(SHIRT_SIZES).map((k,i)=>`<button class="sz" id="sz-${k}" data-size="${k}" aria-pressed="${S.shirtSize===k}">${shirtIcon(.75+i*.12)}${k}</button>`).join('')
+     :PANT_SIZES.map(k=>`<button class="sz" id="sz-${k}" data-size="${k}" aria-pressed="${S.pantSize===k}">${pantIcon()}${k}</button>`).join('')}</div>
+  <div class="toggles">
+    ${isS?`<button class="tog" id="fit-reg" data-fit="regular" aria-pressed="${S.fit==='regular'}">Regular fit</button><button class="tog" id="fit-slim" data-fit="slim" aria-pressed="${S.fit==='slim'}">Slim fit</button>`:''}
+    <button class="tog" id="u-in" data-u="in" aria-pressed="${S.unit==='in'}">inch</button><button class="tog" id="u-cm" data-u="cm" aria-pressed="${S.unit==='cm'}">cm</button>
+    ${canSpeak?`<button class="tog" id="voice" data-voice aria-pressed="${S.voice}" aria-label="Voice">${S.voice?IC.say:IC.mute} Voice</button>`:''}
+  </div>
+  <div class="label">Step by step</div>
+  <div class="path">${chs.map((c,i)=>{const seen=Math.min(S.seen[seenKey(c)]||0,c.steps.length),done=seen>=c.steps.length;
+    return `<button class="ch ${done?'done':''} ${i===nextIdx?'next':''}" id="ch-${c.id}" data-ch="${i}"><span class="num">${done?'✓':i+1}</span>${chIcon(c.id)}<b>${c.name}</b><span class="bar"><i style="width:${seen/c.steps.length*100}%"></i></span></button>`;}).join('')}</div>`;
+}
+let cur=null;
+function renderPlayer(say=true){
+  const chs=chapters(),c=chs[S.view.ch],i=S.view.i,st=c.steps[i],k=seenKey(c);
+  S.seen[k]=Math.max(S.seen[k]||0,i+1);save();
+  const field=st.field,data=S.garment==='shirt'?S.shirt:S.pant;
+  const last=i===c.steps.length-1;
+  app.innerHTML=`<div class="player">
+   <div class="pbar"><button class="icon-btn" id="b-home" aria-label="All steps">${IC.home}</button><div class="ptitle">${chIcon(c.id).replace('class="ci"','')}<span>${c.name}</span></div>
+   <div class="dots">${c.steps.map((_,j)=>`<i class="${j===i?'cur':j<(S.seen[k]||0)?'on':''}"></i>`).join('')}</div></div>
+   <div class="stage" id="stage" title="Tap to play again">${stageSvg(st.svg())}</div>
+   <div class="cap"><span class="n">${i+1}/${c.steps.length}</span><span>${st.cap}</span></div>
+   ${field?`<div class="stepper"><button id="f-minus" aria-label="Smaller">−</button><output id="f-val">${f(data[field])}</output><button id="f-plus" aria-label="Bigger">+</button></div>`:''}
+   <div class="ctrls"><button class="big" id="b-prev" aria-label="Back" ${i===0&&S.view.ch===0?'disabled':''}>${IC.prev}</button>
+     <button class="big round" id="b-replay" aria-label="Play again">${IC.replay}</button>
+     ${canSpeak?`<button class="big round" id="b-say" aria-label="Say it">${IC.say}</button>`:'<span></span>'}
+     <button class="big go" id="b-next" aria-label="${last?'Next chapter':'Next'}">${last&&S.view.ch===chs.length-1?IC.star:IC.next}</button></div></div>`;
+  startStage();
+  if(say&&S.voice)speak(stepSay(st));
+}
+const stepSay=st=>typeof st.say==='function'?st.say():(st.sayFn?st.sayFn():st.say);
+function startStage(){const svg=document.querySelector('#stage svg');try{svg.setCurrentTime(0);svg.unpauseAnimations();}catch(e){}}
+function replay(){const chs=chapters(),st=chs[S.view.ch].steps[S.view.i];document.getElementById('stage').innerHTML=stageSvg(st.svg());startStage();}
+function render(){if(S.view)renderPlayer(false);else renderHome();}
+function go(d){
+  const chs=chapters();let {ch,i}=S.view;i+=d;
+  if(i>=chs[ch].steps.length){if(ch<chs.length-1){ch++;i=0;}else{S.view=null;speak('');render();window.scrollTo({top:0});return;}}
+  if(i<0){if(ch>0){ch--;i=chs[ch].steps.length-1;}else i=0;}
+  S.view={ch,i};renderPlayer(true);
+}
+document.addEventListener('click',e=>{
+  const tap=e.target.closest('[data-say]');if(tap){speak(tap.dataset.say);return;}
+  const b=e.target.closest('button');
+  if(!b){if(e.target.closest('#stage'))replay();return;}
+  if(b.dataset.g){S.garment=b.dataset.g;save();render();return;}
+  if(b.dataset.size){if(S.garment==='shirt'){S.shirtSize=b.dataset.size;S.shirt={...SHIRT_SIZES[S.shirtSize]};}else{S.pantSize=+b.dataset.size;S.pant=pantPreset(S.pantSize);}save();render();return;}
+  if(b.dataset.fit){S.fit=b.dataset.fit;save();render();return;}
+  if(b.dataset.u){S.unit=b.dataset.u;save();render();return;}
+  if(b.hasAttribute('data-voice')){S.voice=!S.voice;if(!S.voice)speak('');save();render();return;}
+  if(b.dataset.ch){S.view={ch:+b.dataset.ch,i:0};renderPlayer(true);window.scrollTo({top:0});return;}
+  switch(b.id){
+    case 'b-home':S.view=null;speak('');render();return;
+    case 'b-next':go(1);return;
+    case 'b-prev':go(-1);return;
+    case 'b-replay':replay();return;
+    case 'b-say':{const st=chapters()[S.view.ch].steps[S.view.i];speak(stepSay(st));return;}
+    case 'f-minus':case 'f-plus':{const st=chapters()[S.view.ch].steps[S.view.i],data=S.garment==='shirt'?S.shirt:S.pant,stp=S.unit==='in'?.25:.5/2.54;
+      data[st.field]=Math.max(1,data[st.field]+(b.id==='f-plus'?stp:-stp));save();document.getElementById('f-val').textContent=f(data[st.field]);replay();return;}
+  }
+});
+document.addEventListener('keydown',e=>{if(!S.view)return;if(e.key==='ArrowRight')go(1);else if(e.key==='ArrowLeft')go(-1);});
+render();
+})();
+</script>
