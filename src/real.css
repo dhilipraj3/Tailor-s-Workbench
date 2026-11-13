@@ -1,0 +1,35 @@
+/* Realistic materials for every picture step (loaded last, overrides the flat look).
+   Fabric, thread and tools are physical objects, so their colours stay the same in light and dark themes. */
+.stage{background:#1b4f3e;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.fr{fill:#7fa1cf;stroke:rgba(20,40,70,.35);stroke-width:1;filter:url(#cloth)}
+.fr2{fill:#6a8ec0;stroke:rgba(20,40,70,.35);stroke-width:1;filter:url(#cloth)}
+.fw{fill:url(#hS);stroke:rgba(20,40,70,.25);stroke-width:1;filter:url(#cloth)}
+.pr{fill:#5f6873;stroke:rgba(0,0,0,.4);stroke-width:1;filter:url(#cloth)}
+.pr2{fill:#4d5560;stroke:rgba(0,0,0,.4);stroke-width:1;filter:url(#cloth)}
+.pw{fill:url(#hP);stroke:rgba(0,0,0,.3);stroke-width:1;filter:url(#cloth)}
+.lin{fill:#ebe6d8;stroke:rgba(0,0,0,.2);stroke-width:1;filter:url(#cloth)}
+.intf{fill:url(#dots);stroke:rgba(0,0,0,.15);stroke-width:1;filter:url(#cloth)}
+.paperpc{fill:#e3d0a0;stroke:#8f7a4e;stroke-width:1;filter:url(#lift2)}
+.kraft{fill:#e6d6b0}
+.mann{fill:url(#formG);stroke:rgba(60,45,25,.35);stroke-width:1}
+.stitch{fill:none;stroke:#f7f3ea;stroke-width:2.4;stroke-dasharray:6 4;stroke-linecap:round;filter:url(#thread)}
+.stitch.solid{stroke-dasharray:none;stroke-width:1.8}
+.chalkl{fill:none;stroke:#fbfbf4;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round;filter:url(#chalk);opacity:.95}
+.chalkd{fill:none;stroke:#fbfbf4;stroke-width:3;stroke-dasharray:10 7;stroke-linecap:round;filter:url(#chalk)}
+.cutl{stroke:rgba(255,255,255,.85)}
+.mach{fill:url(#enamelG);stroke:#8c8473;stroke-width:1.5;filter:url(#lift)}
+.machd{fill:#d9d2c2;stroke:#8c8473;stroke-width:1.5}
+.metal{fill:url(#metalG);stroke:#646c74;stroke-width:1}
+.needle{stroke:#d4d9de}
+.tapel{stroke:#f3c623;filter:url(#lift2)}
+.thread{stroke:#c9473f;filter:url(#thread)}
+.tilebg{fill:rgba(255,255,255,.06);stroke:rgba(255,255,255,.08)}
+.red{fill:url(#glassR)}
+/* catalogue / designer sketches: fashion-flat drawings in real fabric */
+.sketch .sk,.sketch .sk2{filter:url(#clothS);stroke:rgba(20,30,40,.55);stroke-width:1}
+.sketch.shirt .sk{fill:#a8c0e0}.sketch.shirt .sk2{fill:#90abd2}
+.sketch.trousers .sk{fill:#6a7380}.sketch.trousers .sk2{fill:#59616d}
+.sketch .skl{stroke:rgba(20,30,40,.6);stroke-width:1}
+.sketch.trousers .skl{stroke:rgba(255,255,255,.55)}
+.sketch.trousers .skc{stroke:rgba(255,255,255,.6);opacity:.7}
+.sketch .skb{fill:#f2efe6;stroke:rgba(0,0,0,.35);stroke-width:.5}

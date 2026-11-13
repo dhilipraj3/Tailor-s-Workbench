@@ -1,11 +1,22 @@
 import { GARMENTS } from '../garments/index';
 import { f } from '../core/units.js';
 
+// Fabric texture for sketches: soft folds lit from the top left, a fine weave, and a light shadow.
+// Frequencies are in sketch units (about 2 px each), so they differ from the stage filter.
+const SKETCH_DEFS = `<defs><filter id="clothS" x="-6%" y="-4%" width="112%" height="112%" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency=".01 .045" numOctaves="2" seed="9" result="n"/>
+  <feDiffuseLighting in="n" surfaceScale="1.6" diffuseConstant="1" lighting-color="#fff" result="L"><feDistantLight azimuth="235" elevation="58"/></feDiffuseLighting>
+  <feComposite in="SourceGraphic" in2="L" operator="arithmetic" k1=".7" k2=".35" result="lit"/>
+  <feTurbulence type="fractalNoise" baseFrequency="1.1 .25" numOctaves="1" seed="2" result="w"/><feColorMatrix in="w" type="luminanceToAlpha" result="wa"/>
+  <feComposite in="lit" in2="wa" operator="arithmetic" k2="1" k3="-.08" k4=".025" result="woven"/>
+  <feComposite in="woven" in2="SourceAlpha" operator="in" result="c"/>
+  <feDropShadow in="c" dx="1" dy="2" stdDeviation="1.6" flood-color="#000" flood-opacity=".22"/></filter></defs>`;
+
 /** Flat technical sketch of a design with options; crop = [x,y,w,h] to zoom on a detail. */
 export function sketchSvg(garmentId, options, crop, cls = '') {
   const g = GARMENTS[garmentId];
   const vb = crop ? crop.join(' ') : g.viewBox;
-  return `<svg class="sketch ${garmentId} ${cls}" viewBox="${vb}" aria-hidden="true">${g.sketch(options)}</svg>`;
+  return `<svg class="sketch ${garmentId} ${cls}" viewBox="${vb}" aria-hidden="true">${SKETCH_DEFS}${g.sketch(options)}</svg>`;
 }
 
 export const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
