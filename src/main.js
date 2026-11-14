@@ -1,6 +1,7 @@
 import './styles.css';
 import './app.css';
 import './real.css';
+import './theme.css';
 import { route } from './views/app.js';
 
 route();

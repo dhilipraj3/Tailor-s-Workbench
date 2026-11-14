@@ -1,8 +1,7 @@
 import { Outline, type Allow, type Pt } from '../engine/geometry';
 import type { Garment, Measurements, Options, Piece, Step } from '../engine/types';
-import { SEW_PANT } from '../chapters/sew.js';
-import { V } from '../chapters/variants.js';
 import { rectPiece } from './common';
+import { trouserSteps } from './sew-trousers';
 
 const SA = 0.625;
 const plain: Allow = { sa: SA };
@@ -56,7 +55,7 @@ function draft(m: Measurements, o: Options): Piece[] {
   // WAISTBAND
   {
     const len = W / 2 + 2;
-    const ol = new Outline([0, 0]).line([len, 0], plain).line([len, 3], plain, 'overlap end').line([0, 3], plain).close({ sa: SA, extra: 2 }, 'centre back');
+    const ol = new Outline([0, 0]).line([len, 0], plain, 'waist').line([len, 3], plain, 'overlap end').line([0, 3], plain, 'inner edge').close({ sa: SA, extra: 2 }, 'centre back');
     pieces.push({ id: 'band', name: 'Waistband', n: 2, mirror: true, fabric: 'main', interfacing: true, outline: ol, marks: [{ k: 'line', a: [0, 1.5], b: [len, 1.5], style: 'mark' }, { k: 'line', a: [len - 2, 0], b: [len - 2, 3], style: 'guide' }] });
   }
   pieces.push(rectPiece('flyF', 'Fly facing', 2.5, 8.5, 1), rectPiece('flyS', 'Fly shield', 3, 8.5, 1), rectPiece('pfacing', 'Pocket facing', 7, 9, 2));
@@ -67,18 +66,7 @@ function draft(m: Measurements, o: Options): Piece[] {
   return pieces;
 }
 
-function steps(o: Options): Step[] {
-  const s = SEW_PANT, out: Step[] = [s[0], s[1]];
-  if (+o.backPockets > 0) out.push(V.welt);
-  out.push(o.pocket === 'side' ? V.sidePocket : s[2]);
-  if (o.front === 'pleated') out.push(V.pleats);
-  out.push(s[3], s[4], s[5], s[6], s[7], s[8], s[9]);
-  if (o.loops === 'yes') out.push(s[10]);
-  out.push(s[11]);
-  out.push(o.hem === 'turnup' ? V.turnup : s[12]);
-  out.push(s[13], s[14]);
-  return out;
-}
+const steps = (o: Options): Step[] => trouserSteps(o);
 
 function supplies(m: Measurements, o: Options) {
   const bp = +o.backPockets;

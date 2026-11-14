@@ -4,8 +4,18 @@ import { stageSvg } from '../art/svg.js';
 import { canSpeak, speak } from '../core/speech.js';
 import { store, save } from '../core/store.js';
 import { IC } from './icons.js';
+import { esc } from './common.js';
+import { detailChips } from '../engine/sew';
 
 export const sayOf = (st) => (typeof st.say === 'function' ? st.say() : st.say);
+
+/** The sewing detail under the caption: seam width, stitch, lock, press… and the check on its own line. */
+function chipsHtml(d) {
+  const c = detailChips(d);
+  if (!c.length && !d?.check) return '';
+  const items = c.map((x, k) => `<li class="${k === 0 && (d.sa != null || d.on) ? 'lead' : ''}">${esc(x)}</li>`).join('');
+  return `<div class="sewd"><ul class="chips-sew" aria-label="How to sew this">${items}</ul>${d.check ? `<p class="sew-check">Check: ${esc(d.check)}</p>` : ''}</div>`;
+}
 
 const PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z" fill="currentColor"/></svg>';
 const PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/></svg>';
@@ -83,6 +93,7 @@ export function mountPlayer(el, { steps, start = 0, done = [], onIndex, onFinish
         <button class="tl-b tl-t ${store.autoplay ? 'on' : ''}" id="tl-auto" aria-pressed="${!!store.autoplay}" aria-label="Play all steps">${IC.next}${IC.next}</button>
       </div>
       <div class="cap"><span class="n">${i - cur.a + 1}/${cur.b - cur.a + 1}</span><span>${st.cap}</span></div>
+      ${chipsHtml(st.d)}
       <div class="ctrls">
         <button class="big" id="b-prev" aria-label="Back" ${i === 0 ? 'disabled' : ''}>${IC.prev}</button>
         <button class="big round" id="b-replay" aria-label="Play again">${IC.replay}</button>

@@ -2,7 +2,7 @@
 import { Outline, type Allow, type Pt } from '../engine/geometry';
 import type { Garment, Measurements, Options, Piece, Step } from '../engine/types';
 import { rectPiece } from './common';
-import { W } from '../chapters/scenes-b.js';
+import { tunicSteps } from './sew-tunic';
 
 const r4 = (x: number) => Math.round(x * 4) / 4;
 
@@ -86,39 +86,29 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
   // NECK FINISH
   if (o.neck === 'band') {
     const hs = N / 2 + 0.75, h = 1.5, P = { sa: 0.375 };
-    const band = new Outline([0, 0]).line([N / 4, 0], P).quad([hs - 0.3, 0.05], [hs, 0.6], P).quad([hs + 0.05, h], [hs - 0.6, h], P).line([0, h], P, 'neck').close(fold);
+    const band = new Outline([0, 0]).line([N / 4, 0], P, 'band edge').quad([hs - 0.3, 0.05], [hs, 0.6], P, 'band edge').quad([hs + 0.05, h], [hs - 0.6, h], P, 'band edge').line([0, h], P, 'neck').close(fold);
     pieces.push({ id: 'band', name: 'Band collar', n: 2, fold: true, fabric: 'main', interfacing: true, outline: band, marks: [] });
   } else {
     const around = 2 * (nw * 1.6 + fd * 0.9 + bd * 0.6) + 2;
     pieces.push(rectPiece('neckbind', 'Neck facing strip', r4(around), 1.5, 1));
   }
   if (o.opening === 'halfplacket') pieces.push(rectPiece('placket', 'Front placket', 10.5, 3, 2));
+  // A blouse that opens at the front is lined: each lining piece is the same shape and is tacked to its blouse piece.
+  if (openFront) for (const id of ['front', 'back', 'sleeve']) {
+    const p = pieces.find((x) => x.id === id);
+    if (p) pieces.push({ ...p, id: id + 'L', name: p.name + ' lining', fabric: 'lining', interfacing: false, marks: [], note: 'Cut from thin cotton lining, the same shape as the ' + p.name.toLowerCase() + '.' });
+  }
   return pieces;
 }
 
 const tunicDraft = (m: Measurements, o: Options) => draftTunic(m, o as unknown as BodiceOpts, o.darts === 'yes' ? 1.5 : 1);
 
-function steps(o: Options): Step[] {
-  const out: Step[] = [W.stay, W.edges];
-  if (o.darts === 'yes') out.push(W.darts);
-  if (o.opening === 'halfplacket') out.push(W.placket);
-  out.push(W.shoulders);
-  out.push(o.neck === 'band' ? W.bandCollar : o.neck === 'v' ? W.vNeck : W.neckFacing);
-  out.push(o.sleeve === 'none' ? W.armBinding : W.sleeves);
-  out.push(o.slits === 'yes' ? W.sidesSlit : W.sides);
-  if (o.sleeve !== 'none') out.push(W.sleeveHem);
-  if (o.slits === 'yes') out.push(W.slitFinish);
-  out.push(o.fit === 'aline' ? W.curvedHem : W.hem);
-  if (o.opening === 'fronthooks') out.push(W.hooks);
-  if (o.opening === 'halfplacket' || o.neck === 'band') out.push(W.buttons);
-  out.push(W.press, W.doneTunic(o.length));
-  return out;
-}
+const steps = (o: Options): Step[] => tunicSteps(o);
 
 function supplies(m: Measurements, o: Options) {
   const list = [{ icon: 'thread', qty: '1', say: 'One spool of matching thread' }];
   if (o.opening === 'halfplacket' || o.neck === 'band') list.push({ icon: 'buttons', qty: '4', say: 'Four small buttons' });
-  if (o.opening === 'fronthooks') list.push({ icon: 'hook', qty: '8', say: 'Eight blouse hooks and eyes' });
+  if (o.opening === 'fronthooks') list.push({ icon: 'hook', qty: '8', say: 'Eight blouse hooks and eyes' }, { icon: 'lining', qty: '1 m', say: 'One metre of thin cotton lining' });
   if (o.neck === 'band' || o.opening === 'halfplacket') list.push({ icon: 'interfacing', qty: '0.25 m', say: 'A little fusible interfacing for the collar and placket' });
   list.push({ icon: 'needle', qty: '80/12', say: 'Machine needle size 80' });
   return list;

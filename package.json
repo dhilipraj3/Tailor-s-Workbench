@@ -1,9 +1,9 @@
 {
   "name": "tailors-workbench",
-  "version": "0.2.0",
+  "version": "0.6.0",
   "private": true,
   "type": "module",
-  "description": "Picture-and-voice guide that teaches anyone, including children, to sew a formal shirt or trousers from scratch.",
+  "description": "Pick a design and sew it at home: full-size pattern in your size, fabric to buy, and every stitch in pictures with voice.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

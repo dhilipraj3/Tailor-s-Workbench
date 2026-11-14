@@ -40,7 +40,7 @@ export interface OptionGroup {
 
 export interface Supply { icon: string; qty: string; say: string }
 
-export interface Step { cap: string; say: string | (() => string); svg: () => string; field?: string }
+export interface Step { cap: string; say: string | (() => string); svg: () => string; field?: string; d?: import('./sew').SewDetail; sec?: string }
 
 export interface Garment {
   id: string;

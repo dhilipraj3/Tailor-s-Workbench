@@ -1,7 +1,6 @@
 import { Outline, type Allow, type Pt } from '../engine/geometry';
 import type { Garment, Measurements, Options, Piece, Step } from '../engine/types';
-import { SEW_SHIRT } from '../chapters/sew.js';
-import { V } from '../chapters/variants.js';
+import { shirtSteps } from './sew-shirt';
 import { rectPiece } from './common';
 
 const SA = 0.375;
@@ -83,48 +82,33 @@ function draft(m: Measurements, o: Options): Piece[] {
   const hs = N / 2 + 0.75, cl = N / 2 - 0.25;
   if (o.collar === 'mandarin') {
     const h = 1.5;
-    const st = new Outline([0, 0]).line([N / 4, 0], plain).quad([hs - 0.3, 0.05], [hs, 0.6], plain).quad([hs + 0.05, h], [hs - 0.6, h], plain).line([0, h], plain, 'neck').close(fold);
+    const st = new Outline([0, 0]).line([N / 4, 0], plain, 'band edge').quad([hs - 0.3, 0.05], [hs, 0.6], plain, 'band edge').quad([hs + 0.05, h], [hs - 0.6, h], plain, 'band edge').line([0, h], plain, 'neck').close(fold);
     pieces.push({ id: 'band', name: 'Band collar', n: 2, fold: true, fabric: 'main', interfacing: true, outline: st, marks: [{ k: 'line', a: [N / 2, 0], b: [N / 2, h], style: 'mark' }, { k: 'text', p: [N / 2 + 0.1, -0.2], t: 'CF' }] });
   } else {
-    const st = new Outline([0, 0]).line([N / 4, 0], plain).quad([hs - 0.4, 0.05], [hs, 0.55], plain).quad([hs + 0.05, 1.25], [hs - 0.6, 1.25], plain).line([0, 1.25], plain, 'neck').close(fold);
+    const st = new Outline([0, 0]).line([N / 4, 0], plain, 'stand edge').quad([hs - 0.4, 0.05], [hs, 0.55], plain, 'stand edge').quad([hs + 0.05, 1.25], [hs - 0.6, 1.25], plain, 'stand edge').line([0, 1.25], plain, 'neck').close(fold);
     pieces.push({ id: 'stand', name: 'Collar stand', n: 2, fold: true, fabric: 'main', interfacing: true, outline: st, marks: [{ k: 'line', a: [N / 2, 0], b: [N / 2, 1.25], style: 'mark' }, { k: 'text', p: [N / 2 + 0.1, -0.2], t: 'CF' }] });
     const tip: Pt = o.collar === 'spread' ? [cl + 1.15, 0.15] : o.collar === 'buttondown' ? [cl + 0.75, -0.85] : [cl + 0.9, -0.5];
-    const leaf = new Outline([0, 0]).quad([cl * 0.6, 0], tip, plain, 'outer edge').line([cl, 1.5], plain).quad([cl * 0.5, 1.9], [0, 1.875], plain, 'neck').close(fold);
+    const leaf = new Outline([0, 0]).quad([cl * 0.6, 0], tip, plain, 'outer edge').line([cl, 1.5], plain, 'collar end').quad([cl * 0.5, 1.9], [0, 1.875], plain, 'neck').close(fold);
     const marks: Piece['marks'] = o.collar === 'buttondown' ? [{ k: 'btn', p: [cl + 0.15, 0.2] }] : [];
     pieces.push({ id: 'leaf', name: 'Collar', n: 2, fold: true, fabric: 'main', interfacing: true, outline: leaf, marks });
   }
   // CUFF + PLACKETS (full sleeve)
   if (!half) {
     const cL = Wr + 2.5;
-    const cuff = new Outline([0, 0]).line([cL, 0], plain).line([cL, 2], plain).quad([cL, 2.5], [cL - 0.5, 2.5], plain).line([0.5, 2.5], plain).quad([0, 2.5], [0, 2], plain).close(plain);
+    const ce = 'cuff edge';
+    const cuff = new Outline([0, 0]).line([cL, 0], plain, 'sleeve edge').line([cL, 2], plain, ce).quad([cL, 2.5], [cL - 0.5, 2.5], plain, ce).line([0.5, 2.5], plain, ce).quad([0, 2.5], [0, 2], plain, ce).close(plain, ce);
     pieces.push({ id: 'cuff', name: 'Cuff', n: 4, fabric: 'main', interfacing: true, outline: cuff, marks: [], note: 'Fuse interfacing on 2 of the 4.' });
     pieces.push(rectPiece('placketL', 'Sleeve placket (big)', 10, 2.5, 2), rectPiece('placketS', 'Sleeve placket (small)', 6.5, 1.25, 2));
   }
   // POCKET
   if (+o.pockets > 0) {
-    const pk = new Outline([0, 0]).line([5, 0], { sa: 1.25 }, 'top hem').line([5, 5], plain).line([2.5, 5.6], plain).line([0, 5], plain).close(plain);
+    const pk = new Outline([0, 0]).line([5, 0], { sa: 1.25 }, 'top hem').line([5, 5], plain, 'pocket edge').line([2.5, 5.6], plain, 'pocket edge').line([0, 5], plain, 'pocket edge').close(plain, 'pocket edge');
     pieces.push({ id: 'pocket', name: 'Pocket', n: +o.pockets, fabric: 'main', outline: pk, marks: [], grain: [[2.5, 1], [2.5, 4]] });
   }
   return pieces;
 }
 
-function steps(o: Options): Step[] {
-  const s = SEW_SHIRT, half = o.sleeve === 'half', out: Step[] = [s[0], s[1]];
-  if (+o.pockets === 1) out.push(s[2]);
-  if (+o.pockets === 2) out.push({ ...s[2], cap: 'Sew on both pockets', say: 'Fold the top of each pocket down and sew it. Fold in the other edges. Pin one on each front, then sew around the sides and bottom.' });
-  if (o.backPleat === 'box') out.push(V.boxPleat);
-  out.push(s[3], s[4]);
-  if (o.collar === 'mandarin') out.push(V.mandarin);
-  else out.push(s[5], s[6], s[7]);
-  out.push(o.collar === 'mandarin' ? { ...s[8], cap: 'Band collar on', say: 'Match the middle of the band to the middle of the back neck. Pin it all around and sew it to the neck. Fold the inside band over and sew close to the edge.' } : s[8]);
-  if (!half) out.push(s[9]);
-  out.push(s[10], s[11]);
-  out.push(half ? V.halfSleeveHem : s[12]);
-  out.push(o.hem === 'straight' ? V.straightHem : s[13]);
-  if (o.collar === 'buttondown') out.push(V.collarButtons);
-  out.push(s[14], s[15], s[16]);
-  return out;
-}
+const steps = (o: Options): Step[] => shirtSteps(o);
 
 function supplies(m: Measurements, o: Options) {
   const half = o.sleeve === 'half', fnd = m.neck / 6 + 0.75, hemY = (o.hem === 'straight' ? m.shirtLength - 1.5 : m.shirtLength) + 0.75;

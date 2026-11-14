@@ -214,7 +214,7 @@ export function pieceSvg(g: PieceGeo, label: { size?: string; person?: string; d
   const w = g.box[2] - g.box[0], h = g.box[3] - g.box[1], cx = w / 2, cy = h / 2;
   const fs = Math.min(0.7, Math.max(0.3, Math.min(w, h) / 8));
   s += `<text x="${cx}" y="${cy}" font-size="${fs}" font-weight="700" text-anchor="middle" fill="${PAL.text}" font-family="sans-serif">${p.name.toUpperCase()}</text>`;
-  s += `<text x="${cx}" y="${cy + fs * 1.3}" font-size="${fs * 0.75}" text-anchor="middle" fill="${PAL.text}" font-family="sans-serif">Cut ×${p.n}${p.fold ? ' on fold' : ''}${p.fabric === 'lining' ? ' · pocket fabric' : ''}${p.interfacing ? ' · + interfacing' : ''}</text>`;
+  s += `<text x="${cx}" y="${cy + fs * 1.3}" font-size="${fs * 0.75}" text-anchor="middle" fill="${PAL.text}" font-family="sans-serif">Cut ×${p.n}${p.fold ? ' on fold' : ''}${p.fabric === 'lining' ? ' · lining fabric' : ''}${p.interfacing ? ' · + interfacing' : ''}</text>`;
   if (label.person || label.size) s += `<text x="${cx}" y="${cy + fs * 2.4}" font-size="${fs * 0.6}" text-anchor="middle" fill="#55606a" font-family="sans-serif">${[label.design, label.person, label.size].filter(Boolean).join(' · ')}</text>`;
   return { inner: s, w, h };
 }

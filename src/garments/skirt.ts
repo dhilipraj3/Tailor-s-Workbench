@@ -3,7 +3,7 @@ import { Outline, type Allow } from '../engine/geometry';
 import type { Garment, Measurements, Options, Piece, Step } from '../engine/types';
 import { rectPiece } from './common';
 import { draftTunic, tunicSketch, tunicLengthY } from './tunic';
-import { W } from '../chapters/scenes-b.js';
+import { skirtSteps, dressSteps } from './sew-skirt';
 
 const r4 = (x: number) => Math.round(x * 4) / 4;
 
@@ -35,14 +35,6 @@ export function draftSkirt(m: Measurements, style: string, length: number, waist
   return pieces;
 }
 
-const skirtSteps = (o: Options): Step[] => {
-  const out: Step[] = [W.edges];
-  if (o.style === 'gathered') out.push(W.gather);
-  out.push(o.waist === 'band' ? W.skirtSidesZip : W.skirtSides);
-  out.push(o.waist === 'band' ? W.waistbandSkirt : W.elasticCasing);
-  out.push(W.skirtHem, W.press, W.doneSkirt);
-  return out;
-};
 
 function skirtSketch(o: Options) {
   const len = ({ knee: 70, midi: 100, maxi: 130 } as Record<string, number>)[o.length] ?? 70;
@@ -79,10 +71,6 @@ function dressDraft(m: Measurements, o: Options): Piece[] {
   return [...bodice, ...draftSkirt(m, o.skirt, skirtLen(m, o.length), 'joined', false)];
 }
 
-function dressSteps(o: Options): Step[] {
-  return [W.stay, W.edges, W.darts, W.shoulders, W.neckFacing, o.sleeve === 'none' ? W.armBinding : W.sleeves, W.sides,
-    ...(o.sleeve === 'none' ? [] : [W.sleeveHem]), ...(o.skirt === 'gathered' ? [W.gather] : []), W.skirtSides, W.joinSkirt, W.backZip, W.skirtHem, W.press, W.doneDress];
-}
 
 export const DRESS: Garment = {
   id: 'dress' as Garment['id'], name: 'Dress / frock', viewBox: '-40 -14 240 250',
@@ -97,6 +85,7 @@ export const DRESS: Garment = {
   supplies: () => [
     { icon: 'thread', qty: '1', say: 'One spool of matching thread' },
     { icon: 'zip', qty: '14″', say: 'One 14 inch zip for the back' },
+    { icon: 'hook', qty: '1', say: 'One small hook and eye for the neck' },
     { icon: 'needle', qty: '80/12', say: 'Machine needle size 80' },
   ],
   sketch: (o) => {
