@@ -11,7 +11,9 @@ export const tunicHem = (length: string) => (['thigh', 'knee', 'calf'].includes(
 
 /** Neckline finish with a folded facing strip (round, deep, boat, V). Shared with the dress. */
 export function neckFacingSteps(o: Options, ids: { front: string; back: string }, endAt: 'ring' | 'placket' | 'zip' | 'front'): Step[] {
-  const v = o.neck === 'v', N = TUNIC_SA.neck;
+  // sharp points need pivoting and a clip right into the point: V-neck, the centre dip of a sweetheart, and the two corners of a square neck
+  const v = o.neck === 'v' || o.neck === 'sweetheart', sq = o.neck === 'square', N = TUNIC_SA.neck;
+  const point = v ? (o.neck === 'v' ? 'At the V point' : 'At the centre dip') : sq ? 'At each corner' : '';
   const neck = [`${ids.front}:neck`, `${ids.back}:neck`];
   const ends = endAt === 'ring' ? 'Join the two short ends of the strip into a ring first, with a ¼ inch seam, so it fits the neckline exactly.'
     : endAt === 'placket' ? 'Let each end of the strip stick out half an inch past the placket edge. Later you fold these ends inside.'
@@ -19,9 +21,9 @@ export function neckFacingSteps(o: Options, ids: { front: string; back: string }
       : 'Let each end of the strip stick out one inch past the zip line at the back. Later you fold these ends inside, next to the zip.';
   return [
     s(W.neckFacing, 'Fold the facing strip', 'Press the neck strip in half along its length, wrong sides together, so both long raw edges meet.', { pieces: ['neckbind'], stitch: 'none', press: 'Press a sharp fold' }),
-    s(W.neckFacing, 'Sew the strip on', `${ends} Lay the strip on the good side of the neckline, raw edges together, and pin every inch.${v ? ' At the V point, stop with the needle down, lift the foot, turn the fabric and carry on.' : ''}`,
-      { edges: neck, join: 'Raw edges together, on the good side', stitch: 'straight', sa: N, len: v ? 1.8 : 2.5, lock: true, check: v ? 'Both sides of the V are the same length' : 'No pleats or tucks along the curve' }),
-    s(W.neckFacing, 'Trim and clip', `Trim the seam to ${sn(0.25)}. Snip into the seam every half inch around the curve, up to the stitching but not through it.${v ? ' Snip right into the V point, one thread short of the stitch.' : ''}`,
+    s(W.neckFacing, 'Sew the strip on', `${ends} Lay the strip on the good side of the neckline, raw edges together, and pin every inch.${point ? ` ${point}, stop with the needle down, lift the foot, turn the fabric and carry on.` : ''}`,
+      { edges: neck, join: 'Raw edges together, on the good side', stitch: 'straight', sa: N, len: point ? 1.8 : 2.5, lock: true, check: point ? 'Both sides of the neckline are the same shape' : 'No pleats or tucks along the curve' }),
+    s(W.neckFacing, 'Trim and clip', `Trim the seam to ${sn(0.25)}. Snip into the seam every half inch around the curve, up to the stitching but not through it.${point ? ` ${point}, snip right in, one thread short of the stitch.` : ''}`,
       { stitch: 'none', trim: 'Trim to ¼″ and clip the curve', check: 'No snip cuts the stitching' }),
     s(W.neckFacing, 'Understitch the facing', 'Press the strip and the seam away from the garment. Sew on the strip, close to the seam, catching the seam underneath. This keeps the facing from rolling out.',
       { stitch: 'under', sa: 0.125, lock: true }),
@@ -73,6 +75,17 @@ export function tunicSteps(o: Options): Step[] {
         { stitch: 'straight', on: 'A box at the bottom', len: 2, lock: true, check: 'The strips lie flat and the opening is straight' }),
     );
   }
+
+  if (o.back === 'keyhole') out.push(
+    s(W.stay, 'Make the tie strings', `Press both long edges of each tie strip to the middle, fold it in half again and press. Tuck one end in. Sew along the open edge.`,
+      { pieces: ['dori'], stitch: 'edge', sa: 0.0625, lock: true }),
+    s(W.stay, 'Sew the keyhole facing', 'Lay the keyhole facing on the good side of the back, centred over the keyhole mark, good sides together. Sew a narrow U a quarter inch each side of the mark and across its bottom.',
+      { pieces: ['keyface'], join: 'Good sides together', stitch: 'straight', sa: 0.25, len: 1.8, lock: true }),
+    s(W.stay, 'Cut and turn keyhole', 'Cut down the middle of the U, then snip into both bottom corners up to the stitching. Turn the facing to the inside, understitch it and press. Topstitch round the opening.',
+      { stitch: 'top', sa: 0.125, lock: true, trim: 'Clip into the corners', check: 'The keyhole lies flat and both sides match' }),
+    s(W.stay, 'Tack the ties on', 'Tack one tie string at the top of each side of the keyhole, raw ends at the neck edge, so the neck facing will catch them.',
+      { stitch: 'baste', sa: 0.25, check: 'Both ties point down into the back' }),
+  );
 
   out.push(s(W.shoulders, 'Join the shoulders', 'Lay the front on the back, good sides together. Match the neck and armhole ends of each shoulder and pin. Sew both shoulders.',
     { edges: ['front:shoulder', 'back:shoulder'], join: 'Good sides together', stitch: 'straight', sa: SA, lock: true, press: 'Press the seams open', check: 'The neck edges meet exactly at the shoulder' }));

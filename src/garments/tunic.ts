@@ -12,7 +12,7 @@ export function tunicLengthY(m: Measurements, len: string) {
   return { waistY, hipY, len: ({ crop: waistY - 2, waist: waistY, hip: hipY + 1, thigh: hipY + 6, knee: H * 0.58, calf: H * 0.72 } as Record<string, number>)[len] ?? hipY + 1 };
 }
 
-export interface BodiceOpts { neck: string; sleeve: string; length: string; fit: string; slits: string; darts: string; opening: string }
+export interface BodiceOpts { neck: string; sleeve: string; length: string; fit: string; slits: string; darts: string; opening: string; back?: string }
 
 /** Draft front, back, sleeves and finishing pieces. Shared with the dress. */
 export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece[] {
@@ -21,8 +21,9 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
   const E = fitted ? 2.5 : 5, G = C + E;
   const nw = N / 6 + (o.neck === 'boat' ? 1.75 : 0.25), armY = G / 6 + (fitted ? 2.5 : 3);
   const { waistY, hipY, len } = tunicLengthY(m, o.length);
-  const fd = ({ round: N / 6 + 0.75, v: Math.max(4, N / 2.6), deep: Math.max(5, N / 2.4), boat: 1.5, band: N / 6 + 0.75 } as Record<string, number>)[o.neck] ?? N / 6 + 0.75;
-  const bd = o.neck === 'deep' ? 2.5 : o.neck === 'boat' ? 1 : 0.75;
+  const fd = ({ round: N / 6 + 0.75, v: Math.max(4, N / 2.6), deep: Math.max(5, N / 2.4), boat: 1.5, band: N / 6 + 0.75, square: Math.max(4, N / 2.8), sweetheart: Math.max(4.5, N / 2.6), high: N / 6 + 0.25 } as Record<string, number>)[o.neck] ?? N / 6 + 0.75;
+  // back neck depth: a deep U back is cut well down the back (popular for saree blouses)
+  const bd = o.back === 'deepu' ? Math.max(6, armY - 1.5) : o.neck === 'deep' ? 2.5 : o.neck === 'boat' ? 1 : 0.75;
   const di = o.darts === 'yes' ? Math.max(0.5, (C - Wst) / 8) : 0; // bust dart intake, front gets longer by this much
   const halfW = (x: number) => x / 4;
   const chestF = halfW(G) - 0.25, chestB = halfW(G) + 0.25;
@@ -48,7 +49,10 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
   {
     const ol = new Outline(openFront ? [-1, fd] : [0, fd]);
     if (openFront) ol.line([0, fd], neckA, 'neck');
-    if (o.neck === 'v') ol.line([nw, 0], neckA, 'neck'); else ol.cubic([nw * 0.6, fd], [nw, fd * 0.5], [nw, 0], neckA, 'neck');
+    if (o.neck === 'v') ol.line([nw, 0], neckA, 'neck');
+    else if (o.neck === 'square') ol.line([nw - 0.25, fd], neckA, 'neck').line([nw, 0], neckA, 'neck');
+    else if (o.neck === 'sweetheart') ol.cubic([nw * 0.25, fd * 0.75], [nw * 0.55, fd * 0.7], [nw * 0.8, fd * 0.8], neckA, 'neck').quad([nw * 1.05, fd * 0.85], [nw, 0], neckA, 'neck');
+    else ol.cubic([nw * 0.6, fd], [nw, fd * 0.5], [nw, 0], neckA, 'neck');
     ol.line([Sh / 2 - 0.25, 2], plain, 'shoulder').cubic([Sh / 2 - 1, armY * 0.6], [Sh / 2 - 0.8, armY], [chestF, armY], plain, 'armhole');
     const hx = sideSeam(ol, chestF, waistF, hipF, di, true);
     ol.cubic([hx - 1, len + di + 0.4], [hx * 0.5, len + di], [0, len + di], hem, 'hem');
@@ -70,6 +74,7 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
     const marks: Piece['marks'] = [];
     if (fitted && len >= waistY) marks.push({ k: 'path', d: `M${chestB * 0.45 - 0.5} ${waistY} L${chestB * 0.45} ${armY} L${chestB * 0.45 + 0.5} ${waistY}`, style: 'mark' });
     if (backZip) marks.push({ k: 'line', a: [0, bd], b: [0, Math.min(len, waistY + 7)], style: 'mark' }, { k: 'text', p: [0.3, waistY], t: 'zip' });
+    if (o.back === 'keyhole') marks.push({ k: 'line', a: [0, bd], b: [0, bd + 4], style: 'mark' }, { k: 'text', p: [0.3, bd + 2], t: 'keyhole' });
     pieces.push({ id: 'back', name: 'Back', n: backZip ? 2 : 1, fold: !backZip, mirror: backZip, fabric: 'main', outline: ol, marks, grain: [[chestB * 0.55, armY + 1], [chestB * 0.55, len - 1]] });
   }
   // SLEEVE
@@ -93,6 +98,7 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
     pieces.push(rectPiece('neckbind', 'Neck facing strip', r4(around), 1.5, 1));
   }
   if (o.opening === 'halfplacket') pieces.push(rectPiece('placket', 'Front placket', 10.5, 3, 2));
+  if (o.back === 'keyhole') pieces.push(rectPiece('keyface', 'Keyhole facing', 3, 6, 1), rectPiece('dori', 'Tie string', 1.5, 18, 2));
   // A blouse that opens at the front is lined: each lining piece is the same shape and is tacked to its blouse piece.
   if (openFront) for (const id of ['front', 'back', 'sleeve']) {
     const p = pieces.find((x) => x.id === id);
@@ -122,7 +128,7 @@ export function tunicSketch(o: Options, opts: { lengthTo?: number } = {}) {
   const body = `M58 6 Q 80 ${o.neck === 'boat' ? 10 : 16} 102 6 L 124 12 L ${124 - w} 66 L ${124 + fl} ${lenY} Q 80 ${lenY + 4} ${36 - fl} ${lenY} L ${36 + w} 66 L 36 12 Z`;
   const S = ({ none: null, short: [148, 40, 134, 50, 124, 40], elbow: [154, 64, 140, 72, 124, 52], threequarter: [160, 92, 146, 98, 124, 56], full: [164, 118, 148, 124, 124, 58] } as Record<string, number[] | null>)[o.sleeve];
   const sl = S ? `<path d="M124 12 L${S[0]} ${S[1]} L${S[2]} ${S[3]} L${S[4]} ${S[5]} Z" class="sk"/><path d="M36 12 L${160 - S[0]} ${S[1]} L${160 - S[2]} ${S[3]} L${160 - S[4]} ${S[5]} Z" class="sk"/>` : '';
-  const neckD = ({ round: 'M66 7 Q80 26 94 7', v: 'M64 7 L80 34 L96 7', deep: 'M62 7 Q80 44 98 7', boat: 'M58 7 Q80 14 102 7', band: 'M66 7 Q80 22 94 7' } as Record<string, string>)[o.neck] ?? 'M66 7 Q80 26 94 7';
+  const neckD = ({ round: 'M66 7 Q80 26 94 7', v: 'M64 7 L80 34 L96 7', deep: 'M62 7 Q80 44 98 7', boat: 'M58 7 Q80 14 102 7', band: 'M66 7 Q80 22 94 7', square: 'M64 7 L65 30 L95 30 L96 7', sweetheart: 'M64 7 Q63 30 72 30 Q78 30 80 34 Q82 30 88 30 Q97 30 96 7', high: 'M68 7 Q80 18 92 7' } as Record<string, string>)[o.neck] ?? 'M66 7 Q80 26 94 7';
   let extra = `<path d="${neckD}" class="skl"/>`;
   if (o.neck === 'band') extra += `<path d="M64 6 Q80 20 96 6 L95 0 Q80 12 65 0 Z" class="sk2"/>`;
   if (o.opening === 'halfplacket' || o.neck === 'band') extra += `<path d="M78 18 L78 52 L82 52 L82 18" class="skl"/>` + [26, 34, 42].map((y) => `<circle cx="80" cy="${y}" r="1.5" class="skb"/>`).join('');
@@ -136,12 +142,13 @@ export const TUNIC: Garment = {
   id: 'tunic' as Garment['id'], name: 'Kurta / kurti / blouse', viewBox: '-10 -14 180 214',
   measureKeys: ['chest', 'waist', 'hip', 'shoulder', 'neck', 'sleeve', 'bicep', 'height'],
   options: [
-    { id: 'neck', label: 'Neck', crop: [44, -10, 72, 50], values: [{ id: 'round', label: 'Round' }, { id: 'v', label: 'V-neck' }, { id: 'band', label: 'Band collar' }, { id: 'deep', label: 'Deep' }, { id: 'boat', label: 'Boat' }] },
+    { id: 'neck', label: 'Neck', crop: [44, -10, 72, 50], values: [{ id: 'round', label: 'Round' }, { id: 'v', label: 'V-neck' }, { id: 'band', label: 'Band collar' }, { id: 'deep', label: 'Deep' }, { id: 'boat', label: 'Boat' }, { id: 'square', label: 'Square' }, { id: 'sweetheart', label: 'Sweetheart' }, { id: 'high', label: 'High' }] },
     { id: 'sleeve', label: 'Sleeve', crop: [100, -4, 70, 130], values: [{ id: 'none', label: 'None' }, { id: 'short', label: 'Short' }, { id: 'elbow', label: 'Elbow' }, { id: 'threequarter', label: '¾' }, { id: 'full', label: 'Full' }] },
     { id: 'length', label: 'Length', values: [{ id: 'crop', label: 'Blouse' }, { id: 'hip', label: 'Hip' }, { id: 'thigh', label: 'Thigh' }, { id: 'knee', label: 'Knee' }, { id: 'calf', label: 'Calf' }] },
     { id: 'fit', label: 'Shape', values: [{ id: 'straight', label: 'Straight' }, { id: 'aline', label: 'A-line' }, { id: 'fitted', label: 'Fitted' }] },
     { id: 'slits', label: 'Side slits', values: [{ id: 'yes', label: 'Yes' }, { id: 'no', label: 'No' }] },
     { id: 'darts', label: 'Bust darts', values: [{ id: 'no', label: 'No' }, { id: 'yes', label: 'Yes' }] },
+    { id: 'back', label: 'Back', values: [{ id: 'plain', label: 'Plain' }, { id: 'deepu', label: 'Deep U' }, { id: 'keyhole', label: 'Keyhole + ties' }] },
     { id: 'opening', label: 'Opening', values: [{ id: 'none', label: 'Pull-on' }, { id: 'halfplacket', label: 'Half placket' }, { id: 'fronthooks', label: 'Front hooks' }] },
   ],
   draft: tunicDraft, steps, supplies, sketch: (o) => tunicSketch(o),

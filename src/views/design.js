@@ -10,6 +10,9 @@ const SPECIAL = {
   backPockets: (v) => `<svg class="sketch trousers" viewBox="-4 -4 98 50"><path d="M4 0 L86 0 L92 44 L-2 44 Z" class="sk"/><path d="M4 0 L86 0 L86 8 L4 8 Z" class="sk2"/>${v >= 1 ? '<path d="M56 20 L76 20" class="skl" stroke-width="3"/>' : ''}${v >= 2 ? '<path d="M14 20 L34 20" class="skl" stroke-width="3"/>' : ''}</svg>`,
   backPleat: (v) => `<svg class="sketch shirt" viewBox="20 -6 120 70"><path d="M36 12 L58 6 Q 80 14 102 6 L124 12 L124 64 L36 64 Z" class="sk"/><path d="M36 22 L124 22" class="skl"/>${v === 'box' ? '<path d="M74 22 L74 64 M86 22 L86 64" class="skl"/><path d="M74 26 L80 30 L86 26" class="skl"/>' : ''}</svg>`,
   fit: (v, g) => sketchSvg(g, { ...DEFAULT_OPTS[g], fit: v }),
+  // back of the blouse/kurta: plain neck, deep U, or a keyhole with tie strings
+  back: (v) => `<svg class="sketch tunic" viewBox="30 -4 100 70" aria-hidden="true"><path d="M58 6 L36 12 L36 64 L124 64 L124 12 L102 6 ${v === 'deepu' ? 'Q102 44 80 44 Q58 44 58 6' : 'Q80 12 58 6'} Z" class="sk"/>${
+    v === 'keyhole' ? '<path d="M80 9 L80 26" class="skl" stroke-width="2"/><path d="M80 9 Q72 26 70 40 M80 9 Q88 26 90 40" class="skl"/><circle cx="70" cy="41" r="1.6" class="skb"/><circle cx="90" cy="41" r="1.6" class="skb"/>' : ''}</svg>`,
 };
 const DEFAULT_OPTS = Object.fromEntries(Object.keys(GARMENTS).map((g) => [g, DESIGNS.find((d) => d.garment === g).options]));
 
