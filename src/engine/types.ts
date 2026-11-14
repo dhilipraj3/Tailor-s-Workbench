@@ -40,7 +40,9 @@ export interface OptionGroup {
 
 export interface Supply { icon: string; qty: string; say: string }
 
-export interface Step { cap: string; say: string | (() => string); svg: () => string; field?: string; d?: import('./sew').SewDetail; sec?: string }
+export interface Step { cap: string; say: string | (() => string); svg: () => string; field?: string; d?: import('./sew').SewDetail; sec?: string;
+  /** the written instruction shown on screen (without the spoken sewing detail, which shows as chips) */
+  text?: string | (() => string) }
 
 export interface Garment {
   id: string;

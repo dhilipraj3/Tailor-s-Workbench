@@ -102,7 +102,7 @@ type Say = string | (() => string);
 /** Build a step from a picture, a caption, the words and the sewing detail. */
 export function sew(pic: Pic, cap: string, say: Say, d: SewDetail): Step {
   const base = () => (typeof say === 'function' ? say() : say);
-  return { cap, say: () => [base(), detailSay(d)].filter(Boolean).join(' '), svg: pic.svg, d };
+  return { cap, say: () => [base(), detailSay(d)].filter(Boolean).join(' '), text: base, svg: pic.svg, d };
 }
 
 /** every "piece:edge" a set of pieces needs covered (fold edges need nothing) */

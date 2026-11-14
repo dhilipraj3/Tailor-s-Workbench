@@ -37,7 +37,7 @@ export function assemblePants(ctx) {
 
   const steps = [];
   // every step carries its sewing detail (seam width, stitch, lock, press…); the voice reads it after the words
-  const step = (cap, say, svg, d) => steps.push({ sec: 'Sew', cap, say: d ? () => [say, detailSay(d)].filter(Boolean).join(' ') : say, svg, d });
+  const step = (cap, say, svg, d) => steps.push({ sec: 'Sew', cap, say: d ? () => [say, detailSay(d)].filter(Boolean).join(' ') : say, text: say, svg, d });
   const pockets = o.pockets === 'side', SA = 0.625;
   const hemSA = o.style === 'churidar' ? 0.75 : 1.25, casing = elastic ? 1.5 : 2;
 

@@ -60,12 +60,13 @@ function timeline(svg, onTick, onEnd) {
 export function mountPlayer(el, { steps, start = 0, done = [], onIndex, onFinish, finishIcon, atTime = null }) {
   let i = Math.min(Math.max(0, Number.isFinite(+start) ? +start : 0), steps.length - 1);
   let tl = null, autoTimer = 0;
-  const fmt = (s) => s.toFixed(1) + 's';
+  const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
   const tick = (t, dur, playing) => {
     const r = el.querySelector('#tl-range'), b = el.querySelector('#tl-play');
     if (r && document.activeElement !== r) r.value = String(Math.round((t / dur) * 1000));
     if (b) { b.innerHTML = playing ? PAUSE : PLAY; b.setAttribute('aria-label', playing ? 'Pause' : 'Play'); }
     const lbl = el.querySelector('#tl-time'); if (lbl) lbl.textContent = fmt(t);
+    const dl = el.querySelector('#tl-dur'); if (dl) dl.textContent = fmt(dur);
   };
   const startTimeline = () => {
     tl?.stop(); clearTimeout(autoTimer);
@@ -82,23 +83,29 @@ export function mountPlayer(el, { steps, start = 0, done = [], onIndex, onFinish
       const doneN = steps.slice(s.a, s.b + 1).filter((_, k) => done.includes(s.a + k)).length, tot = s.b - s.a + 1;
       return `<button class="sec-t ${s === cur ? 'cur' : ''} ${doneN === tot ? 'full' : ''}" data-go="${s.a}"><b>${s.n}</b><span class="sbar"><i style="width:${(doneN / tot) * 100}%"></i></span></button>`;
     }).join('')}</div>` : '';
-    el.innerHTML = `<div class="player">${secBar}
-      <div class="dots" aria-label="Step ${i - cur.a + 1} of ${cur.b - cur.a + 1}">${steps.slice(cur.a, cur.b + 1).map((_, k) => { const j = cur.a + k; return `<button class="dot ${j === i ? 'cur' : done.includes(j) ? 'on' : ''}" data-go="${j}" aria-label="Step ${k + 1}"></button>`; }).join('')}</div>
-      <div class="stage" id="stage" title="Tap to pause or play">${stageSvg(st.svg())}</div>
-      <div class="tl">
-        <button class="tl-b" id="tl-play" aria-label="Pause">${PAUSE}</button>
-        <input type="range" id="tl-range" min="0" max="1000" value="0" aria-label="Move through this step">
-        <span class="tl-time" id="tl-time">0.0s</span>
-        <button class="tl-b tl-t ${(store.speed || 1) < 1 ? 'on' : ''}" id="tl-slow" aria-pressed="${(store.speed || 1) < 1}" aria-label="Slow motion">½×</button>
-        <button class="tl-b tl-t ${store.autoplay ? 'on' : ''}" id="tl-auto" aria-pressed="${!!store.autoplay}" aria-label="Play all steps">${IC.next}${IC.next}</button>
-      </div>
-      <div class="cap"><span class="n">${i - cur.a + 1}/${cur.b - cur.a + 1}</span><span>${st.cap}</span></div>
-      ${chipsHtml(st.d)}
-      <div class="ctrls">
-        <button class="big" id="b-prev" aria-label="Back" ${i === 0 ? 'disabled' : ''}>${IC.prev}</button>
-        <button class="big round" id="b-replay" aria-label="Play again">${IC.replay}</button>
-        ${canSpeak ? `<button class="big round" id="b-say" aria-label="Say it">${IC.say}</button>` : '<span></span>'}
-        <button class="big go" id="b-next" aria-label="${last ? 'Finish' : 'Next'}">${last ? (finishIcon || IC.check) : IC.next}</button>
+    const secName = (cur.n || '').toUpperCase(), text = st.text ? (typeof st.text === 'function' ? st.text() : st.text) : sayOf(st);
+    const slow = (store.speed || 1) < 1;
+    el.innerHTML = `<div class="player pl2">${secBar}
+      <div class="pl-grid">
+        <div class="pl-stage">
+          <div class="segs" role="group" aria-label="Steps in this part">${steps.slice(cur.a, cur.b + 1).map((_, k) => { const j = cur.a + k; return `<button class="seg ${j === i ? 'cur' : done.includes(j) ? 'on' : ''}" data-go="${j}" aria-label="Step ${k + 1}"></button>`; }).join('')}</div>
+          <div class="stage" id="stage" title="Tap to pause or play">${stageSvg(st.svg())}</div>
+        </div>
+        <div class="pl-side">
+          <span class="eyebrow">${esc(secName)}${secName ? ' · ' : ''}STEP ${i - cur.a + 1} OF ${cur.b - cur.a + 1}</span>
+          <h2 class="pl-cap">${esc(st.cap)}</h2>
+          <p class="pl-say">${esc(text)}</p>
+          ${chipsHtml(st.d)}
+          <div class="pl-tl"><input type="range" id="tl-range" min="0" max="1000" value="0" aria-label="Move through this step"><div class="pl-times"><span id="tl-time">0:00</span><span id="tl-dur"></span></div></div>
+          <div class="pl-ctrls">
+            <button class="pl-b pl-sm ${slow ? 'on' : ''}" id="tl-slow" aria-pressed="${slow}" aria-label="Slow motion">0.5×</button>
+            <button class="pl-b" id="b-prev" aria-label="Back" ${i === 0 ? 'disabled' : ''}>${IC.prev}</button>
+            <button class="pl-b pl-play" id="tl-play" aria-label="Pause">${PAUSE}</button>
+            <button class="pl-b" id="b-next" aria-label="${last ? 'Finish' : 'Next'}">${last ? (finishIcon || IC.check) : IC.next}</button>
+            ${canSpeak ? `<button class="pl-b" id="b-say" aria-label="Say it">${IC.say}</button>` : ''}
+          </div>
+          <div class="pl-more"><button class="pl-link" id="b-replay">${IC.replay}<span>Play again</span></button><button class="pl-link ${store.autoplay ? 'on' : ''}" id="tl-auto" aria-pressed="${!!store.autoplay}">${IC.next}<span>Auto-play next</span></button></div>
+        </div>
       </div></div>`;
     el.querySelector('#tl-range').addEventListener('input', (e) => tl?.seek((+e.target.value / 1000) * tl.dur));
     startTimeline();

@@ -1,6 +1,10 @@
 import { DESIGNS, GARMENTS } from '../garments/index';
 import { EXTRA_LEVELS } from '../engine/sizes';
-import { store, save, uid, project as getProject, personFor } from '../core/store.js';
+import { store, save, uid, project as getProject, personFor, newPerson } from '../core/store.js';
+import { S } from '../core/state.js';
+import { buildCtx, layoutFabric } from '../engine/project';
+import { makeSteps } from './make-steps.js';
+import { PHOTOS, TAG } from './catalog.js';
 import { speak } from '../core/speech.js';
 import { sketchSvg, levelDots, esc, avatar } from './common.js';
 import { IC } from './icons.js';
@@ -16,37 +20,63 @@ const SPECIAL = {
 };
 const DEFAULT_OPTS = Object.fromEntries(Object.keys(GARMENTS).map((g) => [g, DESIGNS.find((d) => d.garment === g).options]));
 
+/** One line about each kind of garment, shown under the design name. */
+function describe(design, o) {
+  const g = design.garment;
+  if (g === 'shirt') return `A ${o.sleeve === 'half' ? 'short-sleeve' : 'long-sleeve'} shirt with ${o.collar === 'mandarin' ? 'a band collar' : 'a collar on a stand'}, a button band${o.sleeve === 'half' ? '' : ' and cuffs'}. Our most detailed design.`;
+  if (g === 'trousers') return `Tailored trousers with a zip fly, ${o.pocket === 'side' ? 'side' : 'slanted'} front pockets${+o.backPockets ? ' and back welt pockets' : ''}, and a waistband you can let out later.`;
+  if (g === 'tunic') return o.opening === 'fronthooks' ? 'A fitted, lined blouse with darts and front hooks. Choose the neckline and the back.'
+    : `A ${o.length === 'knee' ? 'knee-length' : 'comfortable'} ${design.for === 'woman' ? 'kurti' : 'kurta'}${o.opening === 'halfplacket' ? ' with a front placket' : ''}${o.slits === 'yes' ? ' and side slits' : ''}.`;
+  if (g === 'pants') return 'An easy pull-on design with an elastic or drawstring waist. A good first project.';
+  if (g === 'skirt') return `A ${o.style === 'gathered' ? 'gathered' : 'flared A-line'} skirt with ${o.waist === 'band' ? 'a waistband and zip' : 'an elastic waist'}.`;
+  return 'A fitted bodice joined to a skirt at the waist, closed with a back zip.';
+}
+
 export function renderDesign(el, designId, editProjectId) {
   const design = DESIGNS.find((d) => d.id === designId) || DESIGNS[0];
   const g = GARMENTS[design.garment];
   const editing = editProjectId ? getProject(editProjectId) : null;
   const st = { options: { ...(editing?.options || design.options) }, personId: editing?.personId || personFor(design.for || 'man')?.id || 'new', extra: editing?.extra || 'standard' };
+  const kindWord = ({ man: 'man', woman: 'woman', child: 'child' })[design.for || 'man'];
   const draw = () => {
-    el.innerHTML = `<div class="design">
-      <div class="design-preview">
-        <div class="preview-card">${sketchSvg(g.id, st.options, null, 'hero', design.color)}</div>
-        <h1 class="h1">${esc(design.name)}</h1>
-        <div class="meta">${levelDots(design.level)}<span class="hrs">⏱ about ${design.hours} hours</span></div>
+    // the photo shows the design as photographed; once an option changes, the drawing shows exactly what will be made
+    const ph = PHOTOS[design.id], same = Object.entries(design.options).every(([k, v]) => st.options[k] === v);
+    const who = store.profiles.find((p) => p.id === st.personId);
+    let metres = '–', count = '';
+    try {
+      S.unit = store.unit;
+      const ctx = buildCtx(design.id, st.options, who?.m || newPerson('x', 0, design.for || 'man').m, st.extra, who?.name || '');
+      metres = layoutFabric(ctx, 44).metres + ' m';
+      count = ` · ${makeSteps(ctx, 44).length} STEPS`;
+    } catch (e) { /* preview numbers are a nicety; the project page recomputes them */ }
+    el.innerHTML = `<div class="dz">
+      <div class="dz-left">
+        <a class="back-link" href="#/designs">← ALL DESIGNS</a>
+        <figure class="dz-stage">${ph && same ? `<img src="${ph.src}" alt="${esc(ph.alt)}">` : sketchSvg(g.id, st.options, null, 'hero', design.color)}</figure>
       </div>
-      <div class="design-opts">
-        ${g.options.map((grp) => `<section class="optgrp"><h3>${grp.label}</h3><div class="tiles">${grp.values.map((v) => {
-          const sel = st.options[grp.id] === v.id;
-          const pic = SPECIAL[grp.id] ? SPECIAL[grp.id](grp.id === 'backPockets' ? +v.id : v.id, g.id) : sketchSvg(g.id, { ...st.options, [grp.id]: v.id }, grp.crop, '', design.color);
-          return `<button class="tile" data-opt="${grp.id}" data-val="${v.id}" aria-pressed="${sel}">${pic}<span>${v.label}</span></button>`;
-        }).join('')}</div></section>`).join('')}
-        <section class="optgrp"><h3>Who is it for?</h3><div class="tiles people">${store.profiles.map((p) => `<button class="tile person" data-person="${p.id}" aria-pressed="${st.personId === p.id}">${avatar(p, 54)}<span>${esc(p.name)}</span></button>`).join('')}
-          ${!personFor(design.for || 'man') ? `<button class="tile person" data-person="new" aria-pressed="${st.personId === 'new'}"><span class="avatar" style="--c:#8a8f94;width:54px;height:54px;font-size:24px">+</span><span>New ${({ man: 'man', woman: 'woman', child: 'child' })[design.for || 'man']}</span></button>` : ''}<a class="tile person add" href="#/people/new">${IC.plus}<span>Add</span></a></div></section>
-        <section class="optgrp"><h3>Extra cloth for later</h3><div class="tiles">${EXTRA_LEVELS.map((x) => `<button class="tile extra" data-extra="${x.id}" aria-pressed="${st.extra === x.id}">
-          <svg viewBox="0 0 80 50" aria-hidden="true"><rect x="10" y="${32 - x.scale * 8}" width="60" height="${10 + x.scale * 8}" rx="3" fill="rgba(242,140,40,.55)"/><rect x="10" y="32" width="60" height="10" rx="2" fill="rgba(31,111,214,.35)"/><path d="M10 42 H70" stroke="currentColor" stroke-width="2.5" stroke-dasharray="5 3"/></svg><span>${x.label}</span></button>`).join('')}</div></section>
-        <button class="cta" id="start">${editing ? IC.check + ' Save changes' : IC.scissors + ' Start making'}</button>
-      </div></div>`;
+      <aside class="dz-right" aria-label="Options">
+        <span class="eyebrow">${esc(TAG(design))}</span>
+        <h1 class="h1">${esc(design.name)}</h1>
+        <p class="dz-desc">${esc(describe(design, st.options))}</p>
+        <div class="dz-stats"><div><b>Level ${design.level}</b><span>of 5</span></div><div><b>${design.hours} h</b><span>to make</span></div><div><b>${metres}</b><span>fabric, 44″</span></div></div>
+        ${g.options.map((grp) => `<section class="og"><h3 id="og-${grp.id}">${grp.label}</h3><div class="pills" role="group" aria-labelledby="og-${grp.id}">${grp.values.map((v) =>
+          `<button class="pill" data-opt="${grp.id}" data-val="${v.id}" aria-pressed="${st.options[grp.id] === v.id}">${esc(v.label)}</button>`).join('')}</div></section>`).join('')}
+        <section class="og"><h3 id="og-who">Making it for</h3><div class="pills" role="group" aria-labelledby="og-who">${store.profiles.map((p) =>
+          `<button class="pill person" data-person="${p.id}" aria-pressed="${st.personId === p.id}">${avatar(p, 36)}<span>${esc(p.name)}</span></button>`).join('')}
+          ${!personFor(design.for || 'man') ? `<button class="pill person" data-person="new" aria-pressed="${st.personId === 'new'}"><span class="avatar" style="--c:#4a4a47;width:36px;height:36px;font-size:16px">+</span><span>New ${kindWord}</span></button>` : ''}
+          <a class="pill add" href="#/people/new">+ Add person</a></div></section>
+        <section class="og"><label class="og-l" for="extra">Extra cloth for later</label>
+          <select id="extra">${EXTRA_LEVELS.map((x) => `<option value="${x.id}" ${st.extra === x.id ? 'selected' : ''}>${esc(x.label)}</option>`).join('')}</select></section>
+        <button class="cta start" id="start"><span>${editing ? 'SAVE CHANGES' : `START MAKING${count}`}</span><span class="cta-i" aria-hidden="true">${IC.next}</span></button>
+        <p class="hint center">Pattern, fabric list and steps are made for the person you choose.</p>
+      </aside></div>`;
+    el.querySelector('#extra').onchange = (e) => { st.extra = e.target.value; draw(); speak(EXTRA_LEVELS.find((x) => x.id === st.extra).say); };
   };
   draw();
   el.onclick = (e) => {
     const b = e.target.closest('button'); if (!b) return;
     if (b.dataset.opt) { st.options[b.dataset.opt] = b.dataset.val; draw(); }
     else if (b.dataset.person) { st.personId = b.dataset.person; draw(); }
-    else if (b.dataset.extra) { st.extra = b.dataset.extra; draw(); speak(EXTRA_LEVELS.find((x) => x.id === st.extra).say); }
     else if (b.id === 'start') {
       if (st.personId === 'new') st.personId = personFor(design.for || 'man', true).id;
       let p = editing;

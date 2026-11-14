@@ -6,12 +6,12 @@ import { IC } from './icons.js';
 let filter = 'all';
 
 /** Real garment photos (royalty-free, garment only). Designs without one show their drawing. */
-const PHOTOS = {
+export const PHOTOS = {
   'formal-shirt': { src: 'img/shirt.jpg', alt: 'Light blue formal shirt on a wooden hanger' },
   'aline-kurti': { src: 'img/kurti.jpg', alt: 'Printed long-sleeve tunic on a wooden hanger' },
   'kids-frock': { src: 'img/frock.jpg', alt: "Child's lace frock on a hanger" },
 };
-const TAG = (d) => [({ man: 'Men', woman: 'Women', child: 'Kids' })[d.for] || '', d.tags.includes('indian') ? 'Indian' : d.tags.includes('formal') ? 'Formal' : d.tags.includes('easy') ? 'Easy' : 'Casual'].filter(Boolean).join(' · ');
+export const TAG = (d) => [({ man: 'Men', woman: 'Women', child: 'Kids' })[d.for] || '', d.tags.includes('indian') ? 'Indian' : d.tags.includes('formal') ? 'Formal' : d.tags.includes('easy') ? 'Easy' : 'Casual'].filter(Boolean).join(' · ');
 
 const FEATS = [
   ['<rect x="7" y="5" width="26" height="30" rx="2"/><path d="M12 12h16M12 18h16M12 24h10" stroke-dasharray="2 2"/>', 'Full-size pattern', 'Print it, or chalk it on.'],
@@ -20,12 +20,19 @@ const FEATS = [
   ['<rect x="12" y="4" width="16" height="32" rx="3"/><path d="M18 31h4"/>', 'Works offline', 'Install it on your phone.'],
 ];
 
+const HOW = [
+  ['Pick and customise', 'Collar, sleeve, fit and pockets. The picture updates as you tap.'],
+  ['Measure once', 'Save sizes for everyone in the family, or start from a ready-made size.'],
+  ['Mark and cut', 'Chalk each piece straight onto folded fabric, or print the pattern.'],
+  ['Sew with voice', 'Seam width, stitch and pressing, spelled out and read aloud.'],
+];
+
 function hero() {
   return `<section class="hero" aria-label="Welcome">
     <div class="hero-copy">
       <h1>Sewn by you.<br>Made to fit.</h1>
       <p>Pick a design, choose who it's for, and get a pattern in their exact size, the fabric to buy, and every stitch shown in pictures with voice.</p>
-      <a class="cta" href="#designs" data-scroll="designs">EXPLORE THE DESIGNS</a>
+      <a class="cta" href="#/designs">EXPLORE THE DESIGNS</a>
     </div>
     <div class="hero-stage">
       <figure class="hero-photo">
@@ -63,12 +70,21 @@ export function renderCatalog(el) {
     return `<div class="pcard"><a class="pcard-main" href="#/project/${p.id}/make">${sketchSvg(d.garment, p.options, null, '', d.color)}<b>${esc(d.name)}</b>
       <span class="row">${avatar(who, 26)} ${esc(who.name)}</span><span class="bar"><i style="width:${pct}%"></i></span></a>
       <button class="icon-sm" data-del="${p.id}" aria-label="Delete project">${IC.trash}</button></div>`;
-  }).join('')}</div></section>` : ''}
+  }).join('')}</div></section>` : `<section class="sec" id="projects"><div class="sec-head"><div><span class="eyebrow">Carry on</span><h2 class="h2">My projects</h2></div></div>
+    <p class="empty-note">No projects yet. Pick a design below and press Start making. It will wait here for you.</p></section>`}
   <section class="sec" id="designs">
     <div class="sec-head"><div><span class="eyebrow">The collection</span><h2 class="h2">Choose what to make</h2></div>
       <div class="chips" role="group" aria-label="Filter designs">${FILTERS.map((x) => `<button class="chip" data-filter="${x.id}" aria-pressed="${filter === x.id}">${x.label}</button>`).join('')}</div></div>
     <div class="cards">${list.map(card).join('')}</div>
-  </section>`;
+  </section>
+  <section class="how" id="how">
+    <figure class="how-photo"><img src="img/sewing.jpg" alt="Hands guiding teal fabric under a sewing machine foot" loading="lazy"></figure>
+    <div class="how-body">
+      <div><span class="eyebrow">How it works</span><h2 class="h2">From fabric to finished</h2></div>
+      <ol class="how-list">${HOW.map(([t, s], k) => `<li><span class="k">0${k + 1}</span><span><b>${t}</b><span>${s}</span></span></li>`).join('')}</ol>
+    </div>
+  </section>
+  <footer class="foot"><span class="foot-logo">TAILOR'S WORKBENCH</span><span>Make a test version in cheap fabric first · Photos: Unsplash, Pexels</span></footer>`;
   el.onclick = (e) => {
     const sc = e.target.closest('[data-scroll]');
     if (sc) { e.preventDefault(); document.getElementById(sc.dataset.scroll)?.scrollIntoView({ behavior: 'smooth' }); return; }
