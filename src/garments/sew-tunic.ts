@@ -33,7 +33,7 @@ export function neckFacingSteps(o: Options, ids: { front: string; back: string }
 }
 
 export function tunicSteps(o: Options): Step[] {
-  const SA = TUNIC_SA.seam, hemSA = tunicHem(o.length), sleeves = o.sleeve !== 'none';
+  const SA = TUNIC_SA.seam, hemSA = tunicHem(o.length), sleeves = o.sleeve !== 'none', gathered = o.sleeve === 'puff' || o.sleeve === 'balloon';
   const blouse = o.opening === 'fronthooks', placket = o.opening === 'halfplacket', band = o.neck === 'band';
   const out: Step[] = [];
 
@@ -111,8 +111,11 @@ export function tunicSteps(o: Options): Step[] {
 
   if (sleeves) {
     out.push(
-      s(W.sleeves, 'Ease the sleeve top', 'Sew a row of long stitches along the curved top of each sleeve, just inside the sewing line, between the two balance marks. Leave long thread ends.',
-        { stitch: 'baste', sa: 0.375 }),
+      gathered
+        ? s(W.sleeves, 'Gather the sleeve top', `Sew two rows of long stitches across the curved top of each sleeve, ${sn(0.25)} and ${sn(0.375)} from the edge, between the gather marks. Leave long thread ends and do not lock them.`,
+          { stitch: 'gather', sa: 0.25, check: 'Both rows run the full width between the marks' })
+        : s(W.sleeves, 'Ease the sleeve top', 'Sew a row of long stitches along the curved top of each sleeve, just inside the sewing line, between the two balance marks. Leave long thread ends.',
+          { stitch: 'baste', sa: 0.375 }),
       s(W.sleeves, 'Pin in the sleeve', 'Lay the garment open, good side up. Match the top of the sleeve to the shoulder seam, good sides together, and the sleeve ends to the armhole ends. Pull the long stitches gently so the sleeve top fits the armhole, and pin every inch.',
         { join: 'Good sides together', stitch: 'none', check: 'There are no pleats, only a soft fullness at the top' }),
       s(W.sleeves, 'Sew in the sleeves', 'Sew the sleeve to the armhole with the sleeve underneath, so the machine eases it in. Go slowly round the curve.',
@@ -136,8 +139,25 @@ export function tunicSteps(o: Options): Step[] {
     { edges: ['front:side', 'back:side', ...(sleeves ? ['sleeve:underarm'] : [])], join: 'Good sides together', stitch: 'straight', sa: SA, lock: true, press: 'Press the seams open',
       check: sleeves ? 'The armhole seams meet exactly at the underarm' : 'Both sides are the same length' }));
 
-  if (sleeves) out.push(s(W.sleeveHem, 'Hem the sleeves', `Fold the end of each sleeve ${sn(0.25)} to the inside and press, then fold again ${sn(TUNIC_SA.sleeveHem - 0.25)} and press. Sew close to the inner fold.`,
-    { edges: ['sleeve:hem'], stitch: 'edge', sa: 0.125, lock: true, check: 'The underarm seam lines up inside the hem' }));
+  if (gathered) {
+    const what = o.sleeve === 'puff' ? 'band' : 'cuff';
+    out.push(
+      s(W.sleeveHem, `Join the ${what} ends`, `Fold each ${what} good sides together, short ends level, and sew the ends to make a ring.`,
+        { pieces: ['sband'], join: 'Good sides together', stitch: 'straight', sa: 0.375, lock: true, press: 'Press the seam open' }),
+      s(W.sleeveHem, `Press the ${what}s`, `Fold each ring in half along its length, wrong sides together, and press. Open it out and press one long edge ${sn(0.375)} to the wrong side.`,
+        { stitch: 'none', press: 'Press the fold and the edge' }),
+      s(W.sleeveHem, 'Gather the sleeve ends', `Sew two rows of long stitches round the bottom of each sleeve, ${sn(0.25)} and ${sn(0.375)} from the edge, leaving long thread ends.`,
+        { stitch: 'gather', sa: 0.25 }),
+      s(W.sleeveHem, `${what === 'band' ? 'Band' : 'Cuff'} on the sleeve`, `Slip the ${what} over the sleeve end, good sides together, its seam on the underarm seam. Pull up the gathers to fit, spread them evenly, pin, and sew.`,
+        { edges: ['sleeve:hem'], join: 'Good sides together', stitch: 'straight', sa: 0.375, lock: true, trim: 'Pull out any gathering thread that shows', check: 'The gathers are even all round' }),
+      s(W.sleeveHem, `Close the ${what}`, `Fold the ${what} over the seam to the inside so its pressed edge just covers the stitching. From the outside, sew all round close to the seam, catching it.`,
+        { stitch: 'edge', sa: 0.0625, lock: true, check: 'The inner edge is caught all the way round' }),
+    );
+  } else if (sleeves) out.push(o.sleeve === 'bell'
+    ? s(W.sleeveHem, 'Hem the bell sleeves', `Fold the flared edge ${sn(0.25)} to the inside, then ${sn(0.25)} again, easing it round the curve. Sew close to the inner fold.`,
+      { edges: ['sleeve:hem'], stitch: 'edge', sa: 0.125, lock: true, check: 'The hem is flat with no ripples' })
+    : s(W.sleeveHem, 'Hem the sleeves', `Fold the end of each sleeve ${sn(0.25)} to the inside and press, then fold again ${sn(TUNIC_SA.sleeveHem - 0.25)} and press. Sew close to the inner fold.`,
+      { edges: ['sleeve:hem'], stitch: 'edge', sa: 0.125, lock: true, check: 'The underarm seam lines up inside the hem' }));
 
   if (o.slits === 'yes') out.push(
     s(W.slitFinish, 'Fold the slit edges', `Below the slit mark, fold each raw edge ${sn(0.25)} under, then fold again so the fold meets the seam line. Press.`,
@@ -148,7 +168,17 @@ export function tunicSteps(o: Options): Step[] {
       { stitch: 'bartack', check: 'The slit top is strong and flat' }),
   );
 
-  out.push(s(o.fit === 'aline' ? W.curvedHem : W.hem, 'Hem the bottom',
+  if (o.fit === 'peplum') out.push(
+    s(W.gather, 'Gather the peplum', `Sew two rows of long stitches along the top edge of each peplum piece, ${sn(0.375)} and ${sn(0.625)} from the edge. Leave long thread ends.`,
+      { stitch: 'gather', sa: 0.375 }),
+    s(W.skirtSides, 'Peplum side seams', `Put the peplum front${blouse ? 's' : ''} on the back, good sides together, and sew the side seams.`,
+      { pieces: ['pepF', 'pepB'], join: 'Good sides together', stitch: 'straight', sa: SA, lock: true, trim: 'Zigzag the edges', press: 'Press the seams open' }),
+    s(W.joinSkirt, 'Peplum on the top', 'Pull up the gathers until the peplum fits the bottom of the top. Match the side seams, spread the gathers evenly, pin good sides together and sew with the gathers on top.',
+      { edges: ['front:hem', 'back:hem'], join: 'Good sides together', stitch: 'straight', sa: SA, lock: true, trim: 'Zigzag the edges together', press: 'Press the seam up towards the top', check: 'The gathers are even and the side seams meet' }),
+    s(W.skirtHem, 'Hem the peplum', `Fold the peplum bottom ${sn(0.25)} under, then ${sn(0.75)} more. Press and sew close to the inner fold.`,
+      { stitch: 'edge', sa: 0.125, lock: true, check: 'The peplum hangs level all round' }),
+  );
+  else out.push(s(o.fit === 'aline' ? W.curvedHem : W.hem, 'Hem the bottom',
     () => `${o.fit === 'aline' ? `Sew a row of long stitches ${sn(hemSA - 0.25)} from the bottom edge, and pull it gently so the curved hem lies flat when folded. ` : ''}Fold the bottom edge ${sn(0.25)} to the inside and press, then fold again ${sn(hemSA - 0.25)} and press. Sew close to the inner fold.`,
     { edges: ['front:hem', 'back:hem'], stitch: 'edge', sa: 0.125, lock: true, check: 'The side seams line up and the hem is level all round' }));
 
