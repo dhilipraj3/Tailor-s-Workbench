@@ -46,7 +46,7 @@ describe('every stitch is covered', () => {
       const bad = new Map<string, string>();
       for (const o of combos(gid)) for (const p of problems(GARMENTS[gid].draft(M, o), GARMENTS[gid].steps(o))) if (!bad.has(p)) bad.set(p, JSON.stringify(o));
       expect([...bad].map(([p, o]) => `${p}  (${o})`)).toEqual([]);
-    });
+    }, 120_000); // tens of thousands of option combinations
   }
   it('pants (animated assembly): every edge, in every option combination', () => {
     S.unit = 'in';
@@ -58,7 +58,7 @@ describe('every stitch is covered', () => {
       for (const p of problems(ctx.pieces.map((g) => g.piece), sew)) if (!bad.has(p)) bad.set(p, JSON.stringify(o));
     }
     expect([...bad].map(([p, o]) => `${p}  (${o})`)).toEqual([]);
-  });
+  }, 120_000);
 });
 
 describe('no sewing step repeats a picture', () => {
