@@ -4,7 +4,7 @@ import { store, save, uid, project as getProject, personFor, newPerson } from '.
 import { S } from '../core/state.js';
 import { buildCtx, layoutFabric } from '../engine/project';
 import { makeSteps } from './make-steps.js';
-import { PHOTOS, TAG } from './catalog.js';
+import { TAG } from './catalog.js';
 import { speak } from '../core/speech.js';
 import { sketchSvg, levelDots, esc, avatar } from './common.js';
 import { IC } from './icons.js';
@@ -39,9 +39,8 @@ export function renderDesign(el, designId, editProjectId) {
   const st = { options: { ...(editing?.options || design.options) }, personId: editing?.personId || personFor(design.for || 'man')?.id || 'new', extra: editing?.extra || 'standard' };
   const kindWord = ({ man: 'man', woman: 'woman', child: 'child' })[design.for || 'man'];
   const draw = () => {
-    // the photo shows the design as photographed; once an option changes, the drawing shows exactly what will be made
-    const ph = PHOTOS[design.id], same = Object.entries(design.options).every(([k, v]) => st.options[k] === v);
-    const who = store.profiles.find((p) => p.id === st.personId);
+    // the drawing always shows exactly what will be made, with the options chosen
+        const who = store.profiles.find((p) => p.id === st.personId);
     let metres = '–', count = '';
     try {
       S.unit = store.unit;
@@ -52,7 +51,7 @@ export function renderDesign(el, designId, editProjectId) {
     el.innerHTML = `<div class="dz">
       <div class="dz-left">
         <a class="back-link" href="#/designs">← ALL DESIGNS</a>
-        <figure class="dz-stage">${ph && same ? `<img src="${ph.src}" alt="${esc(ph.alt)}">` : sketchSvg(g.id, st.options, null, 'hero', design.color)}</figure>
+        <figure class="dz-stage">${sketchSvg(g.id, st.options, null, 'hero', design.color)}</figure>
       </div>
       <aside class="dz-right" aria-label="Options">
         <span class="eyebrow">${esc(TAG(design))}</span>

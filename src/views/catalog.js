@@ -27,6 +27,8 @@ const HOW = [
   ['Sew with voice', 'Seam width, stitch and pressing, spelled out and read aloud.'],
 ];
 
+const HERO = DESIGNS.find((d) => d.id === 'formal-shirt');
+
 function hero() {
   return `<section class="hero" aria-label="Welcome">
     <div class="hero-copy">
@@ -35,11 +37,11 @@ function hero() {
       <a class="cta" href="#/designs">EXPLORE THE DESIGNS</a>
     </div>
     <div class="hero-stage">
-      <figure class="hero-photo">
-        <img src="img/hero-shirt.jpg" alt="Light blue formal shirt on a wooden hanger, showing the collar, button band and sleeve" width="1000" height="1022">
-        <span class="hot" style="left:31%;top:44%" aria-hidden="true">1</span>
-        <span class="hot" style="left:41%;top:61%" aria-hidden="true">2</span>
-        <span class="hot" style="left:73%;top:49%" aria-hidden="true">3</span>
+      <figure class="hero-photo render" role="img" aria-label="Classic formal shirt in light blue, showing the collar, button band and sleeve">
+        ${sketchSvg('shirt', HERO.options, null, 'hero', HERO.color)}
+        <span class="hot" style="left:45%;top:25%" aria-hidden="true">1</span>
+        <span class="hot" style="left:50%;top:47%" aria-hidden="true">2</span>
+        <span class="hot" style="left:73%;top:26%" aria-hidden="true">3</span>
         <figcaption><span><b>Classic formal shirt</b><span>Level 4 · about 8 hours</span></span><a href="#/design/formal-shirt">MAKE THIS</a></figcaption>
       </figure>
       <ol class="hero-notes">
@@ -53,9 +55,8 @@ function hero() {
 }
 
 function card(d) {
-  const ph = PHOTOS[d.id];
-  return `<a class="dcard" href="#/design/${d.id}">
-    <div class="ph">${ph ? `<img src="${ph.src}" alt="${esc(ph.alt)}" loading="lazy">` : sketchSvg(d.garment, d.options, null, '', d.color)}<span class="tag">${esc(TAG(d))}</span></div>
+    return `<a class="dcard" href="#/design/${d.id}">
+    <div class="ph">${sketchSvg(d.garment, d.options, null, '', d.color)}<span class="tag">${esc(TAG(d))}</span></div>
     <div class="body"><span><b>${esc(d.name)}</b><span class="meta">${levelDots(d.level)}<span class="hrs">${d.hours} h</span></span></span><span class="go">MAKE →</span></div>
   </a>`;
 }

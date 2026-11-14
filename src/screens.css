@@ -109,3 +109,11 @@
 .pl-link svg { width: 16px; height: 16px; }
 .pl-link.on { color: var(--accent); }
 @media (max-width: 480px) { .pl-b { width: 46px; height: 46px; } .pl-play { width: 64px; height: 64px; } }
+
+/* product-style garment drawings (views/common.js sketchSvg) */
+.sketch .sk, .sketch .sk2 { filter: none; }
+.sketch .skt { fill: none; stroke: rgba(0,0,0,.32); stroke-width: .7; stroke-dasharray: 1.6 1.3; vector-effect: non-scaling-stroke; }
+.sketch .skb { fill: url(#gBtn); }
+.dcard .ph .sketch { width: 84%; height: 84%; }
+.hero-photo.render { background: radial-gradient(ellipse 60% 55% at 50% 45%, #3a3a39 0%, #222221 55%, #181818 100%); display: grid; place-items: center; }
+.hero-photo.render .sketch { width: 86%; height: 86%; }
