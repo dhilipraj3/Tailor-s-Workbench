@@ -61,6 +61,18 @@ describe('every stitch is covered', () => {
   });
 });
 
+describe('no sewing step repeats a picture', () => {
+  for (const d of DESIGNS) {
+    it(d.name, () => {
+      S.unit = 'in';
+      const sew = makeSteps(buildCtx(d.id, d.options, M, 'standard', 'T')).filter((s: Step) => s.sec === 'Sew');
+      const pics = sew.map((s: Step) => s.svg());
+      const dup = pics.map((p: string, i: number) => (pics.indexOf(p) !== i ? sew[i].cap : '')).filter(Boolean);
+      expect(dup).toEqual([]);
+    });
+  }
+});
+
 describe('sewing detail is spoken and shown', () => {
   it('chips and speech read naturally in both units', () => {
     const d = { stitch: 'straight' as const, sa: 0.625, lock: true, press: 'Press the seams open' };

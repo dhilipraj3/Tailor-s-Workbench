@@ -7,6 +7,8 @@ import { TOOLICONS } from '../chapters/tools.js';
 import { layoutFabric } from '../engine/project';
 import { bottomWidth } from '../garments/trousers';
 import { markSteps } from './mark-steps.js';
+import { sketchSvg } from './common.js';
+import { techniqueScene } from '../art/technique.js';
 import { assemblePants } from '../assembly/pants.js';
 
 const ASSEMBLY = { pants: assemblePants };
@@ -49,6 +51,18 @@ export function layoutScene(ctx, widthIn, animate = true) {
   return { svg: fab + pcs + label, lay };
 }
 
+const STAR = (x, y, s) => `<path transform="translate(${x} ${y}) scale(${s})" d="M0 -10 L2.9 -3.1 L10 -3.1 L4.3 1.2 L6.5 8.1 L0 4 L-6.5 8.1 L-4.3 1.2 L-10 -3.1 L-2.9 -3.1 Z" fill="#f2c230"/>`;
+
+/** The finished garment on the dark spotlight, with a floor shadow and a few stars. */
+function finishedScene(ctx) {
+  const art = sketchSvg(ctx.design.garment, ctx.options, null, 'hero', ctx.design.color).replace('<svg ', '<svg x="215" y="18" width="370" height="440" ');
+  return `<defs><radialGradient id="finBg" cx=".5" cy=".42" r=".7"><stop offset="0" stop-color="#3b3b3a"/><stop offset=".55" stop-color="#232322"/><stop offset="1" stop-color="#141414"/></radialGradient>
+    <radialGradient id="finFloor"><stop offset="0" stop-color="#000" stop-opacity=".7"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+    <rect width="800" height="500" fill="url(#finBg)"/><ellipse cx="400" cy="462" rx="170" ry="14" fill="url(#finFloor)"/>` +
+    H.fade(art, 0.15) +
+    [[150, 120, 2.2], [650, 100, 1.8], [690, 330, 2.4], [120, 360, 1.9], [590, 220, 1.4], [210, 230, 1.3]].map(([x, y, s], i) => H.pop(STAR(x, y, s), 0.5 + i * 0.2)).join('');
+}
+
 export function makeSteps(ctx, widthIn = 58) {
   syncLegacy(ctx);
   const old = cutSteps(), w = [36, 44, 58].map((x) => [x, layoutFabric(ctx, x).metres]);
@@ -67,5 +81,15 @@ export function makeSteps(ctx, widthIn = 58) {
   ];
   // continuous assembly from the real pieces where available, otherwise the picture steps
   const sew = (ASSEMBLY[ctx.garment.id]?.(ctx)) || ctx.garment.steps(ctx.options);
-  return [...steps, ...sew.map((st) => ({ ...st, sec: 'Sew' }))];
+  // the last step shows the finished garment itself: this design, these options, this colour
+  // A picture used by an earlier step is replaced by a close-up of this step's own action,
+  // so no two sewing steps show the same animation.
+  const seen = new Set(), col = ctx.design.color || ({ shirt: '#a8c0e0', trousers: '#6a7380' })[ctx.garment.id] || '#c9bfa9';
+  const out = sew.map((st) => {
+    const repeat = seen.has(st.svg); seen.add(st.svg);
+    return repeat && st.d ? { ...st, sec: 'Sew', svg: () => techniqueScene(st.d, col, st.cap) } : { ...st, sec: 'Sew' };
+  });
+  const last = out[out.length - 1];
+  if (last) out[out.length - 1] = { ...last, svg: () => finishedScene(ctx) };
+  return [...steps, ...out];
 }
