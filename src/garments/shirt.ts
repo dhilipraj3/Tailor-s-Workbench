@@ -122,26 +122,49 @@ function supplies(m: Measurements, o: Options) {
   ];
 }
 
-/* ---------- flat sketch (viewBox -10 -14 180 176) ---------- */
+/* ---------- product-style drawing (viewBox -10 -14 180 176) ----------
+   Classes: sk / sk2 = fabric (and silhouette), skl = seam (gets a stitch line beside it), skb = button,
+   skf = soft fold shadow, skh = soft highlight. Left side is drawn, the right side is its mirror. */
+const mx = (d: string) => d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (_m, x, y) => `${+(160 - +x).toFixed(2)} ${y}`);
+
 function sketch(o: Options) {
   const slim = o.fit === 'slim', straight = o.hem === 'straight', half = o.sleeve === 'half';
-  const w = slim ? 4 : 0;
-  const bottom = straight ? 'L 124 140 L 36 140' : 'L 124 146 C 100 154 60 154 36 146';
-  const body = `M58 6 Q 80 16 102 6 L 124 12 L ${124 - w} 70 ${bottom} L ${36 + w} 70 L 36 12 Z`;
-  const sl = half ? ['M124 12 L148 48 L134 58 L124 46 Z', 'M36 12 L12 48 L26 58 L36 46 Z'] : ['M124 12 L164 112 L148 120 L124 58 Z', 'M36 12 L-4 112 L12 120 L36 58 Z'];
-  const cuffs = half ? '' : `<path d="M164 112 L148 120 L144.7 111.6 L160.7 103.6 Z" class="sk2"/><path d="M-4 112 L12 120 L15.3 111.6 L-0.7 103.6 Z" class="sk2"/>`;
-  let collar = '';
-  if (o.collar === 'mandarin') collar = `<path d="M58 8 Q 80 18 102 8 L 101 -4 Q 80 4 59 -4 Z" class="sk2"/>`;
+  const w = slim ? 4 : 0, hemY = straight ? 138 : 142;
+  // body: sloped shoulders, armholes, a waist that tapers for slim fit, curved shirt tails or a straight hem
+  const bottom = straight ? `L124 ${hemY} L36 ${hemY}` : `L124 ${hemY} C112 149 98 152 80 152 C62 152 48 149 36 ${hemY}`;
+  const body = `M58 5 Q80 12 102 5 L124 13 C126 32 125 48 123 60 L${123 - w} 92 ${bottom} L${37 + w} 92 L37 60 C35 48 34 32 36 13 Z`;
+  // sleeve (left side; the right is mirrored): shoulder, a slight bend at the elbow, then the cuff or short-sleeve hem
+  const sleeveL = half
+    ? 'M38 13 C26 22 18 36 12 50 L28 58 C31 50 34 44 36 40 Z'
+    : 'M38 13 C24 26 12 62 3 102 L17 109 C24 86 31 70 36 60 Z';
+  const cuffL = 'M3 102 L-1 117 L13 123 L17 109 Z';
+  const sleeveDetail = half
+    ? `<path d="M12 50 L28 58" class="skl"/><path d="M14 46 L29 53" class="skf"/>`
+    : `<path d="${cuffL}" class="sk2"/><path d="M10 106 L14 92" class="skl"/><path d="M7 104 L8 99 M12 106 L13 101" class="skl"/><circle cx="6" cy="117" r="1.5" class="skb"/>` +
+      `<path d="M22 52 C18 58 14 64 12 72" class="skf"/><path d="M14 74 C17 78 21 80 26 79" class="skf"/><path d="M26 34 C22 46 18 58 15 68" class="skh"/>`;
+  const sleeves = [sleeveL, mx(sleeveL)].map((d) => `<path d="${d}" class="sk"/>`).join('') + sleeveDetail + mx(sleeveDetail).replace(/cx="(-?[\d.]+)"/g, (_m, x) => `cx="${160 - +x}"`);
+  // collar: stand and leaves, with a shadow under the points; or a band collar
+  let collar: string;
+  if (o.collar === 'mandarin') collar = `<path d="M58 8 Q80 16 102 8 L101 -3 Q80 4 59 -3 Z" class="sk2"/><path d="M60 0 Q80 7 100 0" class="skl"/><circle cx="80" cy="10" r="1.5" class="skb"/>`;
   else {
-    const L = o.collar === 'spread' ? 'M60 -2 L80 12 L62 18 Z' : o.collar === 'buttondown' ? 'M60 -2 L80 13 L69 25 Z' : 'M60 -2 L80 14 L66 22 Z';
-    const R = L.replace(/(\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (_m, x, y) => `${160 - +x} ${y}`);
-    collar = `<path d="M58 6 Q 80 16 102 6 L 100 -2 Q 80 6 60 -2 Z" class="sk2"/><path d="${L}" class="sk"/><path d="${R}" class="sk"/>` +
-      (o.collar === 'buttondown' ? `<circle cx="68" cy="22" r="1.8" class="skb"/><circle cx="92" cy="22" r="1.8" class="skb"/>` : '');
+    const leaf = o.collar === 'spread' ? 'M60 -2 L79 11 L62 18 C60 10 60 4 60 -2 Z' : o.collar === 'buttondown' ? 'M60 -2 L79 13 L68 25 C63 16 60 6 60 -2 Z' : 'M60 -2 L79 13 L66 22 C62 14 60 6 60 -2 Z';
+    const tip = o.collar === 'spread' ? [62, 18] : o.collar === 'buttondown' ? [68, 25] : [66, 22];
+    const shadowL = `<path d="M${tip[0] + 1} ${tip[1] + 1.5} L79 ${15}" class="skf"/>`;
+    collar = `<path d="M60 -3 Q80 4 100 -3 L100 6 Q80 14 60 6 Z" class="sk2"/>` + shadowL + mx(shadowL) +
+      `<path d="M58 6 Q80 16 102 6 L100 -3 Q80 5 60 -3 Z" class="sk2"/><circle cx="80" cy="9" r="1.4" class="skb"/>` +
+      `<path d="${leaf}" class="sk"/><path d="${mx(leaf)}" class="sk"/>` +
+      (o.collar === 'buttondown' ? `<circle cx="${tip[0] + 1}" cy="${tip[1] - 2}" r="1.4" class="skb"/><circle cx="${160 - tip[0] - 1}" cy="${tip[1] - 2}" r="1.4" class="skb"/>` : '');
   }
-  const pk = +o.pockets, pocket = (x: number) => `<path d="M${x} 40 L${x + 18} 40 L${x + 18} 58 L${x + 9} 62 L${x} 58 Z" class="skl"/>`;
-  const btns = [26, 46, 66, 86, 106, 126].map((y) => `<circle cx="80" cy="${y}" r="1.8" class="skb"/>`).join('');
-  return `<path d="${sl[0]}" class="sk"/><path d="${sl[1]}" class="sk"/>${cuffs}<path d="${body}" class="sk"/>` +
-    `<path d="M80 12 L80 ${straight ? 140 : 151}" class="skl"/>${btns}${pk >= 1 ? pocket(94) : ''}${pk >= 2 ? pocket(48) : ''}${collar}`;
+  // front: button band, yoke seams at the shoulders, folds and highlights, side vents on a curved hem
+  const band = `<path d="M77 13 L77 ${straight ? hemY : 152}" class="skl"/><path d="M83 13 L83 ${straight ? hemY : 152}" class="skl"/>`;
+  const btns = [26, 46, 66, 86, 106, 126].map((y) => `<circle cx="80" cy="${y}" r="1.7" class="skb"/>`).join('');
+  const yoke = `<path d="M58 6 L37 14" class="skl"/><path d="M102 6 L123 14" class="skl"/>`;
+  const foldsL = `<path d="M40 60 C46 64 50 70 52 78" class="skf"/><path d="M50 84 C52 104 50 124 48 140" class="skf"/><path d="M62 30 C64 64 63 100 61 134" class="skh"/>`;
+  const vents = straight ? '' : `<path d="M37 ${hemY - 8} L36 ${hemY}" class="skl"/><path d="M123 ${hemY - 8} L124 ${hemY}" class="skl"/>`;
+  const pk = +o.pockets;
+  const pocket = (x: number) => `<path d="M${x} 38 L${x + 18} 38 L${x + 18} 56 L${x + 9} 60 L${x} 56 Z" class="skl"/><path d="M${x + 1} 58 L${x + 9} 61.5 L${x + 17} 58" class="skf"/>`;
+  return `${sleeves}<path d="${body}" class="sk"/>${yoke}${foldsL}${mx(foldsL)}${vents}${band}${btns}` +
+    `${pk >= 1 ? pocket(92) : ''}${pk >= 2 ? pocket(50) : ''}${collar}`;
 }
 
 export const SHIRT: Garment = {

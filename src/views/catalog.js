@@ -28,6 +28,8 @@ const HOW = [
 ];
 
 const HERO = DESIGNS.find((d) => d.id === 'formal-shirt');
+const HERO_COLORS = [['#a8c0e0', 'Sky blue'], ['#f1efe9', 'White'], ['#2f3e5c', 'Navy'], ['#e3b7c2', 'Rose']];
+let heroColor = HERO_COLORS[0][0];
 
 function hero() {
   return `<section class="hero" aria-label="Welcome">
@@ -37,18 +39,24 @@ function hero() {
       <a class="cta" href="#/designs">EXPLORE THE DESIGNS</a>
     </div>
     <div class="hero-stage">
-      <figure class="hero-photo render" role="img" aria-label="Classic formal shirt in light blue, showing the collar, button band and sleeve">
-        ${sketchSvg('shirt', HERO.options, null, 'hero', HERO.color)}
-        <span class="hot" style="left:45%;top:25%" aria-hidden="true">1</span>
-        <span class="hot" style="left:50%;top:47%" aria-hidden="true">2</span>
-        <span class="hot" style="left:73%;top:26%" aria-hidden="true">3</span>
-        <figcaption><span><b>Classic formal shirt</b><span>Level 4 · about 8 hours</span></span><a href="#/design/formal-shirt">MAKE THIS</a></figcaption>
+      <figure class="hero-garment" role="img" aria-label="Classic formal shirt, showing the collar, button band and sleeve">
+        <span class="hero-word" aria-hidden="true">SHIRT</span>
+        <span class="hero-floor" aria-hidden="true"></span>
+        <span class="hero-art" id="hero-art">${sketchSvg('shirt', HERO.options, null, 'hero', heroColor)}</span>
+        <span class="hot" style="left:42%;top:16%" aria-hidden="true">1</span>
+        <span class="hot" style="left:50%;top:45.5%" aria-hidden="true">2</span>
+        <span class="hot" style="left:74.4%;top:19.3%" aria-hidden="true">3</span>
       </figure>
+      <div class="hero-side">
+        <div class="hero-name"><b>Classic formal shirt</b><span>Level 4 · about 8 hours</span></div>
+        <div class="hero-sw" role="group" aria-label="Fabric colour">${HERO_COLORS.map(([c, n]) => `<button type="button" data-hc="${c}" aria-label="${n}" aria-pressed="${c === heroColor}" style="background:${c}"></button>`).join('')}<span>${HERO_COLORS.find(([c]) => c === heroColor)[1].toUpperCase()}</span></div>
       <ol class="hero-notes">
         <li><span class="n">1</span><span><b>Collar on a stand</b><span>Interfaced collar and stand, topstitched ⅛″ from the edge.</span></span></li>
         <li><span class="n">2</span><span><b>Front button band</b><span>Folded band, buttonholes spaced evenly from the collar.</span></span></li>
         <li><span class="n">3</span><span><b>Set-in sleeve</b><span>Felled armhole seam, then side and sleeve in one seam.</span></span></li>
       </ol>
+      <a class="cta hero-make" href="#/design/formal-shirt">MAKE THIS SHIRT</a>
+      </div>
     </div>
   </section>
   <ul class="feats">${FEATS.map(([ic, b, s]) => `<li><svg viewBox="0 0 40 40" aria-hidden="true">${ic}</svg><span><b>${b}</b><span>${s}</span></span></li>`).join('')}</ul>`;
@@ -90,6 +98,14 @@ export function renderCatalog(el) {
     const sc = e.target.closest('[data-scroll]');
     if (sc) { e.preventDefault(); document.getElementById(sc.dataset.scroll)?.scrollIntoView({ behavior: 'smooth' }); return; }
     const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.hc) {
+      // recolour the hero shirt in place
+      heroColor = b.dataset.hc;
+      el.querySelector('#hero-art').innerHTML = sketchSvg('shirt', HERO.options, null, 'hero', heroColor);
+      el.querySelectorAll('[data-hc]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.hc === heroColor)));
+      el.querySelector('.hero-sw span').textContent = HERO_COLORS.find(([c]) => c === heroColor)[1].toUpperCase();
+      return;
+    }
     if (b.dataset.filter) { filter = b.dataset.filter; renderCatalog(el); document.getElementById('designs')?.scrollIntoView(); }
     if (b.dataset.del) armConfirm(b, () => { store.projects = store.projects.filter((p) => p.id !== b.dataset.del); save(); renderCatalog(el); });
   };
