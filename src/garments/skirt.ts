@@ -41,7 +41,13 @@ function skirtSketch(o: Options) {
   const fl = o.style === 'gathered' ? len * 0.5 : len * 0.34;
   const gathers = o.style === 'gathered' ? Array.from({ length: 10 }, (_, i) => `<path d="M${20 + i * 6} 12 L${10 - fl * 0.6 + i * (10 + fl * 0.14)} ${len - 4}" class="skl" opacity=".55"/>`).join('') : '';
   const band = o.waist === 'band' ? `<path d="M18 0 L82 0 L82 9 L18 9 Z" class="sk2"/><circle cx="76" cy="4.5" r="1.6" class="skb"/>` : `<path d="M18 0 L82 0 L82 9 L18 9 Z" class="sk2"/>${Array.from({ length: 8 }, (_, i) => `<path d="M${22 + i * 8} 1 L${23 + i * 8} 8" class="skl"/>`).join('')}`;
-  return `<path d="M18 8 L82 8 Q${88 + fl * 0.2} ${len * 0.5} ${84 + fl} ${len} Q50 ${len + 6} ${16 - fl} ${len} Q${12 - fl * 0.2} ${len * 0.5} 18 8 Z" class="sk"/>${gathers}${band}`;
+  return `<path d="M18 8 L82 8 Q${88 + fl * 0.2} ${len * 0.5} ${84 + fl} ${len} Q50 ${len + 6} ${16 - fl} ${len} Q${12 - fl * 0.2} ${len * 0.5} 18 8 Z" class="sk"/>${gathers}${band}${skirtDetail(len, fl)}`;
+}
+
+/** hem stitching, soft folds falling from the waist, light down the front */
+function skirtDetail(len: number, fl: number) {
+  const folds = [-0.55, -0.2, 0.2, 0.55].map((k) => `<path d="M${50 + k * 40} 14 Q${50 + k * (40 + fl * 0.5)} ${len * 0.55} ${50 + k * (50 + fl)} ${len - 4}" class="skf"/>`).join('');
+  return `<path d="M${17 - fl} ${len - 3} Q50 ${len + 3} ${83 + fl} ${len - 3}" class="skl"/>${folds}<path d="M44 14 Q42 ${len * 0.5} ${40 - fl * 0.2} ${len - 10}" class="skh"/>`;
 }
 
 export const SKIRT: Garment = {

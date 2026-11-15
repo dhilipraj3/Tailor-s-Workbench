@@ -70,7 +70,12 @@ export function pantsSketch(o: Options) {
   const gathers = Array.from({ length: 9 }, (_, i) => `<path d="M${10 + i * 9} 2 L${11 + i * 9} 9" class="skl"/>`).join('');
   const string = o.waist === 'drawstring' ? `<path d="M43 9 Q40 22 36 26 M47 9 Q50 22 54 27" class="skl" stroke-width="2"/>` : '';
   const churi = st === 'churidar' ? Array.from({ length: 6 }, (_, i) => `<path d="M${outL + 1} ${len - 4 - i * 4} L${outL + bottom} ${len - 6 - i * 4} M${outR - bottom} ${len - 6 - i * 4} L${outR - 1} ${len - 4 - i * 4}" class="skl"/>`).join('') : '';
-  return `<path d="${legs}" class="sk"/><path d="M4 0 L86 0 L86 10 L4 10 Z" class="sk2"/>${gathers}${string}${churi}`;
+  // hem stitching, soft folds at the knee and from the seat, light down each leg
+  const bw = bottom * (st === 'shorts' ? 0.6 : 1), lx = outL + bw / 2, rx = outR - bw / 2, ky = len * 0.62;
+  const det = `<path d="M${outL + 1} ${len - 3} L${outL + bw - 1} ${len - 3} M${outR - bw + 1} ${len - 3} L${outR - 1} ${len - 3}" class="skl"/>` +
+    (st === 'shorts' ? '' : `<path d="M${lx - 7} ${ky} Q${lx} ${ky + 5} ${lx + 7} ${ky} M${rx - 7} ${ky} Q${rx} ${ky + 5} ${rx + 7} ${ky}" class="skf"/>`) +
+    `<path d="M38 ${crotch - 8} Q32 ${crotch + 2} 24 ${crotch + 14} M52 ${crotch - 8} Q58 ${crotch + 2} 66 ${crotch + 14}" class="skf"/><path d="M${lx + 4} 16 L${lx} ${len - 8} M${rx - 4} 16 L${rx} ${len - 8}" class="skh"/>`;
+  return `<path d="${legs}" class="sk"/><path d="M4 0 L86 0 L86 10 L4 10 Z" class="sk2"/>${gathers}${string}${churi}${det}`;
 }
 
 export const PANTS: Garment = {

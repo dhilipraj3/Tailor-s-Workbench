@@ -90,9 +90,14 @@ function sketch(o: Options) {
   const pockets = o.pocket === 'side' ? `<path d="M1 14 L-1 36" class="skl"/><path d="M89 14 L91 36" class="skl"/>` : `<path d="M16 10 L2 32" class="skl"/><path d="M74 10 L88 32" class="skl"/>`;
   const pleats = o.front === 'pleated' ? `<path d="M24 10 L25 26 M30 10 L30.5 22 M66 10 L65 26 M60 10 L59.5 22" class="skl"/>` : '';
   const turnup = o.hem === 'turnup' ? `<path d="M${a - 0.4} 152 L${b + 0.3} 152 L${b} 160 L${a} 160 Z" class="sk2"/><path d="M${c - 0.3} 152 L${d + 0.4} 152 L${d} 160 L${c} 160 Z" class="sk2"/>` : '';
+  // seams, hem stitching, knee folds, drag lines from the seat, and light along the creases
+  const kx = [(a + b) / 2, (c + d) / 2];
+  const det = `<path d="M4 9 L86 9" class="skl"/><path d="M${a + 1} 156 L${b - 1} 156 M${c + 1} 156 L${d - 1} 156" class="skl"/>` +
+    kx.map((x) => `<path d="M${x - 7} 98 Q${x} 103 ${x + 7} 98 M${x - 6} 108 Q${x} 112 ${x + 6} 108" class="skf"/>`).join('') +
+    `<path d="M38 48 Q33 58 28 70 M52 48 Q57 58 62 70" class="skf"/>` + kx.map((x, i) => `<path d="M${x + (i ? -4 : 4)} 22 L${x} 150" class="skh"/>`).join('');
   return `<path d="${legs}" class="sk"/><path d="M4 0 L86 0 L86 10 L4 10 Z" class="sk2"/>${loops}` +
     `<path d="M45 10 L45 40 Q 45 48 38 50 M38 10 L38 42" class="skl"/>${pockets}${pleats}` +
-    `<path d="M${(a + b) / 2 + 6} 12 L${(a + b) / 2} 160 M${(c + d) / 2 - 6} 12 L${(c + d) / 2} 160" class="skc"/>${turnup}<circle cx="45" cy="5" r="1.8" class="skb"/>`;
+    `<path d="M${(a + b) / 2 + 6} 12 L${(a + b) / 2} 160 M${(c + d) / 2 - 6} 12 L${(c + d) / 2} 160" class="skc"/>${turnup}<circle cx="45" cy="5" r="1.8" class="skb"/>${det}`;
 }
 
 export const TROUSERS: Garment = {

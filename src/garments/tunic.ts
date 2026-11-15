@@ -144,16 +144,46 @@ export function tunicSketch(o: Options, opts: { lengthTo?: number } = {}) {
   const aline = o.fit === 'aline', fitted = o.fit === 'fitted';
   const w = fitted ? 6 : 0, fl = aline ? (lenY - 70) * 0.28 : 0;
   const body = `M58 6 Q 80 ${o.neck === 'boat' ? 10 : 16} 102 6 L 124 12 L ${124 - w} 66 L ${124 + fl} ${lenY} Q 80 ${lenY + 4} ${36 - fl} ${lenY} L ${36 + w} 66 L 36 12 Z`;
-  const S = ({ none: null, short: [148, 40, 134, 50, 124, 40], elbow: [154, 64, 140, 72, 124, 52], threequarter: [160, 92, 146, 98, 124, 56], full: [164, 118, 148, 124, 124, 58], puff: [154, 30, 136, 50, 124, 40], balloon: [174, 110, 150, 124, 124, 58], bell: [178, 92, 140, 104, 124, 54] } as Record<string, number[] | null>)[o.sleeve];
-  const sl = S ? `<path d="M124 12 L${S[0]} ${S[1]} L${S[2]} ${S[3]} L${S[4]} ${S[5]} Z" class="sk"/><path d="M36 12 L${160 - S[0]} ${S[1]} L${160 - S[2]} ${S[3]} L${160 - S[4]} ${S[5]} Z" class="sk"/>` : '';
+  // sleeves: curved, with a stitched hem; puff is rounded with a band, balloon is wide with a cuff, bell flares
+  const R: Record<string, string> = {
+    short: 'M124 12 Q140 22 148 40 L134 50 Q130 44 124 40 Z',
+    elbow: 'M124 12 Q142 30 154 64 L140 72 Q132 60 124 52 Z',
+    threequarter: 'M124 12 Q146 40 160 92 L146 98 Q134 76 124 56 Z',
+    full: 'M124 12 Q148 50 164 118 L148 124 Q136 90 124 58 Z',
+    puff: 'M124 12 C146 4 166 26 156 42 L138 52 C133 47 128 44 124 40 Z',
+    balloon: 'M124 12 C152 28 178 70 172 104 L150 116 C140 96 130 76 124 58 Z',
+    bell: 'M124 12 Q140 34 150 62 Q160 80 178 92 L138 106 Q134 84 124 56 Z',
+  };
+  const HEM: Record<string, string> = {
+    short: 'M146 37 L132 47', elbow: 'M152 61 L138 69', threequarter: 'M158 89 L144 95', full: 'M162 115 L146 121',
+    puff: '', balloon: '', bell: 'M175 90 L139 103',
+  };
+  const mirror = (d: string) => d.replace(/(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)/g, (_m, x, y) => `${160 - +x} ${y}`);
+  let sl = '';
+  if (R[o.sleeve]) {
+    const one = `<path d="${R[o.sleeve]}" class="sk"/>` + (HEM[o.sleeve] ? `<path d="${HEM[o.sleeve]}" class="skl"/>` : '') +
+      (o.sleeve === 'puff' ? '<path d="M156 42 L138 52 L141 56 L159 46 Z" class="sk2"/><path d="M134 22 Q142 30 144 40" class="skf"/>' : '') +
+      (o.sleeve === 'balloon' ? '<path d="M172 104 L150 116 L153 124 L175 112 Z" class="sk2"/><path d="M150 60 Q156 80 156 100" class="skf"/>' : '') +
+      (['full', 'threequarter', 'elbow'].includes(o.sleeve) ? '<path d="M136 46 Q140 54 141 62" class="skf"/><path d="M130 26 Q138 44 144 70" class="skh"/>' : '');
+    sl = one + mirror(one);
+  }
   const neckD = ({ round: 'M66 7 Q80 26 94 7', v: 'M64 7 L80 34 L96 7', deep: 'M62 7 Q80 44 98 7', boat: 'M58 7 Q80 14 102 7', band: 'M66 7 Q80 22 94 7', square: 'M64 7 L65 30 L95 30 L96 7', sweetheart: 'M64 7 Q63 30 72 30 Q78 30 80 34 Q82 30 88 30 Q97 30 96 7', high: 'M68 7 Q80 18 92 7' } as Record<string, string>)[o.neck] ?? 'M66 7 Q80 26 94 7';
-  let extra = `<path d="${neckD}" class="skl"/>`;
-  if (o.neck === 'band') extra += `<path d="M64 6 Q80 20 96 6 L95 0 Q80 12 65 0 Z" class="sk2"/>`;
+  // the inside of the back neck shows through the neckline
+  const nx = +(neckD.match(/^M(-?\d+(?:\.\d+)?)/)?.[1] ?? 66);
+  let extra = `<path d="${neckD} Q80 11 ${nx} 7 Z" class="sk2"/><path d="${neckD}" class="skl"/>`;
+  // seams, hem stitching, folds and highlights
+  extra += '<path d="M58 6 L37 12 M102 6 L123 12" class="skl"/>';
+  extra += `<path d="M${37 + w} 66 L${36 - fl + 1} ${lenY - 1} M${123 - w} 66 L${124 + fl - 1} ${lenY - 1}" class="skl"/>`;
+  extra += `<path d="M${37 - fl} ${lenY - 3} Q80 ${lenY + 1} ${123 + fl} ${lenY - 3}" class="skl"/>`;
+  extra += '<path d="M40 40 Q48 46 52 56 M120 40 Q112 46 108 56" class="skf"/>';
+  extra += `<path d="M54 66 Q${52 - fl * 0.4} ${(66 + lenY) / 2} ${50 - fl * 0.6} ${lenY - 4} M106 66 Q${108 + fl * 0.4} ${(66 + lenY) / 2} ${110 + fl * 0.6} ${lenY - 4}" class="skf"/>`;
+  extra += `<path d="M64 24 Q66 ${(24 + lenY) / 2} 62 ${lenY - 8}" class="skh"/>`;
+  if (o.neck === 'band') extra += `<path d="M64 6 Q80 20 96 6 L95 0 Q80 12 65 0 Z" class="sk2"/><path d="M65 3 Q80 15 95 3" class="skl"/>`;
   if (o.opening === 'halfplacket' || o.neck === 'band') extra += `<path d="M78 18 L78 52 L82 52 L82 18" class="skl"/>` + [26, 34, 42].map((y) => `<circle cx="80" cy="${y}" r="1.5" class="skb"/>`).join('');
   if (o.opening === 'fronthooks') extra += `<path d="M80 30 L80 ${lenY}" class="skl"/>` + Array.from({ length: 5 }, (_, i) => `<circle cx="80" cy="${36 + i * 5}" r="1" class="skb"/>`).join('');
   if (o.slits === 'yes' && lenY > 100) extra += `<path d="M${124 + fl * 0.85} ${lenY - 24} L${124 + fl} ${lenY} M${36 - fl * 0.85} ${lenY - 24} L${36 - fl} ${lenY}" class="skl" stroke-width="2"/>`;
   if (o.darts === 'yes') extra += `<path d="M64 ${Math.min(lenY, 66)} L66 44 M96 ${Math.min(lenY, 66)} L94 44" class="skl"/>`;
-  if (pep) extra += `<path d="M36 66 L124 66 L140 96 Q110 102 80 99 Q50 102 20 96 Z" class="sk"/><path d="M52 68 L46 97 M68 68 L66 99 M92 68 L94 99 M108 68 L114 97" class="skc"/>`;
+  if (pep) extra += `<path d="M36 66 L124 66 L140 96 Q110 102 80 99 Q50 102 20 96 Z" class="sk"/><path d="M52 68 L46 97 M68 68 L66 99 M92 68 L94 99 M108 68 L114 97" class="skf"/><path d="M22 93 Q50 99 80 96 Q110 99 138 93" class="skl"/>`;
   return `${sl}<path d="${body}" class="sk"/>${extra}`;
 }
 
