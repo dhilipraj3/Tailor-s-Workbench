@@ -8,6 +8,7 @@ import { layoutFabric } from '../engine/project';
 import { bottomWidth } from '../garments/trousers';
 import { markSteps } from './mark-steps.js';
 import { sketchSvg } from './common.js';
+import { closestPhoto } from './photos.js';
 import { techniqueScene } from '../art/technique.js';
 import { pieceScene } from '../assembly/closeup.js';
 import { assemblePants } from '../assembly/pants.js';
@@ -62,7 +63,7 @@ function finishedScene(ctx) {
     <rect width="800" height="500" fill="url(#finBg)"/><ellipse cx="400" cy="462" rx="170" ry="14" fill="url(#finFloor)"/>` +
     H.fade(art, 0.15) +
     // the design's product photo, when one has been added and the options are the design's own (a missing file draws nothing)
-    (Object.entries(ctx.design.options).every(([k, v]) => ctx.options[k] === v) ? H.fade(`<image href="img/designs/${ctx.design.id}.jpg" x="200" y="0" width="400" height="500" preserveAspectRatio="xMidYMid meet"/>`, 0.15) : '') +
+    (closestPhoto(ctx.design, ctx.options)?.exact ? H.fade(`<image href="${closestPhoto(ctx.design, ctx.options).src}" x="200" y="0" width="400" height="500" preserveAspectRatio="xMidYMid meet"/>`, 0.15) : '') +
     [[150, 120, 2.2], [650, 100, 1.8], [690, 330, 2.4], [120, 360, 1.9], [590, 220, 1.4], [210, 230, 1.3]].map(([x, y, s], i) => H.pop(STAR(x, y, s), 0.5 + i * 0.2)).join('');
 }
 

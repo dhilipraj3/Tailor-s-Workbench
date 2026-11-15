@@ -8,6 +8,7 @@ import { makeSteps } from '../src/views/make-steps.js';
 import { describe as describeDesign } from '../src/views/design.js';
 import { runs } from '../src/assembly/closeup.js';
 import type { Step } from '../src/engine/types';
+import { closestPhoto } from '../src/views/photos.js';
 import { S } from '../src/core/state.js';
 
 const M: Record<string, number> = { ...SHIRT_SIZES.L, ...waistPreset(34), height: 66, bicep: 13 };
@@ -79,5 +80,20 @@ group('edges sewn together match', () => {
         if (!gathered) expect(cap, `sleeve top far longer than armhole ${where}`).toBeLessThanOrEqual(arm / 2 + 1.75);
       }
     }
+  });
+});
+
+group('the customiser picks the closest photo', () => {
+  const k = DESIGNS.find((x) => x.id === 'aline-kurti')!;
+  it('shows the design photo for its own options', () => {
+    expect(closestPhoto(k, k.options)).toMatchObject({ src: 'img/designs/aline-kurti.jpg', exact: true, diff: [] });
+  });
+  it('says what differs when a visible option changes', () => {
+    const p = closestPhoto(k, { ...k.options, neck: 'band' })!;
+    expect(p.exact).toBe(false);
+    expect(p.diff).toEqual([{ group: 'Neck', photo: 'Round', yours: 'Band collar' }]);
+  });
+  it('ignores options you cannot see in a front photo', () => {
+    expect(closestPhoto(k, { ...k.options, back: 'keyhole', darts: 'no' })!.exact).toBe(true);
   });
 });

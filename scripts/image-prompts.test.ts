@@ -2,7 +2,8 @@
 // so photos match exactly what the pattern makes. Run: npx vitest run scripts/image-prompts.test.ts
 import { it } from 'vitest';
 import { writeFileSync } from 'fs';
-import { DESIGNS } from '../src/garments/index';
+import { DESIGNS, GARMENTS } from '../src/garments/index';
+import { VISIBLE } from '../src/views/photos.js';
 
 const COLORS: [string, string][] = [['#efe8d8', 'ivory'], ['#f3efe6', 'off-white'], ['#f1e6c8', 'cream'], ['#e9d7c2', 'beige'], ['#b9c7a6', 'sage green'], ['#7b8a6a', 'olive green'],
   ['#c45b6b', 'rose red'], ['#3f7f8c', 'teal'], ['#b8862e', 'mustard gold'], ['#d9c7d6', 'lilac'], ['#2f4a6b', 'navy blue'], ['#5a4a7a', 'deep purple'], ['#cf8a3a', 'burnt orange'],
@@ -42,4 +43,33 @@ it('writes docs/image-prompts.md', () => {
     `**Check before saving:** the garment must match the description (collar, sleeves, length, pockets, colour). If the generator adds a person, a hanger, text or a logo, generate it again. The background is already the app's own colour, so it needs no cutting out.\n\n---\n\n`;
   for (const d of DESIGNS) md += `## ${d.name}\nFile: \`${d.id}.jpg\`\n\n> ${describe(d).replace(/^./, (c) => c.toUpperCase())}. ${STYLE}\n\n`;
   writeFileSync('docs/image-prompts.md', md);
+});
+
+// Option photos: each design with one visible option changed, so the customiser can show a real photo
+// that matches what people pick. Most-customised designs first.
+const ORDER = ['aline-kurti', 'straight-kurti', 'saree-blouse', 'kurta', 'short-kurta', 'kids-kurta', 'simple-dress', 'kids-frock', 'aline-skirt', 'maxi-skirt',
+  'formal-shirt', 'slim-formal-shirt', 'oxford-shirt', 'band-collar-shirt', 'half-sleeve-shirt', 'two-pocket-shirt', 'kids-shirt',
+  'formal-trousers', 'slim-trousers', 'pleated-trousers', 'side-pocket-trousers', 'pyjama', 'men-shorts', 'salwar', 'churidar', 'palazzo', 'kids-shorts', 'kids-pyjama'];
+
+it('writes docs/image-prompts-options.md', () => {
+  const designs = [...DESIGNS].sort((a, b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
+  let md = '', total = 0;
+  for (const d of designs) {
+    const rows: string[] = [];
+    for (const k of VISIBLE[d.garment] || []) {
+      const grp = GARMENTS[d.garment].options.find((g) => g.id === k);
+      for (const v of grp?.values || []) {
+        if (d.options[k] === v.id) continue;
+        const o = { ...d.options, [k]: v.id };
+        // a change you cannot see in the photo is skipped (side slits on a short top)
+        if (k === 'slits' && !['thigh', 'knee', 'calf'].includes(o.length)) continue;
+        rows.push(`### ${grp!.label}: ${v.label}\nFile: \`${d.id}--${k}-${v.id}.jpg\`\n\n> ${describe({ ...d, options: o }).replace(/^./, (c) => c.toUpperCase())}. ${STYLE}\n`);
+      }
+    }
+    total += rows.length;
+    md += `## ${d.name} (${rows.length} photos)\n\n${rows.join('\n')}\n`;
+  }
+  writeFileSync('docs/image-prompts-options.md', `# Option photos\n\n${total} photos: each design with one visible option changed. The customiser shows the photo closest to what someone picks, ` +
+    `with a note on any difference and a small drawing of exactly what they will make. Work from the top: the first designs have the most options.\n\n` +
+    `**Save as** \`public/img/designs/<file>.jpg\` with the file name shown, then run \`npm run photos\` (or restart \`npm run dev\`). Same checks as the main photos: the garment must match the description, with no person, hanger, text or logo.\n\n---\n\n${md}`);
 });

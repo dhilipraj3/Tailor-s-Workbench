@@ -156,3 +156,12 @@
 
 /* customiser preview: the garment floats on the page, no box */
 .dz-stage { background: radial-gradient(ellipse 45% 42% at 50% 48%, rgba(255,255,255,.07), rgba(255,255,255,0) 70%); box-shadow: none; border-radius: 0; overflow: visible; }
+
+/* customiser: closest photo, with a note and an inset drawing of exactly what will be made */
+.dz-photo { width: 100%; max-height: 74vh; object-fit: contain; display: block; -webkit-mask-image: radial-gradient(ellipse 66% 64% at 50% 50%, #000 76%, transparent 100%); mask-image: radial-gradient(ellipse 66% 64% at 50% 50%, #000 76%, transparent 100%); }
+.dz-inset { position: absolute; right: 8px; bottom: 8px; width: 24%; min-width: 96px; padding: 6px 6px 4px; border-radius: 14px; background: rgba(28,28,27,.85); border: 1px solid #3a3a38; display: grid; gap: 2px; }
+.dz-inset .sketch { width: 100%; height: auto; padding: 0; }
+.dz-inset span { text-align: center; font: 800 10px var(--f-body); letter-spacing: .2em; color: var(--accent); }
+.dz-note { position: absolute; left: 8px; bottom: 8px; max-width: 64%; padding: 8px 12px; border-radius: 12px; background: rgba(28,28,27,.85); border: 1px solid #3a3a38; font-size: .8rem; line-height: 1.5; color: #c9c9c4; }
+.dz-note b { color: #fff; }
+.dz-stage .dz-inset .sketch.hero { width: 100%; height: auto; max-height: none; padding: 0; }

@@ -11,7 +11,11 @@
     "test": "vitest run --dir tests",
     "export-chat": "node scripts/export-chat.mjs",
     "audit": "vite --open /audit.html",
-    "prompts": "vitest run --dir scripts"
+    "prompts": "vitest run --dir scripts",
+    "photos": "node scripts/photos.mjs",
+    "predev": "node scripts/photos.mjs",
+    "prebuild": "node scripts/photos.mjs",
+    "pretest": "node scripts/photos.mjs"
   },
   "devDependencies": {
     "typescript": "^5.8.3",

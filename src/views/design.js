@@ -4,7 +4,8 @@ import { store, save, uid, project as getProject, personFor, newPerson } from '.
 import { S } from '../core/state.js';
 import { buildCtx, layoutFabric } from '../engine/project';
 import { makeSteps } from './make-steps.js';
-import { TAG, designPhoto } from './catalog.js';
+import { TAG } from './catalog.js';
+import { closestPhoto } from './photos.js';
 import { speak } from '../core/speech.js';
 import { sketchSvg, levelDots, esc, avatar } from './common.js';
 import { IC } from './icons.js';
@@ -46,6 +47,19 @@ export function describe(design, o) {
   return `A fitted bodice with ${list([({ round: 'a round neck', v: 'a V-neck', boat: 'a boat neck' })[o.neck] || 'a round neck', ({ none: 'no sleeves', short: 'short sleeves', elbow: 'elbow sleeves' })[o.sleeve] || ''])}, joined to a ${o.skirt === 'aline' ? 'flared' : 'gathered'} ${({ knee: 'knee-length', midi: 'midi', maxi: 'maxi' })[o.length] || ''} skirt, closed with a back zip.`.replace(/\s+/g, ' ');
 }
 
+/**
+ * The big picture in the customiser: the photo closest to the chosen options. When the photo differs in a visible option,
+ * a note says how, and a small drawing labelled "Yours" shows exactly what will be made.
+ */
+function stageArt(design, g, o) {
+  const ph = closestPhoto(design, o), art = sketchSvg(g.id, o, null, 'hero', design.color);
+  if (!ph) return art;
+  const img = `<img class="dz-photo" src="${ph.src}" alt="${esc(design.name)}${ph.exact ? '' : ', closest photo'}">`;
+  if (ph.exact) return img;
+  return img + `<div class="dz-inset">${art}<span>YOURS</span></div>` +
+    `<figcaption class="dz-note">${ph.diff.map((x) => `<b>${esc(x.group)}:</b> ${esc(x.photo)} in the photo, ${esc(x.yours)} in yours`).join('<br>')}</figcaption>`;
+}
+
 export function renderDesign(el, designId, editProjectId) {
   const design = DESIGNS.find((d) => d.id === designId) || DESIGNS[0];
   const g = GARMENTS[design.garment];
@@ -65,7 +79,7 @@ export function renderDesign(el, designId, editProjectId) {
     el.innerHTML = `<div class="dz">
       <div class="dz-left">
         <a class="back-link" href="#/designs">← ALL DESIGNS</a>
-        <figure class="dz-stage">${sketchSvg(g.id, st.options, null, 'hero', design.color)}${Object.entries(design.options).every(([k, v]) => st.options[k] === v) ? designPhoto(design.id) : ''}</figure>
+        <figure class="dz-stage">${stageArt(design, g, st.options)}</figure>
       </div>
       <aside class="dz-right" aria-label="Options">
         <span class="eyebrow">${esc(TAG(design))}</span>

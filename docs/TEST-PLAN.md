@@ -12,7 +12,7 @@ Each area below lists **what** is checked, **how** (automatic test, visual audit
 | Every design opens in the customiser | No error; preview, title, description, stats, every option group render |
 | Every option of every garment can be picked | Pattern, steps and fabric rebuild without error, no `NaN`/`undefined` anywhere |
 | Description text | Reads as a sentence: no empty phrases, no dangling commas, mentions the chosen collar/neck, sleeve and length |
-| Photo shown only for the design's own options | Changing any option shows the drawing |
+| Closest photo | The customiser shows the photo matching the most visible options; any difference is named in a note, and a drawing of exactly what will be made is shown beside it |
 
 ## 2. Patterns (automatic)
 For every garment × every option combination × sizes S, M, L, XL, a child size and a custom size:
@@ -22,7 +22,6 @@ For every garment × every option combination × sizes S, M, L, XL, a child size
 | Seam allowance and extra cloth | Cut line lies outside the stitching line everywhere; extra cloth only where the design says |
 | Matching seams | Edges sewn together have equal length (± ⅛″), or the difference is eased/gathered by a step (sleeve caps, gathers) |
 | Fit sanity | Finished chest/waist/hip ≥ body + minimum ease; lengths within the option's range |
-| PDF and SVG export | Generated without error; A4 tiles cover every piece; test square is 5 cm |
 
 ## 3. Fabric (automatic)
 | Check | Pass rule |
@@ -69,7 +68,7 @@ Findings are logged in section 11 and fixed before release.
 |---|---|
 | Home | Hero, swatches recolour, notes, features, projects (empty and filled), filters, cards, how it works, footer |
 | Customiser | Every option pill, person pills, add person, extra cloth, Start making creates a project |
-| Project | Pattern tab (pieces, PDF, SVG), Fabric tab (widths, metres, supplies), Make it tab |
+| Project | Pattern tab (pieces), Fabric tab (widths, metres, supplies), Make it tab |
 | Player | Sections, step bar, play/pause, drag, slow motion, back/next, voice, auto-play, deep links `/make/<step>?t=` |
 | People | Add, edit measurements, ready-made sizes, delete, backup and restore |
 | Help | Tools and machine guides play |
@@ -102,3 +101,4 @@ Widths: 390 px (phone), 768 px (tablet), 1440 px (desktop). No horizontal scroll
 | 10 | Steps without named pieces borrowed the wrong pieces ("Trim and clip" showed the sleeves) | Pictures | Fixed: preparation looks ahead, follow-up looks back |
 | 11 | "Turn and topstitch" flipped the pieces to the wrong side | Pictures | Fixed |
 | 12 | Final "Press it" step used the old generic picture | Pictures | Fixed; test now covers steps without sewing detail |
+| 13 | Customiser switched to the drawing as soon as any option changed | Customiser | Fixed: closest photo + note + "Yours" drawing; 272 option-photo prompts in docs/image-prompts-options.md |
