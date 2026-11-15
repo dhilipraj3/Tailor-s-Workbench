@@ -3,8 +3,8 @@
 // hems 1″ (1¼″ when longer than the hip), blouse front edges 1½″, sleeve hems 1″.
 import { sn } from '../core/units.js';
 import { W } from '../chapters/scenes-b.js';
-import { sew as s } from '../engine/sew';
-import type { Options, Step } from '../engine/types';
+import { sew as s, withSize, rectSize, edgeLen } from '../engine/sew';
+import type { Fit, Options, Step } from '../engine/types';
 
 export const TUNIC_SA = { neck: 0.375, seam: 0.5, sleeveHem: 1, front: 1.5 };
 export const tunicHem = (length: string) => (['thigh', 'knee', 'calf'].includes(length) ? 1.25 : 1);
@@ -32,7 +32,60 @@ export function neckFacingSteps(o: Options, ids: { front: string; back: string }
   ];
 }
 
-export function tunicSteps(o: Options): Step[] {
+/** This person's sizes for each step, measured from their pattern pieces. */
+function tunicSizes(o: Options, fit: Fit): Record<string, string> {
+  const get = (id: string) => fit.pieces.find((p) => p.id === id);
+  const front = get('front'), back = get('back'), sleeve = get('sleeve');
+  const out: Record<string, string> = {};
+  const neck = 2 * (edgeLen(front, 'neck') + edgeLen(back, 'neck'));
+  const strip = rectSize(get('neckbind'));
+  if (strip) out['Fold the facing strip'] = `Your strip is ${sn(strip.w)} long and ${sn(strip.h)} wide. Folded, it is ${sn(strip.h / 2)} wide.`;
+  out['Sew the strip on'] = `Your neckline measures ${sn(neck)} all round.`;
+  out['Join the shoulders'] = `Each shoulder seam is ${sn(edgeLen(front, 'shoulder'))} long.`;
+  const pl = rectSize(get('placket'));
+  if (pl) {
+    out['Fold the strips'] = `Before folding, each strip is ${sn(pl.w)} long and ${sn(pl.h)} wide.`;
+    out['Mark the buttonholes'] = `For your kurta: 3 buttonholes, the first ${sn(0.5)} below the neck seam, then one every ${sn(3.75)}.`;
+  }
+  if (sleeve) {
+    const cap = edgeLen(sleeve, 'cap'), arm = edgeLen(front, 'armhole') + edgeLen(back, 'armhole'), ease = cap - arm;
+    const msg = `Each sleeve top is ${sn(cap)} and each armhole is ${sn(arm)}${ease > 0.06 ? `, so ease in ${sn(ease)} spread over the top of the sleeve` : ''}.`;
+    out['Pin in the sleeve'] = msg; out['Sew in the sleeves'] = msg;
+    out['Gather the sleeve top'] = `Gather the sleeve top, ${sn(cap)}, down to fit the ${sn(arm)} armhole.`;
+    const hem = edgeLen(sleeve, 'hem');
+    out['Hem the sleeves'] = `Each sleeve end measures ${sn(hem)} round.`;
+    out['Hem the bell sleeves'] = `Each sleeve end measures ${sn(hem)} round.`;
+    const sb = rectSize(get('sband'));
+    if (sb) {
+      const what = o.sleeve === 'puff' ? 'band' : 'cuff';
+      out[`Join the ${what} ends`] = `Each ${what} is ${sn(sb.w)} long and ${sn(sb.h)} wide.`;
+      out['Gather the sleeve ends'] = `Gather each sleeve end, ${sn(hem)}, down to the ${sn(sb.w - 0.75)} ${what}.`;
+    }
+  }
+  const slitIdx = front?.marks.findIndex((mk) => mk.k === 'text' && mk.t === 'slit') ?? -1, slit = slitIdx > 0 ? front!.marks[slitIdx - 1] : null;
+  if (slit && slit.k === 'line') {
+    const L = Math.hypot(slit.b[0] - slit.a[0], slit.b[1] - slit.a[1]);
+    out['Sides down to slits'] = `Each slit is ${sn(L)} long, measured up from the hem.`;
+    out['Fold the slit edges'] = `The slit is ${sn(L)} long.`;
+  }
+  out['Hem the bottom'] = `Your hem measures ${sn(2 * (edgeLen(front, 'hem') + edgeLen(back, 'hem')))} all round.`;
+  const band = get('band');
+  if (band) { const w = 2 * Math.max(...band.outline.points().map((q) => q[0])); out['Sew the band pieces'] = `The finished band is ${sn(w)} long, to fit your ${sn(neck)} neckline.`; }
+  const opening = edgeLen(front, 'front opening');
+  if (opening) out['Sew on the hooks'] = `Your opening is ${sn(opening)} long: ${Math.max(3, Math.round(opening))} hooks, about an inch apart.`;
+  const pf = rectSize(get('pepF')), pb = rectSize(get('pepB'));
+  if (pf && pb) out['Gather the peplum'] = `The peplum is ${sn(pf.h)} deep. Gather it down to fit the ${sn(2 * (edgeLen(front, 'hem') + edgeLen(back, 'hem')))} waist of the top.`;
+  if (get('keyface')) out['Sew the keyhole facing'] = `The keyhole is ${sn(4)} deep. The facing is ${sn(3)} wide and ${sn(6)} long.`;
+  const tie = rectSize(get('dori'));
+  if (tie) out['Make the tie strings'] = `Each strip is ${sn(tie.h)} long and ${sn(tie.w)} wide; it finishes ${sn(tie.w / 4)} wide.`;
+  const ab = rectSize(get('armbind'));
+  if (ab) out['Fold the binding'] = `Each strip is ${sn(ab.w)} long and ${sn(ab.h)} wide. Folded, it is ${sn(ab.h / 2)} wide.`;
+  return out;
+}
+
+export function tunicSteps(o: Options, fit?: Fit): Step[] {
+  // side slits exist only on longer kurtas (the pattern draws them below the hip), never on a peplum
+  const slits = o.slits === 'yes' && ['thigh', 'knee', 'calf'].includes(o.length) && o.fit !== 'peplum';
   const SA = TUNIC_SA.seam, hemSA = tunicHem(o.length), sleeves = o.sleeve !== 'none', gathered = o.sleeve === 'puff' || o.sleeve === 'balloon';
   const blouse = o.opening === 'fronthooks', placket = o.opening === 'halfplacket', band = o.neck === 'band';
   const out: Step[] = [];
@@ -134,8 +187,8 @@ export function tunicSteps(o: Options): Step[] {
     );
   }
 
-  out.push(s(o.slits === 'yes' ? W.sidesSlit : W.sides, o.slits === 'yes' ? 'Sides down to slits' : 'Sew the sides',
-    `${sleeves ? 'Fold the garment good sides together. Starting at the sleeve end, sew along the sleeve, through the underarm, and down the side' : 'Fold the garment good sides together and sew down each side from the armhole'} ${o.slits === 'yes' ? 'until the slit mark. Stop there and lock the stitches.' : 'to the hem.'}`,
+  out.push(s(slits ? W.sidesSlit : W.sides, slits ? 'Sides down to slits' : 'Sew the sides',
+    `${sleeves ? 'Fold the garment good sides together. Starting at the sleeve end, sew along the sleeve, through the underarm, and down the side' : 'Fold the garment good sides together and sew down each side from the armhole'} ${slits ? 'until the slit mark. Stop there and lock the stitches.' : 'to the hem.'}`,
     { edges: ['front:side', 'back:side', ...(sleeves ? ['sleeve:underarm'] : [])], join: 'Good sides together', stitch: 'straight', sa: SA, lock: true, press: 'Press the seams open',
       check: sleeves ? 'The armhole seams meet exactly at the underarm' : 'Both sides are the same length' }));
 
@@ -159,7 +212,7 @@ export function tunicSteps(o: Options): Step[] {
     : s(W.sleeveHem, 'Hem the sleeves', `Fold the end of each sleeve ${sn(0.25)} to the inside and press, then fold again ${sn(TUNIC_SA.sleeveHem - 0.25)} and press. Sew close to the inner fold.`,
       { edges: ['sleeve:hem'], stitch: 'edge', sa: 0.125, lock: true, check: 'The underarm seam lines up inside the hem' }));
 
-  if (o.slits === 'yes') out.push(
+  if (slits) out.push(
     s(W.slitFinish, 'Fold the slit edges', `Below the slit mark, fold each raw edge ${sn(0.25)} under, then fold again so the fold meets the seam line. Press.`,
       { stitch: 'none', press: 'Press both folds' }),
     s(W.slitFinish, 'Stitch around the slit', 'From the inside, sew down one side of the slit close to the fold, across the top just below the seam end, and up the other side, in one U-shaped line.',
@@ -201,5 +254,5 @@ export function tunicSteps(o: Options): Step[] {
   );
 
   out.push(W.press, W.doneTunic(o.length));
-  return out;
+  return fit ? out.map((st) => withSize(st, tunicSizes(o, fit)[st.cap])) : out;
 }

@@ -1,6 +1,6 @@
 // Tunic family: men's kurta, women's kurti, saree blouse, kids' kurta, and the bodice of dresses.
 import { Outline, type Allow, type Pt } from '../engine/geometry';
-import type { Garment, Measurements, Options, Piece, Step } from '../engine/types';
+import type { Fit, Garment, Measurements, Options, Piece, Step } from '../engine/types';
 import { rectPiece, edgeLength, capHeightFor } from './common';
 import { tunicSteps } from './sew-tunic';
 
@@ -109,7 +109,8 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
     const band = new Outline([0, 0]).line([N / 4, 0], P, 'band edge').quad([hs - 0.3, 0.05], [hs, 0.6], P, 'band edge').quad([hs + 0.05, h], [hs - 0.6, h], P, 'band edge').line([0, h], P, 'neck').close(fold);
     pieces.push({ id: 'band', name: 'Band collar', n: 2, fold: true, fabric: 'main', interfacing: true, outline: band, marks: [] });
   } else {
-    const around = 2 * (nw * 1.6 + fd * 0.9 + bd * 0.6) + 2;
+    // the real neckline (front and back, both halves) plus 2 inches for joining the ends or turning them in
+    const around = 2 * (edgeLength(pieces.find((p) => p.id === 'front'), 'neck') + edgeLength(pieces.find((p) => p.id === 'back'), 'neck')) + 2;
     pieces.push(rectPiece('neckbind', 'Neck facing strip', r4(around), 1.5, 1));
   }
   if (o.opening === 'halfplacket') pieces.push(rectPiece('placket', 'Front placket', 10.5, 3, 2));
@@ -129,7 +130,7 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
 
 const tunicDraft = (m: Measurements, o: Options) => draftTunic(m, o as unknown as BodiceOpts, o.darts === 'yes' ? 1.5 : 1);
 
-const steps = (o: Options): Step[] => tunicSteps(o);
+const steps = (o: Options, fit?: Fit): Step[] => tunicSteps(o, fit);
 
 function supplies(m: Measurements, o: Options) {
   const list = [{ icon: 'thread', qty: '1', say: 'One spool of matching thread' }];

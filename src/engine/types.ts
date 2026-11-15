@@ -50,7 +50,8 @@ export interface Garment {
   measureKeys: string[];
   options: OptionGroup[];
   draft(m: Measurements, o: Options): Piece[];
-  steps(o: Options): Step[];
+  /** sewing steps; with the person's measurements and pattern pieces the words include their real sizes */
+  steps(o: Options, fit?: Fit): Step[];
   supplies(m: Measurements, o: Options): Supply[];
   /** flat technical sketch; returns inner SVG for viewBox VIEWBOX */
   sketch(o: Options): string;
@@ -71,3 +72,6 @@ export interface Design {
   /** fabric colour for the sketch */
   color?: string;
 }
+
+/** what the step builders need to put real sizes into the words */
+export interface Fit { m: Measurements; pieces: Piece[] }

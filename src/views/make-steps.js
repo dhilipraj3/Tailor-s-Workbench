@@ -90,7 +90,7 @@ export function makeSteps(ctx, widthIn = 58) {
     { ...old[8], sec: 'Mark & cut' },
   ];
   // continuous assembly from the real pieces where available, otherwise the picture steps
-  const sew = (ASSEMBLY[ctx.garment.id]?.(ctx)) || ctx.garment.steps(ctx.options);
+  const sew = (ASSEMBLY[ctx.garment.id]?.(ctx)) || ctx.garment.steps(ctx.options, { m: ctx.m, pieces: ctx.pieces.map((g) => g.piece) });
   // the last step shows the finished garment itself: this design, these options, this colour
   // A picture used by an earlier step is replaced by a close-up of this step's own action,
   // so no two sewing steps show the same animation.
@@ -117,7 +117,7 @@ export function makeSteps(ctx, widthIn = 58) {
     return { show: `Each dart is ${fmt(L(a, b))} wide at the side seam and ${fmt(L(m, tip))} long, starting ${fmt(L(sideStart, a))} below the armhole.`,
       say: `Each dart is ${sn(L(a, b))} wide at the side seam and ${sn(L(m, tip))} long, starting ${sn(L(sideStart, a))} below the armhole.` };
   })() : null;
-  const withDart = (st) => (dartWords && /dart/i.test(st.cap) ? {
+  const withDart = (st) => (dartWords && /^(fold|sew) the darts$/i.test(st.cap) ? {
     ...st,
     text: () => `${typeof (st.text ?? st.say) === 'function' ? (st.text ?? st.say)() : (st.text ?? st.say)} ${dartWords.show}`,
     say: () => `${typeof st.say === 'function' ? st.say() : st.say} ${dartWords.say}`,

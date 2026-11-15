@@ -44,7 +44,7 @@ describe('every stitch is covered', () => {
     it(`${gid}: every edge of every piece, in every option combination`, () => {
       S.unit = 'in';
       const bad = new Map<string, string>();
-      for (const o of combos(gid)) for (const p of problems(GARMENTS[gid].draft(M, o), GARMENTS[gid].steps(o))) if (!bad.has(p)) bad.set(p, JSON.stringify(o));
+      for (const o of combos(gid)) for (const p of problems(GARMENTS[gid].draft(M, o), GARMENTS[gid].steps(o, { m: M, pieces: GARMENTS[gid].draft(M, o) }))) if (!bad.has(p)) bad.set(p, JSON.stringify(o));
       expect([...bad].map(([p, o]) => `${p}  (${o})`)).toEqual([]);
     }, 120_000); // tens of thousands of option combinations
   }

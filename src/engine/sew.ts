@@ -125,3 +125,24 @@ export function uncovered(keys: Set<string>, steps: { d?: SewDetail }[]) {
     return !edges.has(k) && !edges.has(`${pid}:*`);
   });
 }
+
+/** Add a sentence with this person's sizes to a step: shown in the words and spoken before the sewing detail. */
+export function withSize(st: Step, extra: string | undefined): Step {
+  if (!extra) return st;
+  const base = st.text ?? st.say;
+  const text = () => `${typeof base === 'function' ? base() : base} ${extra}`;
+  return { ...st, text, say: () => [text(), detailSay(st.d)].filter(Boolean).join(' ') };
+}
+
+/** width and height of a plain rectangle piece (its size already includes the sewing space) */
+export function rectSize(p: { outline: { points(): [number, number][] } } | undefined) {
+  if (!p) return null;
+  const pts = p.outline.points(), xs = pts.map((q) => q[0]), ys = pts.map((q) => q[1]);
+  return { w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) };
+}
+
+/** total length of the named edges of a piece */
+export function edgeLen(p: { outline: { edges: { name: string; pts: [number, number][] }[] } } | undefined, name: string) {
+  if (!p) return 0;
+  return p.outline.edges.filter((e) => e.name === name).reduce((s, e) => s + e.pts.slice(1).reduce((t, q, i) => t + Math.hypot(q[0] - e.pts[i][0], q[1] - e.pts[i][1]), 0), 0);
+}

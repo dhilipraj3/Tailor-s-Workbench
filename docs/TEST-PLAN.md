@@ -104,3 +104,7 @@ Widths: 390 px (phone), 768 px (tablet), 1440 px (desktop). No horizontal scroll
 | 13 | Customiser switched to the drawing as soon as any option changed | Customiser | Fixed: closest photo + note + "Yours" drawing; 272 option-photo prompts in docs/image-prompts-options.md |
 | 14 | Hero colour swatches switched to a flat drawing; marker 3 floated off the garment | Home | Fixed: every swatch dyes the real photo |
 | 15 | Many sewing pictures did not explain the technique (e.g. Sew the darts showed only two glowing lines) | Pictures | Fixed: three-picture How strip beside the real piece for darts, seams, hems, casings, bands, understitching, felled seams, gathering, easing, set-in sleeves, stay-stitching, clipping, edgestitching, zigzag, buttonholes, buttons, bartacks and interfacing |
+| 16 | Steps did not give this person's sizes (strip lengths, slit length, button spacing, pocket position, sleeve ease, cuff and collar size…) | Instructions | Fixed for kurta/kurti/blouse and shirt; test fails if a sizing step has no measurement |
+| 17 | Slit steps on kurtas too short to have slits | Instructions | Fixed: slits only on thigh, knee and calf lengths |
+| 18 | Blouse neck facing strip 3″ shorter than its neckline | Pattern | Fixed: strip drafted from the real neckline + 2″ |
+| 19 | Waist darts showed the bust dart size | Instructions | Fixed |

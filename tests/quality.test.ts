@@ -97,3 +97,16 @@ group('the customiser picks the closest photo', () => {
     expect(closestPhoto(k, { ...k.options, back: 'keyhole', darts: 'no' })!.exact).toBe(true);
   });
 });
+
+group('steps that place, size or space something say how much, in this person\'s sizes', () => {
+  const NEED = /^(Fold the facing strip|Sew the strip on|Join the shoulders|Roll and sew shoulders|Fold the strips|Mark the buttonholes|Pin in the sleeve|Sew in the sleeves|Sew on the sleeves|Gather the sleeve top|Hem the sleeves|Hem the bell sleeves|Hem the short sleeves|Sides down to slits|Hem the bottom|Sew the band pieces|Sew on the hooks|Gather the peplum|Sew the keyhole facing|Make the tie strings|Fold the binding|Sew on the pocket|Sew on both pockets|Stand on the neckline|Band on the neckline|Sew the collar|Cut the sleeve slit|Sew the cuff pairs|Fold the big placket|Bind the back edge|Fold the back pleat|Fold the darts|Sew the darts)$/;
+  const SIZE = /inch|inches|centimetre|″|[0-9] cm/;
+  for (const d of DESIGNS.filter((x) => ['tunic', 'shirt'].includes(x.garment))) it(d.name, () => {
+    S.unit = 'in';
+    for (const o of variants(d)) {
+      const sew: Step[] = makeSteps(buildCtx(d.id, o, M, 'standard', 'T')).filter((s: Step) => s.sec === 'Sew');
+      const missing = sew.filter((s) => NEED.test(s.cap) && !SIZE.test(say(s))).map((s) => s.cap);
+      expect(missing, JSON.stringify(o)).toEqual([]);
+    }
+  });
+});

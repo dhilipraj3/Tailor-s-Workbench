@@ -1,5 +1,5 @@
 import { Outline, type Allow, type Pt } from '../engine/geometry';
-import type { Garment, Measurements, Options, Piece, Step } from '../engine/types';
+import type { Fit, Garment, Measurements, Options, Piece, Step } from '../engine/types';
 import { shirtSteps } from './sew-shirt';
 import { rectPiece, edgeLength, capHeightFor } from './common';
 
@@ -111,7 +111,7 @@ function draft(m: Measurements, o: Options): Piece[] {
   return pieces;
 }
 
-const steps = (o: Options): Step[] => shirtSteps(o);
+const steps = (o: Options, fit?: Fit): Step[] => shirtSteps(o, fit);
 
 function supplies(m: Measurements, o: Options) {
   const half = o.sleeve === 'half', fnd = m.neck / 6 + 0.75, hemY = (o.hem === 'straight' ? m.shirtLength - 1.5 : m.shirtLength) + 0.75;

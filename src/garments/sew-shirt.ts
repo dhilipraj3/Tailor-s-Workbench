@@ -3,12 +3,62 @@
 import { sn } from '../core/units.js';
 import { SEW_SHIRT } from '../chapters/sew.js';
 import { V } from '../chapters/variants.js';
-import { sew as s } from '../engine/sew';
-import type { Options, Step } from '../engine/types';
+import { sew as s, withSize, rectSize, edgeLen } from '../engine/sew';
+import type { Fit, Options, Step } from '../engine/types';
 
 const SA = 0.375;
 
-export function shirtSteps(o: Options): Step[] {
+/** This person's sizes for each shirt step, measured from their pattern pieces. */
+function shirtSizes(o: Options, fit: Fit): Record<string, string> {
+  const get = (id: string) => fit.pieces.find((p) => p.id === id);
+  const front = get('front'), back = get('back'), yoke = get('yoke'), sleeve = get('sleeve');
+  const out: Record<string, string> = {};
+  const neck = 2 * (edgeLen(front, 'neck') + edgeLen(yoke, 'neck'));
+  // buttons and buttonholes, from the marks on the front
+  const btn = (front?.marks || []).filter((mk) => mk.k === 'btn').map((mk) => (mk as { p: [number, number] }).p[1]).sort((a, b) => a - b);
+  if (btn.length > 1) {
+    out['Mark the buttonholes'] = `For your shirt: ${btn.length} buttonholes down the front, the first ${sn(btn[0] - (front?.outline.start[1] ?? 0))} below the neck seam at the centre front, then one every ${sn(btn[1] - btn[0])}.`;
+    out['Sew on the buttons'] = `You need ${btn.length} buttons down the front${o.sleeve === 'half' ? '' : ', 2 for the cuffs'}${o.collar === 'buttondown' ? ', 2 small ones for the collar points' : ''} and 1 on the collar ${o.collar === 'mandarin' ? 'band' : 'stand'}.`;
+  }
+  // pocket position, from the pocket mark
+  const pm = (front?.marks || []).find((mk) => mk.k === 'path' && mk.style === 'mark');
+  const pk = get('pocket');
+  if (pm && pk && pm.k === 'path') {
+    const nums = pm.d.match(/-?\d+(\.\d+)?/g)!.map(Number), x0 = nums[0], y0 = nums[1];
+    const msg = `Place the top of the pocket ${sn(y0)} below the shoulder at the neck and ${sn(x0)} from the centre front line. The finished pocket is ${sn(5)} wide.`;
+    out['Sew on the pocket'] = msg; out['Sew on both pockets'] = msg;
+  }
+  out['Roll and sew shoulders'] = `Each shoulder seam is ${sn(edgeLen(front, 'shoulder'))} long.`;
+  const stand = get('stand') || get('band');
+  if (stand) {
+    const w = 2 * Math.max(...stand.outline.points().map((q) => q[0]));
+    out[stand.id === 'band' ? 'Band on the neckline' : 'Stand on the neckline'] = `Your neckline is ${sn(neck)} all round; the finished ${stand.id === 'band' ? 'band' : 'stand'} is ${sn(w)} from end to end.`;
+  }
+  const leaf = get('leaf');
+  if (leaf) out['Sew the collar'] = `The finished collar is ${sn(2 * Math.max(...leaf.outline.points().map((q) => q[0])))} long across the back.`;
+  if (sleeve) {
+    const cap = edgeLen(sleeve, 'cap'), arm = edgeLen(front, 'armhole') + edgeLen(back, 'armhole') + edgeLen(yoke, 'armhole');
+    out['Sew on the sleeves'] = `Each sleeve top is ${sn(cap)} and each armhole is ${sn(arm)}${cap - arm > 0.06 ? `, so ease in ${sn(cap - arm)} over the top of the sleeve` : ''}.`;
+    const slit = sleeve.marks.find((mk) => mk.k === 'line' && mk.style === 'mark');
+    if (slit && slit.k === 'line') out['Cut the sleeve slit'] = `The slit is ${sn(Math.abs(slit.b[1] - slit.a[1]))} long, a quarter of the way across the sleeve end from the back.`;
+    out['Hem the short sleeves'] = `Each sleeve end measures ${sn(edgeLen(sleeve, 'hem'))} round.`;
+  }
+  const cuff = get('cuff');
+  if (cuff) {
+    const pts = cuff.outline.points(), w = Math.max(...pts.map((q) => q[0])) - Math.min(...pts.map((q) => q[0])), h = Math.max(...pts.map((q) => q[1])) - Math.min(...pts.map((q) => q[1]));
+    out['Sew the cuff pairs'] = `Each finished cuff is ${sn(w)} long and ${sn(h)} deep.`;
+    out['Tack the sleeve pleats'] = `Fold the two pleats so the sleeve end shrinks to ${sn(w - 1)}, leaving the overlap free.`;
+  }
+  const bp = rectSize(get('placketL')), sp = rectSize(get('placketS'));
+  if (bp) out['Fold the big placket'] = `The big placket strip is ${sn(bp.w)} long and ${sn(bp.h)} wide; it finishes ${sn((bp.h - 0.5) / 2)} wide.`;
+  if (sp) out['Bind the back edge'] = `The small strip is ${sn(sp.w)} long and ${sn(sp.h)} wide; it finishes ${sn((sp.h - 0.5) / 2)} wide.`;
+  if (o.backPleat === 'box') out['Fold the back pleat'] = `Each fold of the pleat takes in ${sn(0.75)}, centred on the centre back mark.`;
+  out['Hem the bottom'] = `Your hem measures ${sn(2 * (edgeLen(front, 'hem') + edgeLen(back, 'hem')))} all round.`;
+  if (pk) out['Hem the pocket top'] = `The pocket top folds down ${sn(1.25)} in all.`;
+  return out;
+}
+
+export function shirtSteps(o: Options, fit?: Fit): Step[] {
   const P = SEW_SHIRT, half = o.sleeve === 'half', pk = +o.pockets, mandarin = o.collar === 'mandarin';
   const hemSA = o.hem === 'straight' ? 1 : 0.5;
   const out: Step[] = [];
@@ -125,5 +175,5 @@ export function shirtSteps(o: Options): Step[] {
   out.push(s(P[14], 'Sew on the buttons', 'Close the front, mark through each buttonhole onto the left band, and sew each button on with a doubled thread and a short thread stem.',
     { stitch: 'button', check: 'The fronts line up at the neck and the hem' }));
   out.push(P[15], P[16]);
-  return out;
+  return fit ? out.map((st) => withSize(st, shirtSizes(o, fit)[st.cap])) : out;
 }
