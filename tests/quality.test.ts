@@ -129,6 +129,9 @@ group('a finished top can be put on, and its front and back match', () => {
         const hipWidth = (p: typeof f) => Math.max(...p.outline.points().filter((q) => q[1] > (p.outline.points().reduce((a, c) => Math.max(a, c[1]), 0)) - 1).map((q) => Math.abs(q[0])));
         // a cropped blouse ends at the bust, where the front is meant to be wider; every longer top must match at the hem
         if (o.length !== 'crop') expect(Math.abs(hipWidth(f) - hipWidth(b)), `front and back hem width ${where}`).toBeLessThanOrEqual(0.13);
+        // and at the underarm: the widest point of each side seam's top
+        const underarm = (p: typeof f) => Math.max(...p.outline.edges.filter((e) => e.name === 'armhole').flatMap((e) => e.pts.map((q) => q[0])));
+        expect(Math.abs(underarm(f) - underarm(b)), `front and back underarm width ${where}`).toBeLessThanOrEqual(0.01);
       }
     }
   });

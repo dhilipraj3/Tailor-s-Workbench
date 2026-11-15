@@ -37,9 +37,8 @@ export function draftTunic(m: Measurements, o0: BodiceOpts, sideExtra = 1, grow 
   const bd = o.back === 'deepu' ? Math.max(6, armY - 1.5) : Math.max(o.neck === 'deep' ? 2.5 : o.neck === 'boat' ? 1 : 0.75, pullOn ? 2 + grow * 0.5 : 0);
   const di = o.darts === 'yes' ? Math.max(0.5, (C - Wst) / 8) : 0; // bust dart intake, front gets longer by this much
   const halfW = (x: number) => x / 4;
-  // Front and back are the same width at the waist, hip and hem, so the side seams meet. Where there are bust darts
-  // the front gets ¼″ more per quarter at the bust (the dart takes it in again below); without darts both are equal.
-  const bust = o.darts === 'yes' ? 0.25 : 0;
+  // Front and back are the same width at every level (under the arm, bust, waist, hip, hem), so the side seams meet.
+  const bust = 0; // front and back are cut the same width everywhere; the bust darts give the shaping
   const chestF = halfW(G) + bust, chestB = halfW(G) - bust;
   const waistF = fitted ? halfW(Wst + E) : halfW(G) - 0.25, waistB = waistF;
   const hipF = Math.max(halfW(H + E), waistF), hipB = hipF;
