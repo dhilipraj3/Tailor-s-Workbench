@@ -11,18 +11,32 @@ function draft(m: Measurements, o: Options): Piece[] {
   const style = o.style, casing = o.waist === 'drawstring' ? 2 : 1.5;
   const L = style === 'shorts' ? R + (child ? 6 : 9) : style === 'churidar' ? m.outseam + 7 : m.outseam;
   const ease = style === 'churidar' ? 1 : style === 'palazzo' || style === 'salwar' ? 3 : 2;
-  const legBottom = ({ pyjama: H * 0.42, shorts: H * 0.6, palazzo: H * 0.95, churidar: Math.max(8, H * 0.24), salwar: Math.max(12, H * 0.34) } as Record<string, number>)[style] ?? H * 0.42;
+  const legBottom = ({ pyjama: H * 0.42, shorts: H * 0.6, palazzo: H * 0.95, churidar: Math.max((m.height || 66) < 56 ? 9.5 : 12.5, H * 0.24), salwar: Math.max(12, H * 0.34) } as Record<string, number>)[style] ?? H * 0.42;
   const extraTop = style === 'salwar' ? 3 : style === 'palazzo' ? 1.5 : 0;
   const kneeY = R + (L - R) * 0.45;
   const SA = 0.625, side: Allow = { sa: SA, extra: 0.75 }, ins: Allow = { sa: SA, extra: 0.5 }, plain: Allow = { sa: SA };
   const waistA: Allow = { sa: casing + 0.375 }, hem: Allow = { sa: style === 'churidar' ? 0.75 : 1.25, extra: child ? 1 : 0 };
+  const D2 = (a: Pt, b: Pt) => Math.hypot(b[0] - a[0], b[1] - a[1]);
+  // the front leg's side and inside-leg lengths, so the back can be made to match exactly
+  let target: { side: number; ins: number } | null = null;
   const make = (front: boolean): Piece => {
     const half = H / 4 + ease / 2 + (front ? 0 : 1) + extraTop, ext = front ? H / 16 + 0.5 : H / 10 + 0.5;
-    const cr = (half + ext) / 2, hb = legBottom / 4 + (front ? -0.25 : 0.25);
+    const cr = (half + ext) / 2, hb = legBottom / 4;   // leg ends the same width front and back
     const kneeHalf = style === 'palazzo' ? hb : Math.max(hb, (front ? H * 0.12 : H * 0.135));
     const top = front ? 0 : -0.75;
-    const pts = { A: [0, top] as Pt, CF: [half, top] as Pt, F: [half, R * 0.66] as Pt, G: [half + ext, R + (front ? 0 : 0.375)] as Pt,
+    // the back is raised at the centre back for room over the seat; at the side seam it stays level with the front
+    const pts = { A: [0, 0] as Pt, CF: [half, top] as Pt, F: [half, R * 0.66] as Pt, G: [half + ext, R] as Pt,   // front and back crotch points level, so the inside legs are the same length
       K: [cr + kneeHalf, kneeY] as Pt, M: [cr + hb, L] as Pt, N: [cr - hb, L] as Pt, Kl: [cr - kneeHalf, kneeY] as Pt };
+    const straight = style === 'palazzo', sideTop: Pt = [0, R];
+    const sideLen = () => (straight ? D2(sideTop, pts.N) : D2(sideTop, pts.Kl) + D2(pts.Kl, pts.N));
+    const insLen = () => (straight ? D2(pts.G, pts.M) : D2(pts.G, pts.K) + D2(pts.K, pts.M));
+    if (front) target = { side: sideLen(), ins: insLen() };
+    else if (target) {
+      // set the back hem corners so its side seam and inside leg are exactly as long as the front's (the back is wider at the seat)
+      const from = (p: Pt, x: number, len: number) => p[1] + Math.sqrt(Math.max(0, len * len - (x - p[0]) ** 2));
+      pts.N = [pts.N[0], straight ? from(sideTop, pts.N[0], target.side) : from(pts.Kl, pts.N[0], target.side - D2(sideTop, pts.Kl))];
+      pts.M = [pts.M[0], straight ? from(pts.G, pts.M[0], target.ins) : from(pts.K, pts.M[0], target.ins - D2(pts.G, pts.K))];
+    }
     const ol = new Outline(pts.A).line(pts.CF, waistA, 'waist casing').line(pts.F, front ? plain : { sa: SA, extra: [1, 0.6] }, 'crotch')
       .cubic([half, R - (front ? 0.9 : 0.4)], [half + 0.6, pts.G[1]], pts.G, front ? plain : { sa: SA, extra: [0.6, 0] }, 'crotch');
     if (style === 'palazzo') ol.line(pts.M, ins, 'inseam'); else ol.line(pts.K, ins, 'inseam').line(pts.M, ins, 'inseam');

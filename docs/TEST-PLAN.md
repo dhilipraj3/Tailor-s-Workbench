@@ -114,3 +114,7 @@ Widths: 390 px (phone), 768 px (tablet), 1440 px (desktop). No horizontal scroll
 | 23 | **Found by sewing a real straight kurti:** pull-on neckline (17½″ in M) too small to go over the head | Pattern | Fixed properly: pull-on necklines are drafted as kurti necklines (wider and deeper, grown until the head fits); no keyhole is added; band collars always get a front placket; test for every top, option and size |
 | 24 | **Found by sewing a real straight kurti:** back ½″ wider than front all the way down, so side seams did not meet | Pattern | Fixed: front and back equal at waist, hip and hem; front ¼″ more per quarter at the bust only with darts; test |
 | 25 | Peplum bodice ended at the bust width instead of the waist width | Pattern | Fixed |
+| 26 | Pyjama family: back side seam ¾–1″ longer than front (back waist raised at the side instead of the centre back) | Pattern | Fixed |
+| 27 | Pyjama family: inside legs ⅜″ apart (back crotch point dropped) | Pattern | Fixed |
+| 28 | Pyjama family: back seat width tilted the back seams | Pattern | Fixed: back hem corners set so side and inside leg match the front exactly |
+| 29 | Churidar ankle 9⅜″ round, too small for the foot | Pattern | Fixed: at least 12½″ (child 9½″) |
