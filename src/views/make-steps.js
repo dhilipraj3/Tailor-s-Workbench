@@ -91,9 +91,13 @@ export function makeSteps(ctx, widthIn = 58) {
   // Steps that name the pieces or edges they sew are drawn on the real pieces in this person's size
   // (the pyjama family already has its own animation built from the real pieces).
   const real = !ASSEMBLY[ctx.garment.id];
-  const out = sew.map((st) => {
+  // A step that names no pieces (fold, pin, turn, press, trim, buttonholes…) works on the same pieces
+  // as the nearest step that does: the next one first (you fold before you sew), else the one before.
+  const refsOf = (st) => (st?.d?.edges?.length || st?.d?.pieces?.length ? st.d : null);
+  const near = (i) => { for (let k = i + 1; k < sew.length; k++) if (refsOf(sew[k])) return refsOf(sew[k]); for (let k = i - 1; k >= 0; k--) if (refsOf(sew[k])) return refsOf(sew[k]); return null; };
+  const out = sew.map((st, i) => {
     const repeat = seen.has(st.svg); seen.add(st.svg);
-    if (real && (st.d?.edges?.length || st.d?.pieces?.length)) return { ...st, sec: 'Sew', svg: () => pieceScene(ctx, st.d, col, st.cap) || techniqueScene(st.d, col, st.cap) };
+    if (real && st.d && i < sew.length - 1) return { ...st, sec: 'Sew', svg: () => pieceScene(ctx, st.d, col, st.cap, near(i)) || techniqueScene(st.d, col, st.cap) };
     return repeat && st.d ? { ...st, sec: 'Sew', svg: () => techniqueScene(st.d, col, st.cap) } : { ...st, sec: 'Sew' };
   });
   const last = out[out.length - 1];

@@ -73,6 +73,19 @@ describe('no sewing step repeats a picture', () => {
   }
 });
 
+describe('every sewing step is drawn on the real pieces', () => {
+  for (const d of DESIGNS.filter((x) => x.garment !== 'pants')) {
+    it(d.name, () => {
+      S.unit = 'in';
+      const ctx = buildCtx(d.id, d.options, M, 'standard', 'T');
+      const sew = makeSteps(ctx).filter((s: Step) => s.sec === 'Sew');
+      // every step except the finished garment shows at least one real piece (fabric drawn with the cloth filter)
+      const generic = sew.slice(0, -1).filter((s: Step) => s.d && !/filter:url\(#cloth\)/.test(s.svg())).map((s: Step) => s.cap);
+      expect(generic).toEqual([]);
+    });
+  }
+});
+
 describe('sewing detail is spoken and shown', () => {
   it('chips and speech read naturally in both units', () => {
     const d = { stitch: 'straight' as const, sa: 0.625, lock: true, press: 'Press the seams open' };
