@@ -19,7 +19,7 @@ a full-size printable pattern, the fabric to buy, and animated step-by-step inst
 - Works offline once loaded and can be installed on a phone. Backup and restore are on the People page.
 
 ## Run it
-You need Node.js 18 or newer.
+You need Node.js 20 (see `.nvmrc`).
 
 ```bash
 npm install
@@ -28,7 +28,28 @@ npm test           # all tests
 npx tsc -p .       # type-check
 npm run build      # production build in dist/
 npm run preview    # try the production build locally
+npm run audit      # every sewing step of every design on one page, for review by eye
+npm run photos     # after adding photos to public/img/designs or public/img/sew
+npm run prompts    # rewrite the image prompts in docs/ after changing designs or steps
 ```
+
+## Deploy (Cloudflare Pages)
+Every push to `main` is built and published by Cloudflare Pages. One-time setup in the Cloudflare dashboard:
+
+1. **Workers & Pages → Create → Pages → Connect to Git**, pick this repository.
+2. Production branch: `main`.
+3. Framework preset: **None** (or Vite). Build command: `npm run build`. Build output directory: `dist`.
+4. Environment variable (optional, `.nvmrc` already sets it): `NODE_VERSION` = `20`.
+5. Save and deploy. Pull requests and other branches get their own preview addresses.
+
+`public/_headers` keeps the page and the service worker fresh, so installed apps update straight away.
+GitHub Actions (`.github/workflows/ci.yml`) runs the type-check, tests and build on every push.
+
+## Photos
+- `public/img/designs/<design>.jpg`: product photo of each design (prompts: `docs/image-prompts.md`).
+- `public/img/designs/<design>--<option>-<value>.jpg`: one visible option changed (`docs/image-prompts-options.md`).
+- `public/img/sew/<garment>--<step>.jpg`: a real photo of each sewing step (`docs/image-prompts-sewing.md`).
+The app picks up whatever exists; missing photos fall back to the drawings.
 
 ## How it's organised
 ```
@@ -51,5 +72,5 @@ docs/chat-session the conversation this app was built in
 4. `npm test` checks every option combination automatically.
 
 ## Status
-v0.6. A professional tailor hasn't reviewed the patterns yet,
+v0.7. A professional tailor hasn't reviewed the patterns yet,
 so make a test version in cheap fabric first.

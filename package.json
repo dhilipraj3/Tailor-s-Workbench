@@ -1,6 +1,6 @@
 {
   "name": "tailors-workbench",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "description": "Pick a design and sew it at home: full-size pattern in your size, fabric to buy, and every stitch in pictures with voice.",
