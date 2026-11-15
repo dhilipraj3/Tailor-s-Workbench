@@ -138,3 +138,9 @@
 .hero-side .hero-notes { max-width: none; flex: none; }
 .hero-make { justify-self: start; min-height: 48px; padding: 0 24px; font-size: .78rem; }
 .stage .tq { stroke: var(--thread, #f7f3ea); stroke-width: 2.6; filter: none; }
+
+/* product photos (public/img/designs/<id>.jpg) cover the drawing when present */
+.dcard .ph, .dz-stage { position: relative; }
+.dphoto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .3s; }
+.has-photo .dphoto { opacity: 1; }
+.has-photo > .sketch { visibility: hidden; }

@@ -4,7 +4,7 @@ import { store, save, uid, project as getProject, personFor, newPerson } from '.
 import { S } from '../core/state.js';
 import { buildCtx, layoutFabric } from '../engine/project';
 import { makeSteps } from './make-steps.js';
-import { TAG } from './catalog.js';
+import { TAG, designPhoto } from './catalog.js';
 import { speak } from '../core/speech.js';
 import { sketchSvg, levelDots, esc, avatar } from './common.js';
 import { IC } from './icons.js';
@@ -51,7 +51,7 @@ export function renderDesign(el, designId, editProjectId) {
     el.innerHTML = `<div class="dz">
       <div class="dz-left">
         <a class="back-link" href="#/designs">← ALL DESIGNS</a>
-        <figure class="dz-stage">${sketchSvg(g.id, st.options, null, 'hero', design.color)}</figure>
+        <figure class="dz-stage">${sketchSvg(g.id, st.options, null, 'hero', design.color)}${Object.entries(design.options).every(([k, v]) => st.options[k] === v) ? designPhoto(design.id) : ''}</figure>
       </div>
       <aside class="dz-right" aria-label="Options">
         <span class="eyebrow">${esc(TAG(design))}</span>

@@ -62,9 +62,12 @@ function hero() {
   <ul class="feats">${FEATS.map(([ic, b, s]) => `<li><svg viewBox="0 0 40 40" aria-hidden="true">${ic}</svg><span><b>${b}</b><span>${s}</span></span></li>`).join('')}</ul>`;
 }
 
+/** A product photo for the design, if one has been added as public/img/designs/<id>.jpg; otherwise the drawing shows. */
+export const designPhoto = (id) => `<img class="dphoto" src="img/designs/${id}.jpg" alt="" loading="lazy" onload="this.parentNode.classList.add('has-photo')" onerror="this.remove()">`;
+
 function card(d) {
     return `<a class="dcard" href="#/design/${d.id}">
-    <div class="ph">${sketchSvg(d.garment, d.options, null, '', d.color)}<span class="tag">${esc(TAG(d))}</span></div>
+    <div class="ph">${sketchSvg(d.garment, d.options, null, '', d.color)}${designPhoto(d.id)}<span class="tag">${esc(TAG(d))}</span></div>
     <div class="body"><span><b>${esc(d.name)}</b><span class="meta">${levelDots(d.level)}<span class="hrs">${d.hours} h</span></span></span><span class="go">MAKE →</span></div>
   </a>`;
 }
