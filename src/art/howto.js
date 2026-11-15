@@ -2,6 +2,7 @@
 // Side views (cross-sections) show how layers fold for hems, casings, bands and felled seams;
 // top views show darts, gathers, buttonholes, clipping and finishing. Picked from the step's caption and stitch.
 import { H, ICON } from './svg.js';
+import { lessonsFor, lessonPanels } from './lessons.js';
 
 const W = 285, FH = 136;   // one picture
 const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
@@ -137,10 +138,13 @@ function pick(st) {
 }
 
 /** the strip for a step, placed in the right part of the 800×500 stage, or '' when the step has none */
-export function howStrip(st, col) {
-  const id = pick(st); if (!id) return '';
+export function howStrip(st, col, garment = '') {
+  // its own technique strip, else three key pictures from the lesson the step needs
+  const id = pick(st), lesson = id ? null : lessonsFor(st, garment)[0];
+  if (!id && !lesson) return '';
+  const panels = id ? T[id] : lessonPanels(lesson);
   const k = kit(col), x0 = 505, y0 = 30;
-  return `<g class="howstrip">` + T[id].map(([label, draw], i) => {
+  return `<g class="howstrip">` + panels.map(([label, draw], i) => {
     const y = y0 + i * (FH + 12);
     return `<g transform="translate(${x0} ${y})"><rect width="${W}" height="${FH}" rx="12" fill="rgba(10,10,10,.55)" stroke="rgba(255,255,255,.12)"/>` +
       `<g transform="translate(0 -6)">${H.fade(draw(k), 0.15 + i * 0.6)}</g>` +

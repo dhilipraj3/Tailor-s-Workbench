@@ -66,7 +66,7 @@ File: `kurta.jpg`
 ## Short kurta
 File: `short-kurta.jpg`
 
-> Men's sage green cotton kurta, Indian ethnic wear, round neckline, full-length sleeves, mid-thigh length, straight cut, side slits at the hem, short front button placket. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Men's sage green cotton kurta, Indian ethnic wear, round neckline, full-length sleeves, knee length, straight cut, side slits at the hem, short front button placket. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Pyjama
 File: `pyjama.jpg`
@@ -81,7 +81,7 @@ File: `men-shorts.jpg`
 ## A-line kurti
 File: `aline-kurti.jpg`
 
-> Women's rose red cotton kurti, Indian ethnic wear, round neckline, three-quarter sleeves, knee length, A-line flared cut. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Women's rose red cotton kurti, Indian ethnic wear, round neckline, three-quarter sleeves, calf length, A-line flared cut, short front button placket. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Straight kurti
 File: `straight-kurti.jpg`
@@ -101,7 +101,7 @@ File: `salwar.jpg`
 ## Churidar
 File: `churidar.jpg`
 
-> Women's lilac cotton churidar pants, slim legs with soft gathered folds at the ankle, drawstring waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Women's lilac cotton churidar pants, slim legs with soft gathered folds at the ankle, elastic waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Palazzo
 File: `palazzo.jpg`
@@ -131,7 +131,7 @@ File: `kids-frock.jpg`
 ## Kids' shorts
 File: `kids-shorts.jpg`
 
-> Children's denim blue cotton pull-on shorts, elastic waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Children's denim blue cotton pull-on shorts, drawstring waist, side pockets. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Kids' pyjama
 File: `kids-pyjama.jpg`

@@ -13,6 +13,7 @@ import { techniqueScene } from '../art/technique.js';
 import { pieceScene, keySvg, fabricColors, runs } from '../assembly/closeup.js';
 import { f as fmt, sn } from '../core/units.js';
 import { howStrip } from '../art/howto.js';
+import { lessonsFor } from '../art/lessons.js';
 import SEW_PHOTOS from '../sew-photos.json';
 
 /** file name of a sewing step's photo: <garment>--<caption in lower case with dashes> */
@@ -128,10 +129,15 @@ export function makeSteps(ctx, widthIn = 58) {
       // A1: steps without sewing detail (the final press) are drawn on the real pieces too
       const d = st.d || { stitch: 'none', press: 'Press with a damp cloth' }, refs = st.d ? near(i) : allMain;
       // the real piece on the left; the three-picture How strip for the technique on the right
-      const how = howStrip({ ...st, d }, col);
+      const how = howStrip({ ...st, d }, col, ctx.garment.id);
       const scene = (key) => pieceScene(ctx, d, col, st.cap, refs, { key }) || techniqueScene(d, col, st.cap);
       // with a How strip the pieces shrink to the left; the key stays full size along the bottom
       return { ...st, sec: 'Sew', svg: () => (how ? `<g transform="translate(4 56) scale(.62)">${scene(false)}</g>` + how + keySvg(fabricColors(col), '#fbf7ee', 16, 476) : scene(true)) };
+    }
+    // the pyjama family keeps its own animation, shrunk to the left beside the How strip
+    if (!real && i < sew.length - 1) {
+      const how = howStrip(st, col, ctx.garment.id), own = st.svg;
+      if (how) return { ...st, sec: 'Sew', svg: () => `<g transform="translate(4 56) scale(.62)">${own()}</g>` + how };
     }
     return repeat && st.d ? { ...st, sec: 'Sew', svg: () => techniqueScene(st.d, col, st.cap) } : { ...st, sec: 'Sew' };
   });
@@ -146,6 +152,8 @@ export function makeSteps(ctx, widthIn = 58) {
       `<svg x="6" y="6" width="236" height="152" viewBox="0 0 800 500">${drawn()}</svg>` +
       `<text x="124" y="176" text-anchor="middle" class="howt">YOUR PIECE</text></g>` };
   }
+  // every step knows which technique lessons it needs ("Learn this first" in the player)
+  for (let i = 0; i < out.length - 1; i++) out[i] = { ...out[i], lessons: lessonsFor(out[i], ctx.garment.id) };
   const last = out[out.length - 1];
   if (last) out[out.length - 1] = { ...last, svg: () => finishedScene(ctx) };
   return [...steps, ...out];

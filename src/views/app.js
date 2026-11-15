@@ -10,6 +10,7 @@ import { renderProject, leaveProject } from './project.js';
 import { renderPeople, renderPerson } from './people.js';
 import { mountPlayer } from './player.js';
 import { IC } from './icons.js';
+import { LESSONS, lessonSteps } from '../art/lessons.js';
 
 let helpCleanup = null;
 const HELP = { tools: ['Tools & fabric', TOOLS], machine: ['Using the machine', MACHINE] };
@@ -43,11 +44,16 @@ export function route() {
   else if (a === 'project') renderProject(el, b, c || 'pattern', d === undefined ? undefined : +d, new URLSearchParams(query || '').get('t'));
   else if (a === 'people' && b) renderPerson(el, b);
   else if (a === 'people') renderPeople(el);
-  else if (a === 'help' && HELP[b]) {
+  else if (a === 'help' && b === 'learn' && LESSONS[c]) {
+    // one technique lesson: why it matters, then the steps, ending with practice on scrap
+    const L = LESSONS[c];
+    el.innerHTML = `<a class="back-link" href="javascript:history.back()">← BACK</a><span class="eyebrow" style="display:block;margin-top:14px">Learn sewing</span><h2 class="h2">${L.title}</h2><p class="hint">${L.why}</p><div id="hp"></div>`;
+    helpCleanup = mountPlayer(el.querySelector('#hp'), { steps: lessonSteps(c), onFinish: () => history.back() });
+  } else if (a === 'help' && HELP[b]) {
     el.innerHTML = `<h2 class="h2">${IC.help} ${HELP[b][0]}</h2><div id="hp"></div>`;
     helpCleanup = mountPlayer(el.querySelector('#hp'), { steps: HELP[b][1], onFinish: () => { location.hash = '#/help'; } });
   } else if (a === 'help') {
-    el.innerHTML = `<section class="sec"><span class="eyebrow">Before you start</span><h2 class="h2">Help</h2><p class="hint">Short guides for the basics. Every design's own steps are in its Make it tab.</p><div class="hcards">${Object.entries(HELP).map(([k, [n, st]]) =>
+    el.innerHTML = `<section class="sec"><span class="eyebrow">Before you start</span><h2 class="h2">Help</h2><p class="hint">Short guides for the basics. Every design's own steps are in its Make it tab.</p><h3 class="og-l" style="margin:22px 0 0">Learn sewing: the hand skills, with practice on scrap</h3><div class="hcards">${Object.entries(LESSONS).map(([k, L]) => `<a class="hcard" href="#/help/learn/${k}"><span class="help-pic">${IC.needle}</span><span class="hc-t"><b>${L.title}</b><span>${L.steps.length} steps</span></span><span class="hc-go" aria-hidden="true">${IC.next}</span></a>`).join('')}</div><h3 class="og-l" style="margin:22px 0 0">Tools and machine</h3><div class="hcards">${Object.entries(HELP).map(([k, [n, st]]) =>
       `<a class="hcard" href="#/help/${k}"><span class="help-pic">${k === 'tools' ? IC.scissors : IC.needle}</span><span class="hc-t"><b>${n}</b><span>${st.length} picture steps with voice</span></span><span class="hc-go" aria-hidden="true">${IC.next}</span></a>`).join('')}</div></section>`;
   } else {
     // home, and the home sections the top menu jumps to

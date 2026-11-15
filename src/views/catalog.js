@@ -29,8 +29,8 @@ const HOW = [
 
 // the hero: your A-line kurti photo (with a short front placket, so the link opens the design with that option)
 const HERO = DESIGNS.find((d) => d.id === 'aline-kurti');
-const HERO_OPTS = { ...HERO.options, opening: 'halfplacket' };
-const HERO_COLORS = [['#b5263f', 'Crimson'], ['#efe8d8', 'Ivory'], ['#3f7f8c', 'Teal'], ['#b8862e', 'Mustard']];
+const HERO_OPTS = { ...HERO.options };
+const HERO_COLORS = [[DESIGNS.find((d) => d.id === 'aline-kurti').color, 'Crimson'], ['#efe8d8', 'Ivory'], ['#3f7f8c', 'Teal'], ['#b8862e', 'Mustard']];
 let heroColor = HERO_COLORS[0][0];
 // the photo shows the shirt in its own colour; any other swatch shows the recoloured drawing
 // every colour is your photo, dyed: the photo turns grey and the colour is multiplied over it, so folds and shading stay real
@@ -62,7 +62,7 @@ function hero() {
         <li><span class="n">2</span><span><b>Three-quarter sleeve</b><span>Eased into the armhole, hem turned twice and stitched.</span></span></li>
         <li><span class="n">3</span><span><b>A-line flare</b><span>Bust darts for shape, flared side seams, curved hem eased flat.</span></span></li>
       </ol>
-      <a class="cta hero-make" href="#/design/aline-kurti?o=opening:halfplacket">MAKE THIS KURTI</a>
+      <a class="cta hero-make" href="#/design/aline-kurti">MAKE THIS KURTI</a>
       </div>
     </div>
   </section>

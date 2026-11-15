@@ -210,3 +210,8 @@
 .mcard .stepper.sm button { flex: none; border: 1px solid #4a4a47; background: transparent; color: #fff; }
 .mcard .stepper.sm output { flex: 1; min-width: 0; background: var(--accent); color: var(--accent-ink); }
 .sizes .sz, .chip.big { min-height: 48px; }
+
+/* Learn this first links in the step player */
+.learn { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: .82rem; color: #b3b3ae; }
+.learn-l { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); font-weight: 700; }
+.learn-l:hover { background: var(--accent); color: var(--accent-ink); }

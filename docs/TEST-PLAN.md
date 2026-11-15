@@ -118,3 +118,6 @@ Widths: 390 px (phone), 768 px (tablet), 1440 px (desktop). No horizontal scroll
 | 27 | Pyjama family: inside legs ⅜″ apart (back crotch point dropped) | Pattern | Fixed |
 | 28 | Pyjama family: back seat width tilted the back seams | Pattern | Fixed: back hem corners set so side and inside leg match the front exactly |
 | 29 | Churidar ankle 9⅜″ round, too small for the foot | Pattern | Fixed: at least 12½″ (child 9½″) |
+| 30 | About 70 sewing steps did not explain their technique; hard skills (curves, corners, clipping, binding a neck, setting sleeves, points, crossing seams, zips…) were not taught | Instructions | Fixed: 18 technique lessons with practice on scrap in Help; Learn this first links on every step; every step has a How strip; test |
+| 31 | Design defaults did not match their photos (A-line kurti placket and length, short kurta length, churidar waist, kids' shorts waist and pockets) | Catalogue | Fixed: every design's options checked against its photo |
+| 32 | Drawings and sewing pieces in invented colours, not the photo's | Pictures | Fixed: each design's colour measured from its photo |

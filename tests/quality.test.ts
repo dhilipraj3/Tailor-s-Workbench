@@ -24,8 +24,9 @@ const len = (pts: number[][]) => pts.slice(1).reduce((s, p, i) => s + Math.hypot
 const edgeLen = (piece: any, name: string) => ((runs(piece) as any)[name] || []).reduce((s: number, r: number[][]) => s + len(r), 0);
 
 group('descriptions read as sentences', () => {
-  for (const d of DESIGNS) it(d.name, () => {
+  for (const d of DESIGNS) it(d.name, async () => {
     for (const o of variants(d)) {
+      await new Promise((r) => setTimeout(r, 0)); // let the test runner report progress
       const t = describeDesign(d, o);
       expect(t, JSON.stringify(o)).toMatch(/^[A-Z].{24,}\.$/);
       expect(t, JSON.stringify(o)).not.toMatch(/ ,|,,|, \.|with \.|with and|  | and \.|undefined|null/);
@@ -45,9 +46,10 @@ group('pictures follow each part of an edge separately', () => {
 });
 
 group('everything a step uses is on the shopping list', () => {
-  for (const d of DESIGNS) it(d.name, () => {
+  for (const d of DESIGNS) it(d.name, async () => {
     S.unit = 'in';
     for (const o of variants(d)) {
+      await new Promise((r) => setTimeout(r, 0)); // let the test runner report progress
       const ctx = buildCtx(d.id, o, M, 'standard', 'T');
       const sup = ctx.garment.supplies(ctx.m, ctx.options), has = (icon: string, word = '') => sup.some((x) => x.icon === icon || (word && x.say.toLowerCase().includes(word)));
       const sew: Step[] = makeSteps(ctx).filter((s: Step) => s.sec === 'Sew');
@@ -63,8 +65,9 @@ group('everything a step uses is on the shopping list', () => {
 });
 
 group('edges sewn together match', () => {
-  for (const d of DESIGNS.filter((x) => ['tunic', 'shirt'].includes(x.garment))) it(d.name, () => {
+  for (const d of DESIGNS.filter((x) => ['tunic', 'shirt'].includes(x.garment))) it(d.name, async () => {
     for (const o of variants(d)) {
+      await new Promise((r) => setTimeout(r, 0)); // let the test runner report progress
       const ps = GARMENTS[d.garment].draft(M, o), get = (id: string) => ps.find((p) => p.id === id);
       const front = get('front'), back = get('back'), sleeve = get('sleeve'), yoke = get('yoke'), where = JSON.stringify(o);
       // shoulders: the back may be up to 3/8 inch longer (eased in), never shorter
@@ -101,9 +104,10 @@ group('the customiser picks the closest photo', () => {
 group('steps that place, size or space something say how much, in this person\'s sizes', () => {
   const NEED = /^(Fold the facing strip|Sew the strip on|Join the shoulders|Roll and sew shoulders|Fold the strips|Mark the buttonholes|Pin in the sleeve|Sew in the sleeves|Sew on the sleeves|Gather the sleeve top|Hem the sleeves|Hem the bell sleeves|Hem the short sleeves|Sides down to slits|Hem the bottom|Sew the band pieces|Sew on the hooks|Gather the peplum|Sew the keyhole facing|Make the tie strings|Fold the binding|Sew on the pocket|Sew on both pockets|Stand on the neckline|Band on the neckline|Sew the collar|Cut the sleeve slit|Sew the cuff pairs|Fold the big placket|Bind the back edge|Fold the back pleat|Fold the darts|Sew the darts)$/;
   const SIZE = /inch|inches|centimetre|″|[0-9] cm/;
-  for (const d of DESIGNS.filter((x) => ['tunic', 'shirt'].includes(x.garment))) it(d.name, () => {
+  for (const d of DESIGNS.filter((x) => ['tunic', 'shirt'].includes(x.garment))) it(d.name, async () => {
     S.unit = 'in';
     for (const o of variants(d)) {
+      await new Promise((r) => setTimeout(r, 0)); // let the test runner report progress
       const sew: Step[] = makeSteps(buildCtx(d.id, o, M, 'standard', 'T')).filter((s: Step) => s.sec === 'Sew');
       const missing = sew.filter((s) => NEED.test(s.cap) && !SIZE.test(say(s))).map((s) => s.cap);
       expect(missing, JSON.stringify(o)).toEqual([]);
@@ -116,6 +120,7 @@ group('a finished top can be put on, and its front and back match', () => {
     const { neckOpening, headOpening } = await import('../src/garments/tunic');
     for (const size of [M, { ...M, chest: 34, neck: 13.5, waist: 28, hip: 37, height: 62 }, { ...M, chest: 26, neck: 11.5, waist: 23, hip: 27, height: 48, shoulder: 11, sleeve: 16 }]) {
       for (const o of variants(d)) {
+      await new Promise((r) => setTimeout(r, 0)); // let the test runner report progress
         const ps = GARMENTS.tunic.draft(size, o), where = JSON.stringify(o);
         const key = ps.find((p) => p.id === 'keyface'), keyDepth = key ? Math.max(...key.outline.points().map((p) => p[1])) - 2 : 0;
         // no keyhole unless chosen; a pull-on neckline must fit the head on its own

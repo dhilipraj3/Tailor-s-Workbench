@@ -26,7 +26,7 @@ File: `tunic--iron-on-interfacing.jpg`
 ### 4. Fold the strips
 File: `tunic--fold-the-strips.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold each strip in half along its length, wrong sides together, and press. Each strip is now one and a half inches wide. (Press a sharp fold). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold each strip in half along its length, wrong sides together, and press. Each strip is now one and a half inches wide. Before folding, each strip is 10 and a half inches long and 3 inches wide. (Press a sharp fold). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 5. Sew strips to front
 File: `tunic--sew-strips-to-front.jpg`
@@ -56,7 +56,7 @@ File: `tunic--box-the-bottom.jpg`
 ### 10. Join the shoulders
 File: `tunic--join-the-shoulders.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Lay the front on the back, good sides together. Match the neck and armhole ends of each shoulder and pin. Sew both shoulders. (½″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Press the seams open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Lay the front on the back, good sides together. Match the neck and armhole ends of each shoulder and pin. Sew both shoulders. Each shoulder seam is 6 and one eighth inches long. (½″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Press the seams open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 11. Interface the band
 File: `tunic--interface-the-band.jpg`
@@ -66,7 +66,7 @@ File: `tunic--interface-the-band.jpg`
 ### 12. Sew the band pieces
 File: `tunic--sew-the-band-pieces.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Press the neck edge of the plain band three eighths of an inch to the wrong side. Lay the two bands good sides together and sew along the top and both rounded ends. Leave the neck edge open. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Trim to ⅛″ and notch the curves). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Press the neck edge of the plain band three eighths of an inch to the wrong side. Lay the two bands good sides together and sew along the top and both rounded ends. Leave the neck edge open. The finished band is 17 and a half inches long, to fit your 16 and one eighth inches neckline. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Trim to ⅛″ and notch the curves). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 13. Turn the band
 File: `tunic--turn-the-band.jpg`
@@ -91,12 +91,12 @@ File: `tunic--ease-the-sleeve-top.jpg`
 ### 17. Pin in the sleeve
 File: `tunic--pin-in-the-sleeve.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Lay the garment open, good side up. Match the top of the sleeve to the shoulder seam, good sides together, and the sleeve ends to the armhole ends. Pull the long stitches gently so the sleeve top fits the armhole, and pin every inch. (Good sides together). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Lay the garment open, good side up. Match the top of the sleeve to the shoulder seam, good sides together, and the sleeve ends to the armhole ends. Pull the long stitches gently so the sleeve top fits the armhole, and pin every inch. Each sleeve top is 22 inches and each armhole is 21 and a quarter inches, so ease in three quarters of an inch spread over the top of the sleeve. (Good sides together). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 18. Sew in the sleeves
 File: `tunic--sew-in-the-sleeves.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Sew the sleeve to the armhole with the sleeve underneath, so the machine eases it in. Go slowly round the curve. (½″ seam, Straight stitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Sew the sleeve to the armhole with the sleeve underneath, so the machine eases it in. Go slowly round the curve. Each sleeve top is 22 inches and each armhole is 21 and a quarter inches, so ease in three quarters of an inch spread over the top of the sleeve. (½″ seam, Straight stitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 19. Finish the armholes
 File: `tunic--finish-the-armholes.jpg`
@@ -106,17 +106,17 @@ File: `tunic--finish-the-armholes.jpg`
 ### 20. Sides down to slits
 File: `tunic--sides-down-to-slits.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the garment good sides together. Starting at the sleeve end, sew along the sleeve, through the underarm, and down the side until the slit mark. Stop there and lock the stitches. (½″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Press the seams open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the garment good sides together. Starting at the sleeve end, sew along the sleeve, through the underarm, and down the side until the slit mark. Stop there and lock the stitches. Each slit is 10 inches long, measured up from the hem. (½″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Press the seams open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 21. Hem the sleeves
 File: `tunic--hem-the-sleeves.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the end of each sleeve a quarter of an inch to the inside and press, then fold again three quarters of an inch and press. Sew close to the inner fold. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the end of each sleeve a quarter of an inch to the inside and press, then fold again three quarters of an inch and press. Sew close to the inner fold. Each sleeve end measures 10 and seven eighths inches round. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 22. Fold the slit edges
 File: `tunic--fold-the-slit-edges.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Below the slit mark, fold each raw edge a quarter of an inch under, then fold again so the fold meets the seam line. Press. (Press both folds). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Below the slit mark, fold each raw edge a quarter of an inch under, then fold again so the fold meets the seam line. Press. The slit is 10 inches long. (Press both folds). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 23. Stitch around the slit
 File: `tunic--stitch-around-the-slit.jpg`
@@ -131,12 +131,12 @@ File: `tunic--bartack-the-slit-top.jpg`
 ### 25. Hem the bottom
 File: `tunic--hem-the-bottom.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the bottom edge a quarter of an inch to the inside and press, then fold again 1 inch and press. Sew close to the inner fold. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the bottom edge a quarter of an inch to the inside and press, then fold again 1 inch and press. Sew close to the inner fold. Your hem measures 46 inches all round. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 26. Mark the buttonholes
 File: `tunic--mark-the-buttonholes.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Mark one buttonhole across the band, half an inch from its end, and up-and-down buttonholes in the middle of the top placket strip: the first half an inch below the neck seam, the last one inch above the box, the rest evenly between.. Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Mark one buttonhole across the band, half an inch from its end, and up-and-down buttonholes in the middle of the top placket strip: the first half an inch below the neck seam, the last one inch above the box, the rest evenly between. For your kurta: 3 buttonholes, the first a half of an inch below the neck seam, then one every 3 and three quarters inches.. Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 27. Sew the buttonholes
 File: `tunic--sew-the-buttonholes.jpg`
@@ -156,12 +156,12 @@ File: `tunic--press-it.jpg`
 ### 30. Fold the facing strip
 File: `tunic--fold-the-facing-strip.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Press the neck strip in half along its length, wrong sides together, so both long raw edges meet. (Press a sharp fold). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Press the neck strip in half along its length, wrong sides together, so both long raw edges meet. Your strip is 18 and a quarter inches long and 1 and a half inches wide. Folded, it is three quarters of an inch wide. (Press a sharp fold). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 31. Sew the strip on
 File: `tunic--sew-the-strip-on.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Let each end of the strip stick out half an inch past the placket edge. Later you fold these ends inside. Lay the strip on the good side of the neckline, raw edges together, and pin every inch. (⅜″ seam, Raw edges together, on the good side, Straight stitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Let each end of the strip stick out half an inch past the placket edge. Later you fold these ends inside. Lay the strip on the good side of the neckline, raw edges together, and pin every inch. Your neckline measures 16 and one eighth inches all round. (⅜″ seam, Raw edges together, on the good side, Straight stitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 32. Trim and clip
 File: `tunic--trim-and-clip.jpg`
@@ -186,7 +186,7 @@ File: `tunic--finish-the-strip-ends.jpg`
 ### 36. Fold the binding
 File: `tunic--fold-the-binding.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Press each armhole binding strip in half along its length, wrong sides together. (Press a sharp fold). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Press each armhole binding strip in half along its length, wrong sides together. Each strip is 28 inches long and 1 and a half inches wide. Folded, it is three quarters of an inch wide. (Press a sharp fold). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 37. Sew on the binding
 File: `tunic--sew-on-the-binding.jpg`
@@ -196,12 +196,12 @@ File: `tunic--sew-on-the-binding.jpg`
 ### 38. Gather the sleeve top
 File: `tunic--gather-the-sleeve-top.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Sew two rows of long stitches across the curved top of each sleeve, a quarter of an inch and three eighths of an inch from the edge, between the gather marks. Leave long thread ends and do not lock them. (¼″ seam, Two rows of long stitches 4.5). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Sew two rows of long stitches across the curved top of each sleeve, a quarter of an inch and three eighths of an inch from the edge, between the gather marks. Leave long thread ends and do not lock them. Gather the sleeve top, 27 and five eighths inches, down to fit the 21 and a quarter inches armhole. (¼″ seam, Two rows of long stitches 4.5). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 39. Join the band ends
 File: `tunic--join-the-band-ends.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold each band good sides together, short ends level, and sew the ends to make a ring. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Press the seam open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold each band good sides together, short ends level, and sew the ends to make a ring. Each band is 14 and three quarters inches long and 2 and a half inches wide. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Press the seam open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 40. Press the bands
 File: `tunic--press-the-bands.jpg`
@@ -211,7 +211,7 @@ File: `tunic--press-the-bands.jpg`
 ### 41. Gather the sleeve ends
 File: `tunic--gather-the-sleeve-ends.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Sew two rows of long stitches round the bottom of each sleeve, a quarter of an inch and three eighths of an inch from the edge, leaving long thread ends. (¼″ seam, Two rows of long stitches 4.5). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Sew two rows of long stitches round the bottom of each sleeve, a quarter of an inch and three eighths of an inch from the edge, leaving long thread ends. Gather each sleeve end, 21 and a half inches, down to the 14 inches band. (¼″ seam, Two rows of long stitches 4.5). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 42. Band on the sleeve
 File: `tunic--band-on-the-sleeve.jpg`
@@ -221,7 +221,7 @@ File: `tunic--band-on-the-sleeve.jpg`
 ### 43. Join the cuff ends
 File: `tunic--join-the-cuff-ends.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold each cuff good sides together, short ends level, and sew the ends to make a ring. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Press the seam open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold each cuff good sides together, short ends level, and sew the ends to make a ring. Each cuff is 9 and a quarter inches long and 3 and a quarter inches wide. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Press the seam open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 44. Press the cuffs
 File: `tunic--press-the-cuffs.jpg`
@@ -241,57 +241,57 @@ File: `tunic--close-the-cuff.jpg`
 ### 47. Hem the bell sleeves
 File: `tunic--hem-the-bell-sleeves.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the flared edge a quarter of an inch to the inside, then a quarter of an inch again, easing it round the curve. Sew close to the inner fold. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the flared edge a quarter of an inch to the inside, then a quarter of an inch again, easing it round the curve. Sew close to the inner fold. Each sleeve end measures 31 and three eighths inches round. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
-### 48. Sew the waist darts
-File: `tunic--sew-the-waist-darts.jpg`
-
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold each waist dart along its middle and sew from one point to the other along the chalk lines, widest at the waist. Tie the threads at both points. (On the chalk lines, Straight stitch 2, Tie the threads, Press towards the centre). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
-
-### 49. Gather the peplum
-File: `tunic--gather-the-peplum.jpg`
-
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Sew two rows of long stitches along the top edge of each peplum piece, three eighths of an inch and five eighths of an inch from the edge. Leave long thread ends. (⅜″ seam, Two rows of long stitches 4.5). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
-
-### 50. Peplum side seams
-File: `tunic--peplum-side-seams.jpg`
-
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Put the peplum front on the back, good sides together, and sew the side seams. (½″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Zigzag the edges, Press the seams open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
-
-### 51. Peplum on the top
-File: `tunic--peplum-on-the-top.jpg`
-
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Pull up the gathers until the peplum fits the bottom of the top. Match the side seams, spread the gathers evenly, pin good sides together and sew with the gathers on top. (½″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Zigzag the edges together, Press the seam up towards the top). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
-
-### 52. Hem the peplum
-File: `tunic--hem-the-peplum.jpg`
-
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the peplum bottom a quarter of an inch under, then three quarters of an inch more. Press and sew close to the inner fold. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
-
-### 53. Sew the sides
+### 48. Sew the sides
 File: `tunic--sew-the-sides.jpg`
 
 > Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the garment good sides together. Starting at the sleeve end, sew along the sleeve, through the underarm, and down the side to the hem. (½″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Press the seams open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
+### 49. Sew the waist darts
+File: `tunic--sew-the-waist-darts.jpg`
+
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold each waist dart along its middle and sew from one point to the other along the chalk lines, widest at the waist. Tie the threads at both points. (On the chalk lines, Straight stitch 2, Tie the threads, Press towards the centre). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+
+### 50. Gather the peplum
+File: `tunic--gather-the-peplum.jpg`
+
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Sew two rows of long stitches along the top edge of each peplum piece, three eighths of an inch and five eighths of an inch from the edge. Leave long thread ends. The peplum is 8 inches deep. Gather it down to fit the 36 and a half inches waist of the top. (⅜″ seam, Two rows of long stitches 4.5). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+
+### 51. Peplum side seams
+File: `tunic--peplum-side-seams.jpg`
+
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Put the peplum front on the back, good sides together, and sew the side seams. (½″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Zigzag the edges, Press the seams open). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+
+### 52. Peplum on the top
+File: `tunic--peplum-on-the-top.jpg`
+
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Pull up the gathers until the peplum fits the bottom of the top. Match the side seams, spread the gathers evenly, pin good sides together and sew with the gathers on top. (½″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Zigzag the edges together, Press the seam up towards the top). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+
+### 53. Hem the peplum
+File: `tunic--hem-the-peplum.jpg`
+
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold the peplum bottom a quarter of an inch under, then three quarters of an inch more. Press and sew close to the inner fold. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+
 ### 54. Fold the darts
 File: `tunic--fold-the-darts.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold each bust dart through its middle, good sides together, so its two chalk lines lie exactly on top of each other. Put a pin across the point.. Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Fold each bust dart through its middle, good sides together, so its two chalk lines lie exactly on top of each other. Put a pin across the point. Each dart is 1″ wide at the side seam and 3″ long, starting 1½″ below the armhole.. Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 55. Sew the darts
 File: `tunic--sew-the-darts.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Sew from the wide end to the point along the chalk line. For the last half inch, sew right next to the fold and run off the edge. Do not backstitch at the point. (On the chalk line, Straight stitch 2, Lock the start, Tie the threads, Press bust darts down). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Sew from the wide end to the point along the chalk line. For the last half inch, sew right next to the fold and run off the edge. Do not backstitch at the point. Each dart is 1″ wide at the side seam and 3″ long, starting 1½″ below the armhole. (On the chalk line, Straight stitch 2, Lock the start, Tie the threads, Press bust darts down). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 56. Make the tie strings
 File: `tunic--make-the-tie-strings.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Press both long edges of each tie strip to the middle, fold it in half again and press. Tuck one end in. Sew along the open edge. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Press both long edges of each tie strip to the middle, fold it in half again and press. Tuck one end in. Sew along the open edge. Each strip is 18 inches long and 1 and a half inches wide; it finishes three eighths of an inch wide. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 57. Sew the keyhole facing
 File: `tunic--sew-the-keyhole-facing.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Lay the keyhole facing on the good side of the back, centred over the keyhole mark, good sides together. Sew a narrow U a quarter inch each side of the mark and across its bottom. (¼″ seam, Good sides together, Straight stitch 1.8, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: Lay the keyhole facing on the good side of the back, centred over the keyhole mark, good sides together. Sew a narrow U a quarter inch each side of the mark and across its bottom. The keyhole is 4 inches deep. The facing is 3 inches wide and 6 inches long. (¼″ seam, Good sides together, Straight stitch 1.8, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 58. Cut and turn keyhole
 File: `tunic--cut-and-turn-keyhole.jpg`
@@ -316,7 +316,7 @@ File: `tunic--fold-the-front-edges.jpg`
 ### 62. Sew on the hooks
 File: `tunic--sew-on-the-hooks.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, sewing by hand with a needle and thread, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: On the inside of the right front, sew a hook an eighth of an inch back from the edge, every inch from the neck to the hem. Sew through the folded edge only, so no stitches show outside. (Hand stitch). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, sewing by hand with a needle and thread, making a kurti (Indian tunic) in plain natural off-white cotton. The step shown: On the inside of the right front, sew a hook an eighth of an inch back from the edge, every inch from the neck to the hem. Sew through the folded edge only, so no stitches show outside. Your opening is 34 and seven eighths inches long: 35 hooks, about an inch apart. (Hand stitch). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 63. Sew on the eyes
 File: `tunic--sew-on-the-eyes.jpg`
@@ -343,7 +343,7 @@ File: `shirt--stitch-the-button-bands.jpg`
 ### 4. Hem the pocket top
 File: `shirt--hem-the-pocket-top.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Fold the top of the pocket a quarter of an inch to the wrong side, then 1 inch more. Press and sew close to the inner fold. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Fold the top of the pocket a quarter of an inch to the wrong side, then 1 inch more. Press and sew close to the inner fold. The pocket top folds down 1 and a quarter inches in all. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 5. Press the pocket edges
 File: `shirt--press-the-pocket-edges.jpg`
@@ -353,7 +353,7 @@ File: `shirt--press-the-pocket-edges.jpg`
 ### 6. Sew on the pocket
 File: `shirt--sew-on-the-pocket.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Pin the pocket on the left front at the chalk marks. Sew down one side, round the point and up the other side, close to the edge. At each top corner sew a small triangle to make it strong. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Pin the pocket on the left front at the chalk marks. Sew down one side, round the point and up the other side, close to the edge. At each top corner sew a small triangle to make it strong. Place the top of the pocket 7 and five eighths inches below the shoulder at the neck and 2 and a quarter inches from the centre front line. The finished pocket is 5 inches wide. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 7. Sandwich back and yoke
 File: `shirt--sandwich-back-and-yoke.jpg`
@@ -368,7 +368,7 @@ File: `shirt--edgestitch-the-yoke.jpg`
 ### 9. Roll and sew shoulders
 File: `shirt--roll-and-sew-shoulders.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Pin the outer yoke shoulders to the front shoulders, good sides together. Roll the fronts and back up tightly. Bring the inner yoke over the roll and pin its shoulders on top, so the fronts are sandwiched. Sew both shoulders, then pull everything out through the neck. (⅜″ seam, Fronts sandwiched between the yokes, Straight stitch 2.5, Lock both ends, Press the yoke flat). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Pin the outer yoke shoulders to the front shoulders, good sides together. Roll the fronts and back up tightly. Bring the inner yoke over the roll and pin its shoulders on top, so the fronts are sandwiched. Sew both shoulders, then pull everything out through the neck. Each shoulder seam is 6 and one eighth inches long. (⅜″ seam, Fronts sandwiched between the yokes, Straight stitch 2.5, Lock both ends, Press the yoke flat). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 10. Tack the yoke edges
 File: `shirt--tack-the-yoke-edges.jpg`
@@ -378,7 +378,7 @@ File: `shirt--tack-the-yoke-edges.jpg`
 ### 11. Sew the collar
 File: `shirt--sew-the-collar.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Lay the two collar pieces good sides together. Sew along both short ends and the long outer edge, leaving the neck edge open. At each point, sew one small stitch across the tip. (⅜″ seam, Good sides together, Straight stitch 2, Lock both ends, Trim to ⅛″ and cut the points across). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Lay the two collar pieces good sides together. Sew along both short ends and the long outer edge, leaving the neck edge open. At each point, sew one small stitch across the tip. The finished collar is 17 and a quarter inches long across the back. (⅜″ seam, Good sides together, Straight stitch 2, Lock both ends, Trim to ⅛″ and cut the points across). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 12. Turn and press
 File: `shirt--turn-and-press.jpg`
@@ -403,7 +403,7 @@ File: `shirt--turn-the-stand.jpg`
 ### 16. Stand on the neckline
 File: `shirt--stand-on-the-neckline.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Pin the open edge of the interfaced stand to the neckline, good sides together, centre to centre back and each end level with the front edge. Sew it on and clip the curve. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Clip the neck curve). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Pin the open edge of the interfaced stand to the neckline, good sides together, centre to centre back and each end level with the front edge. Sew it on and clip the curve. Your neckline is 17 and five eighths inches all round; the finished stand is 17 and a half inches from end to end. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Clip the neck curve). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 17. Close the stand
 File: `shirt--close-the-stand.jpg`
@@ -413,17 +413,17 @@ File: `shirt--close-the-stand.jpg`
 ### 18. Cut the sleeve slit
 File: `shirt--cut-the-sleeve-slit.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, making a men's shirt in plain natural off-white cotton. The step shown: Cut along the slit line at the bottom of each sleeve.. Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, making a men's shirt in plain natural off-white cotton. The step shown: Cut along the slit line at the bottom of each sleeve. The slit is 5 and a half inches long, a quarter of the way across the sleeve end from the back. (Cut along the slit line). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 19. Bind the back edge
 File: `shirt--bind-the-back-edge.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Press both long edges of the small placket a quarter of an inch under, then fold it in half. Wrap it round the edge of the slit nearer the underarm and sew close to its edge. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Press both long edges of the small placket a quarter of an inch under, then fold it in half. Wrap it round the edge of the slit nearer the underarm and sew close to its edge. The small strip is 6 and a half inches long and 1 and a quarter inches wide; it finishes three eighths of an inch wide. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 20. Fold the big placket
 File: `shirt--fold-the-big-placket.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, making a men's shirt in plain natural off-white cotton. The step shown: Press both long edges of the big placket a quarter of an inch under, fold it in half and press the top end into a point. (Press the point). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, making a men's shirt in plain natural off-white cotton. The step shown: Press both long edges of the big placket a quarter of an inch under, fold it in half and press the top end into a point. The big placket strip is 10 inches long and 2 and a half inches wide; it finishes 1 inch wide. (Press the point). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 21. Sew the tower placket
 File: `shirt--sew-the-tower-placket.jpg`
@@ -433,12 +433,12 @@ File: `shirt--sew-the-tower-placket.jpg`
 ### 22. Tack the sleeve pleats
 File: `shirt--tack-the-sleeve-pleats.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Fold the two small pleats at the sleeve bottom towards the placket and tack them in place. (¼″ from edge, Long tacking stitch 4.5). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Fold the two small pleats at the sleeve bottom towards the placket and tack them in place. Fold the two pleats so the sleeve end shrinks to 8 and a half inches, leaving the overlap free. (¼″ from edge, Long tacking stitch 4.5). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 23. Sew on the sleeves
 File: `shirt--sew-on-the-sleeves.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Match the top of each sleeve to the shoulder seam, good sides together, and pin all along the armhole. Sew with the sleeve on top. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Match the top of each sleeve to the shoulder seam, good sides together, and pin all along the armhole. Sew with the sleeve on top. Each sleeve top is 21 and seven eighths inches and each armhole is 21 and a half inches, so ease in three eighths of an inch over the top of the sleeve. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 24. Fell the armholes
 File: `shirt--fell-the-armholes.jpg`
@@ -458,7 +458,7 @@ File: `shirt--finish-the-side-seams.jpg`
 ### 27. Sew the cuff pairs
 File: `shirt--sew-the-cuff-pairs.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Press the long top edge of each plain cuff three eighths of an inch under. Lay each plain cuff on an interfaced cuff, good sides together, and sew round the two ends and the bottom. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Trim to ⅛″ and notch the curves). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Press the long top edge of each plain cuff three eighths of an inch under. Lay each plain cuff on an interfaced cuff, good sides together, and sew round the two ends and the bottom. Each finished cuff is 9 and a half inches long and 2 and a half inches deep. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Trim to ⅛″ and notch the curves). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 28. Turn the cuffs
 File: `shirt--turn-the-cuffs.jpg`
@@ -478,12 +478,12 @@ File: `shirt--close-the-cuffs.jpg`
 ### 31. Hem the bottom
 File: `shirt--hem-the-bottom.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Fold the curved bottom edge a quarter of an inch under, then a quarter of an inch again. Sew slowly round the curves, easing the fabric. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Fold the curved bottom edge a quarter of an inch under, then a quarter of an inch again. Sew slowly round the curves, easing the fabric. Your hem measures 51 and seven eighths inches all round. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 32. Mark the buttonholes
 File: `shirt--mark-the-buttonholes.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, making a men's shirt in plain natural off-white cotton. The step shown: Mark up-and-down buttonholes on the right front band at the chalk marks, one across the collar stand, one across each cuff half an inch from the end.. Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, making a men's shirt in plain natural off-white cotton. The step shown: Mark up-and-down buttonholes on the right front band at the chalk marks, one across the collar stand, one across each cuff half an inch from the end. For your shirt: 6 buttonholes down the front, the first 3 inches below the neck seam at the centre front, then one every 3 and a half inches.. Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 33. Sew the buttonholes
 File: `shirt--sew-the-buttonholes.jpg`
@@ -493,7 +493,7 @@ File: `shirt--sew-the-buttonholes.jpg`
 ### 34. Sew on the buttons
 File: `shirt--sew-on-the-buttons.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a work table, sewing by hand with a needle and thread, making a men's shirt in plain natural off-white cotton. The step shown: Close the front, mark through each buttonhole onto the left band, and sew each button on with a doubled thread and a short thread stem. (Sew on by hand). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a work table, sewing by hand with a needle and thread, making a men's shirt in plain natural off-white cotton. The step shown: Close the front, mark through each buttonhole onto the left band, and sew each button on with a doubled thread and a short thread stem. You need 6 buttons down the front, 2 for the cuffs and 1 on the collar stand. (Sew on by hand). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 35. Press it
 File: `shirt--press-it.jpg`
@@ -518,7 +518,7 @@ File: `shirt--turn-the-band.jpg`
 ### 39. Band on the neckline
 File: `shirt--band-on-the-neckline.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Pin the interfaced band to the neckline, good sides together, centre to centre back and each end level with the front edge. Sew it on and clip the curve. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Clip the neck curve). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Pin the interfaced band to the neckline, good sides together, centre to centre back and each end level with the front edge. Sew it on and clip the curve. Your neckline is 17 and five eighths inches all round; the finished band is 17 and a half inches from end to end. (⅜″ seam, Good sides together, Straight stitch 2.5, Lock both ends, Clip the neck curve). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 40. Close the band
 File: `shirt--close-the-band.jpg`
@@ -528,17 +528,17 @@ File: `shirt--close-the-band.jpg`
 ### 41. Hem the short sleeves
 File: `shirt--hem-the-short-sleeves.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Fold each sleeve end a quarter of an inch to the inside, then three quarters of an inch more. Press and sew close to the inner fold. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Fold each sleeve end a quarter of an inch to the inside, then three quarters of an inch more. Press and sew close to the inner fold. Each sleeve end measures 15 inches round. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 42. Sew on both pockets
 File: `shirt--sew-on-both-pockets.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Pin one pocket on each front at the chalk marks. Sew down one side, round the point and up the other side, close to the edge. At each top corner sew a small triangle to make it strong. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Pin one pocket on each front at the chalk marks. Sew down one side, round the point and up the other side, close to the edge. At each top corner sew a small triangle to make it strong. Place the top of the pocket 7 and five eighths inches below the shoulder at the neck and 2 and a quarter inches from the centre front line. The finished pocket is 5 inches wide. (⅛″ from edge, Edgestitch 2.5, Lock both ends). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ### 43. Fold the back pleat
 File: `shirt--fold-the-back-pleat.jpg`
 
-> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Fold the pleat at the centre back marks, the two folds meeting in the middle. Tack it across the top edge. (¼″ from edge, Long tacking stitch 4.5). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
+> Real photograph, close-up from slightly above, of a person's hands at a home sewing machine, the presser foot on the fabric, making a men's shirt in plain natural off-white cotton. The step shown: Fold the pleat at the centre back marks, the two folds meeting in the middle. Tack it across the top edge. Each fold of the pleat takes in three quarters of an inch, centred on the centre back mark. (¼″ from edge, Long tacking stitch 4.5). Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.
 
 ## Trousers (39 photos)
 

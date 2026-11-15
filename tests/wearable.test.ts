@@ -26,9 +26,10 @@ const bottom = (p: Piece) => Math.max(...p.outline.points().map((q) => q[1]));
 const foot = (m: Record<string, number>) => (m.height && m.height < 56 ? 9.5 : 12.5);   // round the heel and instep
 
 describe('every garment can be put on, and matching pieces match', () => {
-  for (const d of DESIGNS) it(d.name, () => {
+  for (const d of DESIGNS) it(d.name, async () => {
     const m0 = SIZES[d.for || 'man'];
     for (const o of variants(d)) {
+      await new Promise((r) => setTimeout(r, 0)); // let the test runner report progress
       const ps = GARMENTS[d.garment].draft(m0, o), w = JSON.stringify(o), hip = m0.hip, rise = [] as string[];
       if (d.garment === 'pants') {
         // pull-on: the waist must open round the hips; each leg end must go over the foot

@@ -41,10 +41,16 @@ function problems(pieces: ReturnType<typeof GARMENTS[string]['draft']>, steps: S
 
 describe('every stitch is covered', () => {
   for (const gid of Object.keys(GARMENTS).filter((g) => g !== 'pants')) {
-    it(`${gid}: every edge of every piece, in every option combination`, () => {
+    it(`${gid}: every edge of every piece, in every option combination`, async () => {
       S.unit = 'in';
       const bad = new Map<string, string>();
-      for (const o of combos(gid)) for (const p of problems(GARMENTS[gid].draft(M, o), GARMENTS[gid].steps(o, { m: M, pieces: GARMENTS[gid].draft(M, o) }))) if (!bad.has(p)) bad.set(p, JSON.stringify(o));
+      let n = 0;
+      for (const o of combos(gid)) {
+        // tens of thousands of combinations: let the test runner breathe now and then
+        if (++n % 300 === 0) await new Promise((r) => setTimeout(r, 0));
+        const pieces = GARMENTS[gid].draft(M, o);
+        for (const p of problems(pieces, GARMENTS[gid].steps(o, { m: M, pieces }))) if (!bad.has(p)) bad.set(p, JSON.stringify(o));
+      }
       expect([...bad].map(([p, o]) => `${p}  (${o})`)).toEqual([]);
     }, 120_000); // tens of thousands of option combinations
   }
@@ -63,7 +69,7 @@ describe('every stitch is covered', () => {
 
 describe('no sewing step repeats a picture', () => {
   for (const d of DESIGNS) {
-    it(d.name, () => {
+    it(d.name, async () => {
       S.unit = 'in';
       const sew = makeSteps(buildCtx(d.id, d.options, M, 'standard', 'T')).filter((s: Step) => s.sec === 'Sew');
       const pics = sew.map((s: Step) => s.svg());
@@ -75,7 +81,7 @@ describe('no sewing step repeats a picture', () => {
 
 describe('every sewing step is drawn on the real pieces', () => {
   for (const d of DESIGNS.filter((x) => x.garment !== 'pants')) {
-    it(d.name, () => {
+    it(d.name, async () => {
       S.unit = 'in';
       const ctx = buildCtx(d.id, d.options, M, 'standard', 'T');
       const sew = makeSteps(ctx).filter((s: Step) => s.sec === 'Sew');
@@ -96,4 +102,16 @@ describe('sewing detail is spoken and shown', () => {
     expect(detailChips(d)[0]).toBe('1.6 cm seam');
     S.unit = 'in';
   });
+});
+
+describe('every sewing step explains its technique', () => {
+  for (const d of DESIGNS) {
+    it(d.name, async () => {
+      const { howStrip } = await import('../src/art/howto.js');
+      S.unit = 'in';
+      const sew = makeSteps(buildCtx(d.id, d.options, M, 'standard', 'T')).filter((s: Step) => s.sec === 'Sew').slice(0, -1);
+      const missing = sew.filter((s: any) => !howStrip(s, '#c45b6b', d.garment)).map((s: Step) => s.cap);
+      expect(missing).toEqual([]);
+    });
+  }
 });

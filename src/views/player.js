@@ -6,6 +6,7 @@ import { store, save } from '../core/store.js';
 import { IC } from './icons.js';
 import { esc } from './common.js';
 import { detailChips } from '../engine/sew';
+import { LESSONS } from '../art/lessons.js';
 
 export const sayOf = (st) => (typeof st.say === 'function' ? st.say() : st.say);
 
@@ -96,6 +97,7 @@ export function mountPlayer(el, { steps, start = 0, done = [], onIndex, onFinish
           <h2 class="pl-cap">${esc(st.cap)}</h2>
           <p class="pl-say">${esc(text)}</p>
           ${chipsHtml(st.d)}
+          ${st.lessons?.length ? `<div class="learn"><span>Learn this first:</span>${st.lessons.map((l) => `<a class="learn-l" href="#/help/learn/${l}">${esc(LESSONS[l].title)}</a>`).join('')}</div>` : ''}
           <div class="pl-tl"><input type="range" id="tl-range" min="0" max="1000" value="0" aria-label="Move through this step"><div class="pl-times"><span id="tl-time">0:00</span><span id="tl-dur"></span></div></div>
           <div class="pl-ctrls">
             <button class="pl-b pl-sm ${slow ? 'on' : ''}" id="tl-slow" aria-pressed="${slow}" aria-label="Slow motion">0.5×</button>
