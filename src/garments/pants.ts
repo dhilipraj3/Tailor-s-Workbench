@@ -55,6 +55,7 @@ function supplies(m: Measurements, o: Options) {
   const list = [{ icon: 'thread', qty: '1', say: 'One spool of matching thread' }];
   if (o.waist === 'elastic') list.push({ icon: 'lining', qty: `${r4(m.waist - 2)}″`, say: `Waist elastic, about ${Math.round(m.waist - 2)} inches long and one inch wide` });
   if (o.pockets === 'side') list.push({ icon: 'lining', qty: '0.3 m', say: 'A little pocket fabric' });
+  if (o.waist === 'drawstring') list.push({ icon: 'interfacing', qty: '2″ sq', say: 'A small square of fusible interfacing behind the drawstring buttonholes' });
   list.push({ icon: 'needle', qty: '80/12', say: 'Machine needle size 80' });
   return list;
 }

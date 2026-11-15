@@ -1,7 +1,7 @@
 import { Outline, type Allow, type Pt } from '../engine/geometry';
 import type { Garment, Measurements, Options, Piece, Step } from '../engine/types';
 import { shirtSteps } from './sew-shirt';
-import { rectPiece } from './common';
+import { rectPiece, edgeLength, capHeightFor } from './common';
 
 const SA = 0.375;
 const plain: Allow = { sa: SA };
@@ -65,7 +65,10 @@ function draft(m: Measurements, o: Options): Piece[] {
   }
   // SLEEVE
   {
-    const bw = G * (slim ? 0.35 : 0.37), cap = G / 8 - 0.5;
+    // sleeve top drafted to the armhole (front + back + yoke) plus 3/8 inch of ease
+    const bw = G * (slim ? 0.35 : 0.37), get = (id: string) => pieces.find((p) => p.id === id);
+    const armLen = edgeLength(get('front'), 'armhole') + edgeLength(get('back'), 'armhole') + edgeLength(get('yoke'), 'armhole');
+    const cap = capHeightFor(bw, armLen + 0.375);
     const len = half ? SL * 0.36 : SL - 2, hemW = half ? bw * 0.86 : Wr + 4;
     const B: Pt = [-bw / 2, cap], Cc: Pt = [bw / 2, cap];
     const o2 = new Outline(B).cubic([-bw * 0.3, cap], [-bw * 0.24, 0], [0, 0], plain, 'cap').cubic([bw * 0.24, 0], [bw * 0.3, cap], Cc, plain, 'cap')

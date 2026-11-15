@@ -21,15 +21,29 @@ const SPECIAL = {
 const DEFAULT_OPTS = Object.fromEntries(Object.keys(GARMENTS).map((g) => [g, DESIGNS.find((d) => d.garment === g).options]));
 
 /** One line about each kind of garment, shown under the design name. */
-function describe(design, o) {
+/** "a, b and c" */
+const list = (xs) => { const a = xs.filter(Boolean); return a.length < 2 ? a.join('') : `${a.slice(0, -1).join(', ')} and ${a[a.length - 1]}`; };
+
+/** One plain sentence about the garment with the options chosen, shown under the design name. */
+export function describe(design, o) {
   const g = design.garment;
-  if (g === 'shirt') return `A ${o.sleeve === 'half' ? 'short-sleeve' : 'long-sleeve'} shirt with ${o.collar === 'mandarin' ? 'a band collar' : 'a collar on a stand'}, a button band${o.sleeve === 'half' ? '' : ' and cuffs'}. Our most detailed design.`;
-  if (g === 'trousers') return `Tailored trousers with a zip fly, ${o.pocket === 'side' ? 'side' : 'slanted'} front pockets${+o.backPockets ? ' and back welt pockets' : ''}, and a waistband you can let out later.`;
-  if (g === 'tunic') return o.opening === 'fronthooks' ? 'A fitted, lined blouse with darts and front hooks. Choose the neckline and the back.'
-    : `A ${o.length === 'knee' ? 'knee-length' : 'comfortable'} ${design.for === 'woman' ? 'kurti' : 'kurta'}${o.opening === 'halfplacket' ? ' with a front placket' : ''}${o.slits === 'yes' ? ' and side slits' : ''}.`;
-  if (g === 'pants') return 'An easy pull-on design with an elastic or drawstring waist. A good first project.';
-  if (g === 'skirt') return `A ${o.style === 'gathered' ? 'gathered' : 'flared A-line'} skirt with ${o.waist === 'band' ? 'a waistband and zip' : 'an elastic waist'}.`;
-  return 'A fitted bodice joined to a skirt at the waist, closed with a back zip.';
+  if (g === 'shirt') return `A ${o.sleeve === 'half' ? 'short-sleeve' : 'long-sleeve'}${o.fit === 'slim' ? ', slim-fit' : ''} shirt with ${list([
+    o.collar === 'mandarin' ? 'a band collar' : o.collar === 'buttondown' ? 'a button-down collar on a stand' : o.collar === 'spread' ? 'a spread collar on a stand' : 'a collar on a stand',
+    'a button band', o.sleeve === 'half' ? '' : 'cuffs', +o.pockets ? (+o.pockets === 2 ? 'two pockets' : 'a pocket') : '']) }.`;
+  if (g === 'trousers') return `Tailored trousers with ${list(['a zip fly', `${o.pocket === 'side' ? 'side' : 'slanted'} front pockets`, +o.backPockets ? 'back welt pockets' : '', o.front === 'pleated' ? 'front pleats' : '', o.hem === 'turnup' ? 'turn-ups' : ''])}, and a waistband you can let out later.`;
+  if (g === 'tunic') {
+    const neck = ({ round: 'a round neck', v: 'a V-neck', band: 'a band collar', deep: 'a deep neck', boat: 'a boat neck', square: 'a square neck', sweetheart: 'a sweetheart neck', high: 'a high neck' })[o.neck] || 'a round neck';
+    const sleeve = ({ none: 'no sleeves', short: 'short sleeves', elbow: 'elbow sleeves', threequarter: 'three-quarter sleeves', full: 'full sleeves', puff: 'puff sleeves', balloon: 'balloon sleeves', bell: 'bell sleeves' })[o.sleeve] || '';
+    const len = ({ crop: 'cropped', hip: 'hip-length', thigh: 'thigh-length', knee: 'knee-length', calf: 'calf-length' })[o.length] || '';
+    const shape = ({ straight: 'straight', aline: 'A-line', fitted: 'fitted', peplum: 'peplum' })[o.fit] || '';
+    const noun = o.opening === 'fronthooks' ? 'blouse' : design.for === 'woman' ? 'kurti' : 'kurta';
+    const extras = [o.opening === 'halfplacket' ? 'a front placket' : '', o.opening === 'fronthooks' ? 'front hooks and a lining' : '', o.slits === 'yes' && o.fit !== 'peplum' && ['thigh', 'knee', 'calf'].includes(o.length) ? 'side slits' : '',
+      o.back === 'deepu' ? 'a deep U back' : o.back === 'keyhole' ? 'a keyhole back with ties' : ''];
+    return `A ${o.fit === 'peplum' ? '' : len + ' '}${shape} ${noun} with ${list([neck, sleeve, ...extras])}.`.replace(/\s+/g, ' ');
+  }
+  if (g === 'pants') return `Easy pull-on ${({ pyjama: 'pyjama', palazzo: 'palazzo', churidar: 'churidar', salwar: 'salwar', shorts: 'shorts' })[o.style] || 'pants'} with ${list([o.waist === 'drawstring' ? 'a drawstring waist' : 'an elastic waist', o.pockets === 'side' ? 'side pockets' : ''])}. A good first project.`;
+  if (g === 'skirt') return `A ${({ knee: 'knee-length', midi: 'midi', maxi: 'maxi' })[o.length] || ''} ${o.style === 'gathered' ? 'gathered' : 'A-line'} skirt with ${o.waist === 'band' ? 'a waistband and zip' : 'an elastic waist'}.`.replace(/\s+/g, ' ');
+  return `A fitted bodice with ${list([({ round: 'a round neck', v: 'a V-neck', boat: 'a boat neck' })[o.neck] || 'a round neck', ({ none: 'no sleeves', short: 'short sleeves', elbow: 'elbow sleeves' })[o.sleeve] || ''])}, joined to a ${o.skirt === 'aline' ? 'flared' : 'gathered'} ${({ knee: 'knee-length', midi: 'midi', maxi: 'maxi' })[o.length] || ''} skirt, closed with a back zip.`.replace(/\s+/g, ' ');
 }
 
 export function renderDesign(el, designId, editProjectId) {

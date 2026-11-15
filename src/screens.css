@@ -153,3 +153,6 @@
 /* photos melt into the page: the edges fade out, so no box shows around the garment */
 .dphoto { -webkit-mask-image: radial-gradient(ellipse 74% 72% at 50% 50%, #000 78%, transparent 100%); mask-image: radial-gradient(ellipse 74% 72% at 50% 50%, #000 78%, transparent 100%); }
 .hero-art .dphoto { -webkit-mask-image: radial-gradient(ellipse 60% 62% at 50% 50%, #000 76%, transparent 100%); mask-image: radial-gradient(ellipse 60% 62% at 50% 50%, #000 76%, transparent 100%); }
+
+/* customiser preview: the garment floats on the page, no box */
+.dz-stage { background: radial-gradient(ellipse 45% 42% at 50% 48%, rgba(255,255,255,.07), rgba(255,255,255,0) 70%); box-shadow: none; border-radius: 0; overflow: visible; }

@@ -8,8 +8,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest run",
-    "export-chat": "node scripts/export-chat.mjs"
+    "test": "vitest run --dir tests",
+    "export-chat": "node scripts/export-chat.mjs",
+    "audit": "vite --open /audit.html",
+    "prompts": "vitest run --dir scripts"
   },
   "devDependencies": {
     "typescript": "^5.8.3",

@@ -94,10 +94,20 @@ export function makeSteps(ctx, widthIn = 58) {
   // A step that names no pieces (fold, pin, turn, press, trim, buttonholes…) works on the same pieces
   // as the nearest step that does: the next one first (you fold before you sew), else the one before.
   const refsOf = (st) => (st?.d?.edges?.length || st?.d?.pieces?.length ? st.d : null);
-  const near = (i) => { for (let k = i + 1; k < sew.length; k++) if (refsOf(sew[k])) return refsOf(sew[k]); for (let k = i - 1; k >= 0; k--) if (refsOf(sew[k])) return refsOf(sew[k]); return null; };
+  const ahead = (i) => { for (let k = i + 1; k < sew.length; k++) if (refsOf(sew[k])) return refsOf(sew[k]); return null; };
+  const back = (i) => { for (let k = i - 1; k >= 0; k--) if (refsOf(sew[k])) return refsOf(sew[k]); return null; };
+  // preparing (fold, pin, mark, ease, gather, iron on) uses the pieces of the step it prepares; anything else (trim, clip,
+  // understitch, turn, close, press) uses the pieces of the step it follows
+  const near = (i) => (/^(fold|pin|mark|ease|gather|iron|tack|cut|make|prepare|press the [a-z]+s?$)/i.test(sew[i].cap) ? ahead(i) || back(i) : back(i) || ahead(i));
+  // the final press works on every main piece
+  const allMain = { pieces: ctx.pieces.filter((g) => g.piece.fabric === 'main' && !g.piece.simple).slice(0, 3).map((g) => g.piece.id) };
   const out = sew.map((st, i) => {
     const repeat = seen.has(st.svg); seen.add(st.svg);
-    if (real && st.d && i < sew.length - 1) return { ...st, sec: 'Sew', svg: () => pieceScene(ctx, st.d, col, st.cap, near(i)) || techniqueScene(st.d, col, st.cap) };
+    if (real && i < sew.length - 1) {
+      // A1: steps without sewing detail (the final press) are drawn on the real pieces too
+      const d = st.d || { stitch: 'none', press: 'Press with a damp cloth' }, refs = st.d ? near(i) : allMain;
+      return { ...st, sec: 'Sew', svg: () => pieceScene(ctx, d, col, st.cap, refs) || techniqueScene(d, col, st.cap) };
+    }
     return repeat && st.d ? { ...st, sec: 'Sew', svg: () => techniqueScene(st.d, col, st.cap) } : { ...st, sec: 'Sew' };
   });
   const last = out[out.length - 1];

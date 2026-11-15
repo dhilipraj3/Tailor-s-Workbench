@@ -80,7 +80,7 @@ describe('every sewing step is drawn on the real pieces', () => {
       const ctx = buildCtx(d.id, d.options, M, 'standard', 'T');
       const sew = makeSteps(ctx).filter((s: Step) => s.sec === 'Sew');
       // every step except the finished garment shows at least one real piece (fabric drawn with the cloth filter)
-      const generic = sew.slice(0, -1).filter((s: Step) => s.d && !/filter:url\(#cloth\)/.test(s.svg())).map((s: Step) => s.cap);
+      const generic = sew.slice(0, -1).filter((s: Step) => !/filter:url\(#cloth\)/.test(s.svg())).map((s: Step) => s.cap);
       expect(generic).toEqual([]);
     });
   }

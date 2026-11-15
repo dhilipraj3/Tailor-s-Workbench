@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sewing steps audit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Manrope:wght@400;600;700;800&display=swap">
+<style>
+  body { margin: 0; padding: 16px 24px 48px; }
+  .bar { position: sticky; top: 0; z-index: 3; background: #141414; padding: 10px 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .bar a { padding: 6px 10px; border: 1px solid #4a4a47; border-radius: 999px; color: #e6e6e2; font: 600 12px Manrope, sans-serif; text-decoration: none; }
+  .bar a[aria-current="true"] { background: #8fcbb5; color: #10201a; }
+  h2 { font: 800 22px Montserrat, sans-serif; color: #fff; margin: 28px 0 10px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+  .cell { background: #1c1c1b; border: 1px solid #2e2e2c; border-radius: 14px; padding: 8px; display: grid; gap: 6px; }
+  .cell .stage { border-radius: 10px; overflow: hidden; }
+  .cell b { font: 800 14px Montserrat, sans-serif; color: #fff; }
+  .cell p { margin: 0; font: 500 12px Manrope, sans-serif; color: #b3b3ae; }
+  .cell .n { color: #8fcbb5; font: 800 11px Manrope, sans-serif; letter-spacing: .12em; }
+  .chips-sew li { font-size: 11px !important; padding: 3px 8px !important; }
+  /* every animation shown at its end */
+  .cell svg *, .cell svg { animation-delay: -60s !important; animation-play-state: paused !important; }
+</style>
+</head>
+<body>
+<nav class="bar" id="bar"></nav>
+<main id="out"></main>
+<script type="module">
+  import '/src/styles.css'; import '/src/app.css'; import '/src/real.css'; import '/src/theme.css'; import '/src/screens.css';
+  import { DESIGNS } from '/src/garments/index';
+  import { buildCtx } from '/src/engine/project';
+  import { SHIRT_SIZES, waistPreset } from '/src/engine/sizes';
+  import { makeSteps } from '/src/views/make-steps.js';
+  import { stageSvg } from '/src/art/svg.js';
+  import { detailChips } from '/src/engine/sew';
+  import { S } from '/src/core/state.js';
+
+  // ?design=<id> shows one design (default: the first); &<option>=<value> changes an option
+  const q = new URLSearchParams(location.search), id = q.get('design') || DESIGNS[0].id;
+  const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+  document.getElementById('bar').innerHTML = DESIGNS.map((d) => `<a href="?design=${d.id}" aria-current="${d.id === id}">${esc(d.name)}</a>`).join('');
+  S.unit = 'in';
+  const d = DESIGNS.find((x) => x.id === id);
+  const opts = { ...d.options }; for (const [k, v] of q) if (k !== 'design') opts[k] = v;
+  const M = { ...SHIRT_SIZES.M, ...waistPreset(32), height: 64, bicep: 12 };
+  const steps = makeSteps(buildCtx(d.id, opts, M, 'standard', 'Audit')).filter((s) => s.sec === 'Sew');
+  const say = (s) => (typeof (s.text ?? s.say) === 'function' ? (s.text ?? s.say)() : (s.text ?? s.say));
+  document.getElementById('out').innerHTML = `<h2>${esc(d.name)} · ${steps.length} sewing steps · ${esc(JSON.stringify(opts))}</h2><div class="grid">` +
+    steps.map((s, i) => `<div class="cell"><span class="n">STEP ${i + 1}</span><div class="stage">${stageSvg(s.svg())}</div><b>${esc(s.cap)}</b><p>${esc(say(s))}</p>` +
+      `<ul class="chips-sew">${detailChips(s.d).map((c) => `<li>${esc(c)}</li>`).join('')}</ul></div>`).join('') + '</div>';
+  // SMIL parts (presser foot, visibility) also jump to the end
+  for (const svg of document.querySelectorAll('.cell svg')) { try { svg.pauseAnimations(); svg.setCurrentTime(60); } catch (e) { /* no SMIL */ } }
+</script>
+</body>
+</html>

@@ -8,6 +8,17 @@ const SEWN = ['straight', 'stay', 'baste', 'gather', 'edge', 'top', 'under', 'di
 const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
 const n1 = (v) => v.toFixed(1);
 
+/** each named edge as its separate runs of points (e.g. a sleeve has two underarm edges, a front split by a dart has two side runs) */
+export function runs(piece) {
+  const out = {}; let prev = null;
+  for (const e of piece.outline.edges) {
+    const k = e.name || '?', list = (out[k] = out[k] || []);
+    if (prev === k && list.length) list[list.length - 1].push(...e.pts.slice(1)); else list.push([...e.pts]);
+    prev = k;
+  }
+  return out;
+}
+
 /** lay out 1–3 pieces side by side (or one on top of the other when they are sewn together) */
 function layout(shapes, stacked) {
   const list = stacked ? shapes.slice(0, 1) : shapes.slice(0, 3);
@@ -32,13 +43,27 @@ export function pieceScene(ctx, d, color, cap = '', ctxRefs = null) {
   if (!shapes.length) return null;
   const joined = !!(d.join && /together/i.test(d.join)) && shapes.length > 1;
   const placed = layout(shapes, joined), col = fabricColors(color);
+  {
+    const p = placed[0], R = runs(p.sh.piece), mine = refs.filter((r) => r[0] === p.sh.piece.id && r[1] !== '*').map((r) => r[1]);
+    const pts = mine.flatMap((n) => (R[n] || []).flat());
+    if (placed.length === 1 && pts.length) {
+      const xs = pts.map(([x]) => x), ys = pts.map(([, y]) => y);   // on a piece cut on the fold, zoom on one half
+      const ex0 = Math.min(...xs), ex1 = Math.max(...xs), ey0 = Math.min(...ys), ey1 = Math.max(...ys);
+      if (ey1 - ey0 < 0.25 * p.h && ex1 - ex0 < 0.6 * p.w) {
+        // the detail is small: zoom so its area fills the middle of the picture
+        const cx = (ex0 + ex1) / 2, cy = (ey0 + ey1) / 2, s = Math.min(560 / Math.max(ex1 - ex0 + 6, 0.1), 300 / Math.max(ey1 - ey0 + 5, 0.1), 140);
+        const ox = 400 - cx * s, oy = 290 - cy * s;
+        Object.assign(p, { s, ox, oy, M: place(ox, oy, s), Mm: place(ox, oy, s, true), zoomed: true });
+      }
+    }
+  }
   const word = cap.toLowerCase();
   let out = '', t0 = 0.5;
 
   // the second piece lies underneath, shifted a little, when the step joins two pieces
   if (joined) { const p = placed[0]; out += H.fade(fabric(shapes[1], place(p.ox + 12, p.oy + 10, p.s), col, 'wrong', { stitchLine: false }), 0.1); }
 
-  const turning = /^turn|turn .*(through|out|right side)/.test(word);
+  const turning = /^turn (the|it|each|right)|right side out|turn .* through/.test(word) && !/^turn and/.test(word);
   for (const p of placed) {
     const maps = p.whole ? [p.M, p.Mm] : [p.M];
     let piece = (p.whole ? fabric(p.sh, p.Mm, col, 'right') : '') + fabric(p.sh, p.M, col, 'right', { label: p.whole ? '' : esc(p.sh.piece.name.toUpperCase()) });
@@ -47,9 +72,10 @@ export function pieceScene(ctx, d, color, cap = '', ctxRefs = null) {
     out += turning ? H.flip(piece, 'x', n1(p.M([(p.x0 + p.x1) / 2, 0])[0]), 0.4, 1.2) : piece;
 
     const named = refs.filter((r) => r[0] === p.sh.piece.id).map((r) => r[1]);
-    const names = named.includes('*') || !named.length ? Object.keys(p.sh.edges).filter((k) => k !== '?' || named.includes('*')) : named;
-    for (const n of names) {
-      const pts = p.sh.edges[n];
+    const R = runs(p.sh.piece);
+    // a step that names no edges (pressing the whole garment) highlights none; otherwise its edges, or all with "*"
+    const names = named.includes('*') ? Object.keys(R) : named.length ? named : (d.stitch === 'none' && d.press ? [] : Object.keys(R));
+    for (const pts of names.flatMap((n) => R[n] || [])) {
       if (!pts || pts.length < 2) continue;
       for (const m of maps) {
         out += glow(pts, m, 0.2);

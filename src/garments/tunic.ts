@@ -1,7 +1,7 @@
 // Tunic family: men's kurta, women's kurti, saree blouse, kids' kurta, and the bodice of dresses.
 import { Outline, type Allow, type Pt } from '../engine/geometry';
 import type { Garment, Measurements, Options, Piece, Step } from '../engine/types';
-import { rectPiece } from './common';
+import { rectPiece, edgeLength, capHeightFor } from './common';
 import { tunicSteps } from './sew-tunic';
 
 const r4 = (x: number) => Math.round(x * 4) / 4;
@@ -68,7 +68,7 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
   // BACK
   {
     const ol = new Outline(backZip ? [0, bd] : [0, bd]);
-    ol.quad([nw * 0.85, bd], [nw, 0], neckA, 'neck').line([Sh / 2, 1.75], plain, 'shoulder').cubic([Sh / 2 - 0.6, armY * 0.55], [Sh / 2 - 0.4, armY], [chestB, armY], plain, 'armhole');
+    (o.back === 'deepu' ? ol.cubic([nw * 0.62, bd], [nw, bd * 0.6], [nw, 0], neckA, 'neck') : ol.quad([nw * 0.85, bd], [nw, 0], neckA, 'neck')).line([Sh / 2, 1.75], plain, 'shoulder').cubic([Sh / 2 - 0.6, armY * 0.55], [Sh / 2 - 0.4, armY], [chestB, armY], plain, 'armhole');
     const hx = sideSeam(ol, chestB, waistB, hipB, 0, false);
     ol.cubic([hx - 1, len + 0.3], [hx * 0.5, len], [0, len], hem, 'hem');
     ol.close(backZip ? { sa: 0.75, extra: 0.5 } : fold, backZip ? 'centre back' : '');
@@ -80,7 +80,10 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
   }
   // SLEEVE
   if (o.sleeve !== 'none') {
-    const fitB = (m.bicep || C * 0.32) + (fitted ? 2 : 3.5), baseCap = G / 8 - 0.5 + (fitted ? 1 : 0);
+    // the sleeve top is drafted to the real armhole length plus a little ease, so it sets in without stretching or tucks
+    const fitB = (m.bicep || C * 0.32) + (fitted ? 2 : 3.5);
+    const armLen = edgeLength(pieces.find((p) => p.id === 'front'), 'armhole') + edgeLength(pieces.find((p) => p.id === 'back'), 'armhole');
+    const baseCap = capHeightFor(fitB, armLen + (fitted ? 0.5 : 0.75));
     const puff = o.sleeve === 'puff', balloon = o.sleeve === 'balloon', bell = o.sleeve === 'bell', gathered = puff || balloon;
     // puff and balloon sleeves are cut wider and taller at the top: the extra is gathered into the armhole and into a band;
     // a bell sleeve keeps the normal top and flares out to the hem

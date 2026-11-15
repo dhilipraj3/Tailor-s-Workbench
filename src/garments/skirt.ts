@@ -62,7 +62,8 @@ export const SKIRT: Garment = {
   steps: skirtSteps,
   supplies: (m, o) => [
     { icon: 'thread', qty: '1', say: 'One spool of matching thread' },
-    o.waist === 'band' ? { icon: 'zip', qty: '7″', say: 'One 7 inch zip and a hook' } : { icon: 'lining', qty: `${r4(m.waist - 2)}″`, say: `Waist elastic, about ${Math.round(m.waist - 2)} inches long` },
+    o.waist === 'band' ? { icon: 'zip', qty: '7″', say: 'One 7 inch zip' } : { icon: 'lining', qty: `${r4(m.waist - 2)}″`, say: `Waist elastic, about ${Math.round(m.waist - 2)} inches long` },
+    ...(o.waist === 'band' ? [{ icon: 'hook', qty: '1', say: 'One skirt hook and bar' }, { icon: 'interfacing', qty: '0.25 m', say: 'A strip of fusible interfacing for the waistband' }] : []),
     { icon: 'needle', qty: '80/12', say: 'Machine needle size 80' },
   ],
   sketch: skirtSketch,
