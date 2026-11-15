@@ -30,6 +30,8 @@ const HOW = [
 const HERO = DESIGNS.find((d) => d.id === 'formal-shirt');
 const HERO_COLORS = [['#a8c0e0', 'Sky blue'], ['#f1efe9', 'White'], ['#2f3e5c', 'Navy'], ['#e3b7c2', 'Rose']];
 let heroColor = HERO_COLORS[0][0];
+// the photo shows the shirt in its own colour; any other swatch shows the recoloured drawing
+const heroArt = () => sketchSvg('shirt', HERO.options, null, 'hero', heroColor) + (heroColor === HERO_COLORS[0][0] ? designPhoto(HERO.id) : '');
 
 function hero() {
   return `<section class="hero" aria-label="Welcome">
@@ -42,10 +44,10 @@ function hero() {
       <figure class="hero-garment" role="img" aria-label="Classic formal shirt, showing the collar, button band and sleeve">
         <span class="hero-word" aria-hidden="true">SHIRT</span>
         <span class="hero-floor" aria-hidden="true"></span>
-        <span class="hero-art" id="hero-art">${sketchSvg('shirt', HERO.options, null, 'hero', heroColor)}</span>
-        <span class="hot" style="left:42%;top:16%" aria-hidden="true">1</span>
-        <span class="hot" style="left:50%;top:45.5%" aria-hidden="true">2</span>
-        <span class="hot" style="left:74.4%;top:19.3%" aria-hidden="true">3</span>
+        <span class="hero-art" id="hero-art">${heroArt()}</span>
+        <span class="hot" style="--dx:42%;--dy:16%;--px:45.3%;--py:17.2%" aria-hidden="true">1</span>
+        <span class="hot" style="--dx:50%;--dy:45.5%;--px:50%;--py:36%" aria-hidden="true">2</span>
+        <span class="hot" style="--dx:74.4%;--dy:19.3%;--px:68.4%;--py:24%" aria-hidden="true">3</span>
       </figure>
       <div class="hero-side">
         <div class="hero-name"><b>Classic formal shirt</b><span>Level 4 · about 8 hours</span></div>
@@ -104,7 +106,8 @@ export function renderCatalog(el) {
     if (b.dataset.hc) {
       // recolour the hero shirt in place
       heroColor = b.dataset.hc;
-      el.querySelector('#hero-art').innerHTML = sketchSvg('shirt', HERO.options, null, 'hero', heroColor);
+      el.querySelector('#hero-art').classList.remove('has-photo');
+      el.querySelector('#hero-art').innerHTML = heroArt();
       el.querySelectorAll('[data-hc]').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.hc === heroColor)));
       el.querySelector('.hero-sw span').textContent = HERO_COLORS.find(([c]) => c === heroColor)[1].toUpperCase();
       return;

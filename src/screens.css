@@ -144,3 +144,12 @@
 .dphoto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .3s; }
 .has-photo .dphoto { opacity: 1; }
 .has-photo > .sketch { visibility: hidden; }
+
+/* hero markers sit on the photo or on the drawing, whichever is showing */
+.hero-garment .hot { left: var(--dx); top: var(--dy); }
+.hero-garment:has(.has-photo) .hot { left: var(--px); top: var(--py); }
+.hero-art .dphoto { object-fit: contain; }
+
+/* photos melt into the page: the edges fade out, so no box shows around the garment */
+.dphoto { -webkit-mask-image: radial-gradient(ellipse 74% 72% at 50% 50%, #000 78%, transparent 100%); mask-image: radial-gradient(ellipse 74% 72% at 50% 50%, #000 78%, transparent 100%); }
+.hero-art .dphoto { -webkit-mask-image: radial-gradient(ellipse 60% 62% at 50% 50%, #000 76%, transparent 100%); mask-image: radial-gradient(ellipse 60% 62% at 50% 50%, #000 76%, transparent 100%); }
