@@ -12,6 +12,10 @@ import { closestPhoto } from './photos.js';
 import { techniqueScene } from '../art/technique.js';
 import { pieceScene } from '../assembly/closeup.js';
 import { howStrip } from '../art/howto.js';
+import SEW_PHOTOS from '../sew-photos.json';
+
+/** file name of a sewing step's photo: <garment>--<caption in lower case with dashes> */
+export const sewPhotoName = (garment, cap) => `${garment}--${String(cap).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 import { assemblePants } from '../assembly/pants.js';
 
 const ASSEMBLY = { pants: assemblePants };
@@ -115,6 +119,17 @@ export function makeSteps(ctx, widthIn = 58) {
     }
     return repeat && st.d ? { ...st, sec: 'Sew', svg: () => techniqueScene(st.d, col, st.cap) } : { ...st, sec: 'Sew' };
   });
+  // A real photo of the step, when one has been added (public/img/sew/<garment>--<step>.jpg), becomes the main
+  // picture; the person's own pieces, with the edge and seam width, stay in a small inset.
+  for (let i = 0; i < out.length - 1; i++) {
+    const name = sewPhotoName(ctx.garment.id, out[i].cap);
+    if (!SEW_PHOTOS.includes(name)) continue;
+    const drawn = out[i].svg;
+    out[i] = { ...out[i], photo: `img/sew/${name}.jpg`, svg: () => `<image href="img/sew/${name}.jpg" x="0" y="0" width="800" height="500" preserveAspectRatio="xMidYMid slice"/>` +
+      `<g transform="translate(16 296)"><rect width="248" height="188" rx="14" fill="rgba(16,16,15,.82)" stroke="rgba(255,255,255,.18)"/>` +
+      `<svg x="6" y="6" width="236" height="152" viewBox="0 0 800 500">${drawn()}</svg>` +
+      `<text x="124" y="176" text-anchor="middle" class="howt">YOUR PIECE</text></g>` };
+  }
   const last = out[out.length - 1];
   if (last) out[out.length - 1] = { ...last, svg: () => finishedScene(ctx) };
   return [...steps, ...out];

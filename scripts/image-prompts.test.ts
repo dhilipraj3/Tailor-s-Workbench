@@ -4,6 +4,11 @@ import { it } from 'vitest';
 import { writeFileSync } from 'fs';
 import { DESIGNS, GARMENTS } from '../src/garments/index';
 import { VISIBLE } from '../src/views/photos.js';
+import { buildCtx } from '../src/engine/project';
+import { SHIRT_SIZES, waistPreset } from '../src/engine/sizes';
+import { makeSteps, sewPhotoName } from '../src/views/make-steps.js';
+import { detailChips } from '../src/engine/sew';
+import { S } from '../src/core/state.js';
 
 const COLORS: [string, string][] = [['#efe8d8', 'ivory'], ['#f3efe6', 'off-white'], ['#f1e6c8', 'cream'], ['#e9d7c2', 'beige'], ['#b9c7a6', 'sage green'], ['#7b8a6a', 'olive green'],
   ['#c45b6b', 'rose red'], ['#3f7f8c', 'teal'], ['#b8862e', 'mustard gold'], ['#d9c7d6', 'lilac'], ['#2f4a6b', 'navy blue'], ['#5a4a7a', 'deep purple'], ['#cf8a3a', 'burnt orange'],
@@ -72,4 +77,53 @@ it('writes docs/image-prompts-options.md', () => {
   writeFileSync('docs/image-prompts-options.md', `# Option photos\n\n${total} photos: each design with one visible option changed. The customiser shows the photo closest to what someone picks, ` +
     `with a note on any difference and a small drawing of exactly what they will make. Work from the top: the first designs have the most options.\n\n` +
     `**Save as** \`public/img/designs/<file>.jpg\` with the file name shown, then run \`npm run photos\` (or restart \`npm run dev\`). Same checks as the main photos: the garment must match the description, with no person, hanger, text or logo.\n\n---\n\n${md}`);
+});
+
+// Sewing-step photos: one real photo per distinct sewing step of each garment family, in plain off-white cotton,
+// so they serve every design and colour. The person's own pieces stay in an inset beside the photo.
+it('writes docs/image-prompts-sewing.md', () => {
+  S.unit = 'in';
+  const M: Record<string, number> = { ...SHIRT_SIZES.L, ...waistPreset(34), height: 66, bicep: 13 };
+  const FAMILY: Record<string, string> = { tunic: 'a kurti (Indian tunic)', shirt: "a men's shirt", trousers: 'tailored trousers', pants: 'pyjama pants', skirt: 'a skirt', dress: 'a dress' };
+  const ORDER_G = ['tunic', 'shirt', 'trousers', 'pants', 'dress', 'skirt'];
+  const seen = new Map<string, { garment: string; cap: string; text: string; d: any }[]>();
+  const done = new Set<string>();
+  for (const d of [...DESIGNS].sort((a, b) => ORDER_G.indexOf(a.garment) - ORDER_G.indexOf(b.garment))) {
+    const vs = [d.options];
+    for (const g of GARMENTS[d.garment].options) for (const v of g.values) vs.push({ ...d.options, [g.id]: v.id });
+    for (const o of vs) {
+      const sew = makeSteps(buildCtx(d.id, o, M, 'standard', 'T')).filter((x: any) => x.sec === 'Sew').slice(0, -1);
+      for (const st of sew) {
+        const name = sewPhotoName(d.garment, st.cap);
+        if (done.has(name)) continue;
+        done.add(name);
+        const text = String(typeof (st.text ?? st.say) === 'function' ? (st.text ?? st.say)() : (st.text ?? st.say));
+        const list = seen.get(d.garment) || [];
+        list.push({ garment: d.garment, cap: st.cap, text, d: st.d });
+        seen.set(d.garment, list);
+      }
+    }
+  }
+  const where = (d: any, cap: string) => {
+    const c = cap.toLowerCase();
+    if (d?.stitch === 'fuse' || /press|iron/.test(c) && d?.stitch === 'none') return 'at an ironing board, with a steam iron';
+    if (d?.stitch === 'hand' || d?.stitch === 'button') return 'at a work table, sewing by hand with a needle and thread';
+    if (!d || d.stitch === 'none') return 'at a work table';
+    return 'at a home sewing machine, the presser foot on the fabric';
+  };
+  let md = '', total = 0;
+  for (const g of ORDER_G) {
+    const rows = (seen.get(g) || []).map((x, i) => {
+      const chips = detailChips(x.d).join(', ');
+      return `### ${i + 1}. ${x.cap}\nFile: \`${sewPhotoName(g, x.cap)}.jpg\`\n\n> Real photograph, close-up from slightly above, of a person's hands ${where(x.d, x.cap)}, making ${FAMILY[g]} in plain natural off-white cotton. ` +
+        `The step shown: ${x.text}${chips ? ` (${chips})` : ''}. Show exactly this action and where the stitching goes; chalk marks and pins visible where they help; matching thread. ` +
+        `Clean dark charcoal work surface, soft daylight-balanced light, sharp focus, photorealistic, no text, no logo, no face, landscape 16:10.\n`;
+    });
+    total += rows.length;
+    md += `## ${({ tunic: 'Kurta / kurti / blouse', shirt: 'Shirt', trousers: 'Trousers', pants: 'Pyjama, salwar, churidar, palazzo, shorts', dress: 'Dress and frock', skirt: 'Skirt' } as any)[g]} (${rows.length} photos)\n\n${rows.join('\n')}\n`;
+  }
+  writeFileSync('docs/image-prompts-sewing.md', `# Sewing-step photos\n\n${total} photos: one for every distinct sewing step, shared by all designs of that garment. ` +
+    `They use plain off-white cotton so stitches, chalk and folds show clearly; the person's own pieces, edge and seam width appear in a small inset beside each photo.\n\n` +
+    `**Save as** \`public/img/sew/<file>.jpg\` with the file name shown (landscape, about 1600 × 1000), then run \`npm run photos\` or restart \`npm run dev\`. ` +
+    `Check each photo shows the action described (right edge, right side of the fabric, foot on the fabric). Regenerate if it adds text, a logo or a face.\n\n---\n\n${md}`);
 });
