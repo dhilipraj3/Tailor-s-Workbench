@@ -93,7 +93,7 @@ export function shirtSteps(o: Options, fit?: Fit): Step[] {
     s(P[4], 'Roll and sew shoulders', 'Pin the outer yoke shoulders to the front shoulders, good sides together. Roll the fronts and back up tightly. Bring the inner yoke over the roll and pin its shoulders on top, so the fronts are sandwiched. Sew both shoulders, then pull everything out through the neck.',
       { edges: ['yoke:shoulder', 'front:shoulder'], join: 'Fronts sandwiched between the yokes', stitch: 'straight', sa: SA, lock: true, press: 'Press the yoke flat', check: 'Both yoke layers lie smooth with no twist' }),
     s(P[4], 'Tack the yoke edges', 'Tack the two yoke layers together along the neck and the armholes, just inside the sewing line. Then stay-stitch the front neck curves.',
-      { stitch: 'stay', sa: 0.25, check: 'The yoke layers match at the neck and armholes' }),
+      { edges: ['yoke:neck', 'yoke:armhole'], stitch: 'stay', sa: 0.25, check: 'The yoke layers match at the neck and armholes' }),
   );
 
   if (mandarin) {
@@ -125,7 +125,7 @@ export function shirtSteps(o: Options, fit?: Fit): Step[] {
   }
 
   if (!half) out.push(
-    s(P[9], 'Cut the sleeve slit', 'Cut along the slit line at the bottom of each sleeve.', { stitch: 'none', check: 'Both slits are the same length' }),
+    s(P[9], 'Cut the sleeve slit', 'Cut along the slit line at the bottom of each sleeve.', { pieces: ['sleeve'], stitch: 'none', trim: 'Cut along the slit line', check: 'Both slits are the same length' }),
     s(P[9], 'Bind the back edge', `Press both long edges of the small placket ${sn(0.25)} under, then fold it in half. Wrap it round the edge of the slit nearer the underarm and sew close to its edge.`,
       { pieces: ['placketS'], stitch: 'edge', sa: 0.0625, lock: true }),
     s(P[9], 'Fold the big placket', `Press both long edges of the big placket ${sn(0.25)} under, fold it in half and press the top end into a point.`,
@@ -133,7 +133,7 @@ export function shirtSteps(o: Options, fit?: Fit): Step[] {
     s(P[9], 'Sew the tower placket', 'Wrap the big placket round the other edge of the slit, over the small one. Sew up its side, across above the slit, round the point and down. Then sew a small box with a cross above the slit, through every layer.',
       { stitch: 'edge', sa: 0.0625, lock: true, check: 'The placket lies flat and covers the slit top' }),
     s(P[12], 'Tack the sleeve pleats', 'Fold the two small pleats at the sleeve bottom towards the placket and tack them in place.',
-      { stitch: 'baste', sa: 0.25 }),
+      { edges: ['sleeve:hem'], stitch: 'baste', sa: 0.25 }),
   );
 
   out.push(
@@ -166,7 +166,7 @@ export function shirtSteps(o: Options, fit?: Fit): Step[] {
 
   out.push(
     s(P[14], 'Mark the buttonholes', `Mark up-and-down buttonholes on the right front band at the chalk marks, one across the ${mandarin ? 'band' : 'collar stand'}${half ? '' : ', one across each cuff half an inch from the end'}${o.collar === 'buttondown' ? ', and one at each collar point' : ''}.`,
-      { stitch: 'none', check: 'Buttonholes are evenly spaced and centred' }),
+      { pieces: ['front'], stitch: 'none', check: 'Buttonholes are evenly spaced and centred' }),
     s(P[14], 'Sew the buttonholes', 'Make each buttonhole an eighth of an inch longer than the button. Try one on a scrap first. Open each with the seam ripper, with a pin across the end.',
       { stitch: 'buttonhole', foot: 'Buttonhole foot', check: 'The button goes through easily' }),
   );

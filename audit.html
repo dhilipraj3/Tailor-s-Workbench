@@ -41,12 +41,14 @@
   document.getElementById('bar').innerHTML = DESIGNS.map((d) => `<a href="?design=${d.id}" aria-current="${d.id === id}">${esc(d.name)}</a>`).join('');
   S.unit = 'in';
   const d = DESIGNS.find((x) => x.id === id);
-  const opts = { ...d.options }; for (const [k, v] of q) if (k !== 'design') opts[k] = v;
+  const opts = { ...d.options }; for (const [k, v] of q) if (!['design', 'from', 'to'].includes(k)) opts[k] = v;
   const M = { ...SHIRT_SIZES.M, ...waistPreset(32), height: 64, bicep: 12 };
-  const steps = makeSteps(buildCtx(d.id, opts, M, 'standard', 'Audit')).filter((s) => s.sec === 'Sew');
+  const all = makeSteps(buildCtx(d.id, opts, M, 'standard', 'Audit')).filter((s) => s.sec === 'Sew');
+  // &from=<n>&to=<n> shows only those steps (numbers as shown), e.g. to look at a few at a time
+  const from = +(q.get('from') || 1), to = +(q.get('to') || all.length), steps = all.slice(from - 1, to);
   const say = (s) => (typeof (s.text ?? s.say) === 'function' ? (s.text ?? s.say)() : (s.text ?? s.say));
   document.getElementById('out').innerHTML = `<h2>${esc(d.name)} · ${steps.length} sewing steps · ${esc(JSON.stringify(opts))}</h2><div class="grid">` +
-    steps.map((s, i) => `<div class="cell"><span class="n">STEP ${i + 1}</span><div class="stage">${stageSvg(s.svg())}</div><b>${esc(s.cap)}</b><p>${esc(say(s))}</p>` +
+    steps.map((s, i) => `<div class="cell"><span class="n">STEP ${i + from}</span><div class="stage">${stageSvg(s.svg())}</div><b>${esc(s.cap)}</b><p>${esc(say(s))}</p>` +
       `<ul class="chips-sew">${detailChips(s.d).map((c) => `<li>${esc(c)}</li>`).join('')}</ul></div>`).join('') + '</div>';
   // SMIL parts (presser foot, visibility) also jump to the end
   for (const svg of document.querySelectorAll('.cell svg')) { try { svg.pauseAnimations(); svg.setCurrentTime(60); } catch (e) { /* no SMIL */ } }

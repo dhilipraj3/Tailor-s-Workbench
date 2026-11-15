@@ -108,3 +108,4 @@ Widths: 390 px (phone), 768 px (tablet), 1440 px (desktop). No horizontal scroll
 | 17 | Slit steps on kurtas too short to have slits | Instructions | Fixed: slits only on thigh, knee and calf lengths |
 | 18 | Blouse neck facing strip 3″ shorter than its neckline | Pattern | Fixed: strip drafted from the real neckline + 2″ |
 | 19 | Waist darts showed the bust dart size | Instructions | Fixed |
+| 20 | Shirt steps showed the wrong piece: Tack the yoke edges (collar), Cut the sleeve slit (placket strip), Tack the sleeve pleats (sleeve top), Mark the buttonholes (pins on the hem) | Pictures | Fixed: steps name their exact pieces; marking and cutting steps draw the real chalk marks |

@@ -78,7 +78,18 @@ export function pieceScene(ctx, d, color, cap = '', ctxRefs = null, opts = {}) {
     const named = refs.filter((r) => r[0] === p.sh.piece.id).map((r) => r[1]);
     const R = runs(p.sh.piece);
     // a step that names no edges (pressing the whole garment) highlights none; otherwise its edges, or all with "*"
-    const names = named.includes('*') ? Object.keys(R) : named.length ? named : (d.stitch === 'none' && d.press ? [] : Object.keys(R));
+    // a step that names the piece but no edge (cut the slit, mark the buttonholes) works on the chalk marks of that piece
+    const marks = !named.length && src.pieces?.includes(p.sh.piece.id) ? (p.sh.piece.marks || []).filter((mk) => (mk.k === 'line' && mk.style === 'mark') || mk.k === 'btn') : [];
+    for (const m of maps) for (const mk of marks) {
+      if (mk.k === 'btn') {
+        const [x, y] = m(mk.p);
+        out += H.draw(`M${n1(x - 9)} ${n1(y)} L${n1(x + 9)} ${n1(y)}`, 'chalkl', t0, 0.3); t0 += 0.25;
+      } else {
+        const dd = `M${m(mk.a).map(n1).join(' ')} L${m(mk.b).map(n1).join(' ')}`;
+        out += H.draw(dd, 'chalkl', t0, 0.6) + (d.trim ? H.cut(dd, t0 + 0.7, 1.2) : ''); t0 += 1.9;
+      }
+    }
+    const names = named.includes('*') ? Object.keys(R) : named.length ? named : (marks.length || (d.stitch === 'none' && d.press) ? [] : Object.keys(R));
     for (const pts of names.flatMap((n) => R[n] || [])) {
       if (!pts || pts.length < 2) continue;
       for (const m of maps) {
