@@ -9,6 +9,7 @@ import { bottomWidth } from '../garments/trousers';
 import { markSteps } from './mark-steps.js';
 import { sketchSvg } from './common.js';
 import { techniqueScene } from '../art/technique.js';
+import { pieceScene } from '../assembly/closeup.js';
 import { assemblePants } from '../assembly/pants.js';
 
 const ASSEMBLY = { pants: assemblePants };
@@ -85,8 +86,12 @@ export function makeSteps(ctx, widthIn = 58) {
   // A picture used by an earlier step is replaced by a close-up of this step's own action,
   // so no two sewing steps show the same animation.
   const seen = new Set(), col = ctx.design.color || ({ shirt: '#a8c0e0', trousers: '#6a7380' })[ctx.garment.id] || '#c9bfa9';
+  // Steps that name the pieces or edges they sew are drawn on the real pieces in this person's size
+  // (the pyjama family already has its own animation built from the real pieces).
+  const real = !ASSEMBLY[ctx.garment.id];
   const out = sew.map((st) => {
     const repeat = seen.has(st.svg); seen.add(st.svg);
+    if (real && (st.d?.edges?.length || st.d?.pieces?.length)) return { ...st, sec: 'Sew', svg: () => pieceScene(ctx, st.d, col, st.cap) || techniqueScene(st.d, col, st.cap) };
     return repeat && st.d ? { ...st, sec: 'Sew', svg: () => techniqueScene(st.d, col, st.cap) } : { ...st, sec: 'Sew' };
   });
   const last = out[out.length - 1];
