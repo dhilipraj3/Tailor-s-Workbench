@@ -30,7 +30,7 @@ export const D = (pts, map, close = true) => 'M' + pts.map((p) => map(p).map((v)
 /* ---------- drawing a fabric piece ---------- */
 export function fabric(shape, map, col, side = 'right', opts = {}) {
   const fill = side === 'right' ? col.right : col.wrong;
-  let o = `<path d="${D(shape.cut, map)}" fill="${fill}" stroke="${col.edge}" stroke-width="1" style="filter:url(#cloth)"/>`;
+  let o = `<path d="${D(shape.cut, map)}" fill="${fill}" stroke="${col.edge}" stroke-width="1.8" stroke-linejoin="round" style="filter:url(#cloth)"/>`;
   if (side === 'wrong') o += `<path d="${D(shape.cut, map)}" fill="url(#wrongTex)" style="pointer-events:none"/>`;
   if (opts.stitchLine !== false) o += `<path d="${D(shape.stitch, map)}" fill="none" stroke="rgba(255,255,255,${side === 'wrong' ? 0.7 : 0.35})" stroke-width="1.2" stroke-dasharray="5 5"/>`;
   if (opts.label) { const c = map([(shape.box[0] + shape.box[2]) / 2, (shape.box[1] + shape.box[3]) / 2]); o += `<text x="${c[0].toFixed(1)}" y="${c[1].toFixed(1)}" text-anchor="middle" style="font:700 15px var(--f-display);letter-spacing:.06em" fill="rgba(0,0,0,.45)">${opts.label}</text>`; }

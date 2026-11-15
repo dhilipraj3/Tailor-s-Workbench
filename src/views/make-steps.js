@@ -10,7 +10,7 @@ import { markSteps } from './mark-steps.js';
 import { sketchSvg } from './common.js';
 import { closestPhoto } from './photos.js';
 import { techniqueScene } from '../art/technique.js';
-import { pieceScene } from '../assembly/closeup.js';
+import { pieceScene, keySvg, fabricColors } from '../assembly/closeup.js';
 import { howStrip } from '../art/howto.js';
 import SEW_PHOTOS from '../sew-photos.json';
 
@@ -114,8 +114,9 @@ export function makeSteps(ctx, widthIn = 58) {
       const d = st.d || { stitch: 'none', press: 'Press with a damp cloth' }, refs = st.d ? near(i) : allMain;
       // the real piece on the left; the three-picture How strip for the technique on the right
       const how = howStrip({ ...st, d }, col);
-      const scene = () => pieceScene(ctx, d, col, st.cap, refs) || techniqueScene(d, col, st.cap);
-      return { ...st, sec: 'Sew', svg: () => (how ? `<g transform="translate(4 70) scale(.62)">${scene()}</g>` + how : scene()) };
+      const scene = (key) => pieceScene(ctx, d, col, st.cap, refs, { key }) || techniqueScene(d, col, st.cap);
+      // with a How strip the pieces shrink to the left; the key stays full size along the bottom
+      return { ...st, sec: 'Sew', svg: () => (how ? `<g transform="translate(4 56) scale(.62)">${scene(false)}</g>` + how + keySvg(fabricColors(col), '#fbf7ee', 16, 476) : scene(true)) };
     }
     return repeat && st.d ? { ...st, sec: 'Sew', svg: () => techniqueScene(st.d, col, st.cap) } : { ...st, sec: 'Sew' };
   });

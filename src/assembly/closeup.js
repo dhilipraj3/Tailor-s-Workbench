@@ -33,7 +33,7 @@ function layout(shapes, stacked) {
   });
 }
 
-export function pieceScene(ctx, d, color, cap = '', ctxRefs = null) {
+export function pieceScene(ctx, d, color, cap = '', ctxRefs = null, opts = {}) {
   if (!d) return null;
   const src = (d.edges?.length || d.pieces?.length) ? d : ctxRefs;   // a step that names nothing borrows its neighbour's pieces
   if (!src) return null;
@@ -51,7 +51,7 @@ export function pieceScene(ctx, d, color, cap = '', ctxRefs = null) {
       const ex0 = Math.min(...xs), ex1 = Math.max(...xs), ey0 = Math.min(...ys), ey1 = Math.max(...ys);
       if (ey1 - ey0 < 0.25 * p.h && ex1 - ex0 < 0.6 * p.w) {
         // the detail is small: zoom so its area fills the middle of the picture
-        const cx = (ex0 + ex1) / 2, cy = (ey0 + ey1) / 2, s = Math.min(560 / Math.max(ex1 - ex0 + 6, 0.1), 300 / Math.max(ey1 - ey0 + 5, 0.1), 140);
+        const cx = (ex0 + ex1) / 2, cy = (ey0 + ey1) / 2, s = Math.min(560 / Math.max(ex1 - ex0 + 6, 0.1), 300 / Math.max(ey1 - ey0 + 5, 0.1), 80);
         const ox = 400 - cx * s, oy = 290 - cy * s;
         Object.assign(p, { s, ox, oy, M: place(ox, oy, s), Mm: place(ox, oy, s, true), zoomed: true });
       }
@@ -60,14 +60,18 @@ export function pieceScene(ctx, d, color, cap = '', ctxRefs = null) {
   const word = cap.toLowerCase();
   let out = '', t0 = 0.5;
 
-  // the second piece lies underneath, shifted a little, when the step joins two pieces
-  if (joined) { const p = placed[0]; out += H.fade(fabric(shapes[1], place(p.ox + 12, p.oy + 10, p.s), col, 'wrong', { stitchLine: false }), 0.1); }
+  // pattern-instruction style: good side shaded in the garment colour, wrong side pale and hatched, dark stitch line.
+  // Good sides together: the lower piece shows its good side, the top piece its wrong side.
+  const side = joined ? 'wrong' : 'right';
+  const tag = (m, x, y, name, sd) => { const c = m([x, y]); return `<text x="${n1(c[0])}" y="${n1(c[1])}" text-anchor="middle" class="pname">${esc(name)}</text>` +
+    `<text x="${n1(c[0])}" y="${n1(c[1] + 16)}" text-anchor="middle" class="pside">${sd === 'right' ? 'GOOD SIDE' : 'WRONG SIDE'}</text>`; };
+  if (joined) { const p = placed[0], M2 = place(p.ox + 14, p.oy + 12, p.s); out += H.fade(fabric(shapes[1], M2, col, 'right', { stitchLine: false }), 0.1); }
 
   const turning = /^turn (the|it|each|right)|right side out|turn .* through/.test(word) && !/^turn and/.test(word);
   for (const p of placed) {
     const maps = p.whole ? [p.M, p.Mm] : [p.M];
-    let piece = (p.whole ? fabric(p.sh, p.Mm, col, 'right') : '') + fabric(p.sh, p.M, col, 'right', { label: p.whole ? '' : esc(p.sh.piece.name.toUpperCase()) });
-    if (p.whole) { const c = p.M([0, (p.y0 + p.y1) / 2]); piece += `<text x="${n1(c[0])}" y="${n1(c[1])}" text-anchor="middle" style="font:700 15px var(--f-display);letter-spacing:.06em" fill="rgba(0,0,0,.45)">${esc(p.sh.piece.name.toUpperCase())}</text>`; }
+    let piece = (p.whole ? fabric(p.sh, p.Mm, col, side) : '') + fabric(p.sh, p.M, col, side);
+    if (!p.zoomed) piece += tag(p.M, p.whole ? 0 : (p.x0 + p.x1) / 2, (p.y0 + p.y1) / 2, p.sh.piece.name.toUpperCase(), side);
     // turning right side out / turning a band or strip through: the piece flips over
     out += turning ? H.flip(piece, 'x', n1(p.M([(p.x0 + p.x1) / 2, 0])[0]), 0.4, 1.2) : piece;
 
@@ -78,9 +82,10 @@ export function pieceScene(ctx, d, color, cap = '', ctxRefs = null) {
     for (const pts of names.flatMap((n) => R[n] || [])) {
       if (!pts || pts.length < 2) continue;
       for (const m of maps) {
-        out += glow(pts, m, 0.2);
-        if (SEWN.includes(d.stitch)) { out += sewAlong(pts, m, t0, 1.4); t0 += 1.5; }
-        else if (d.stitch === 'zigzag') { out += H.stitch(H.zz(pts.map(m), 5, 10), t0, 1.4, 'foot', 'stitch solid'); t0 += 1.5; }
+        // the edge being worked: a soft yellow band, like a highlighter on a pattern sheet
+        out += H.fade(`<path d="${D(pts, m, false)}" fill="none" stroke="#ffd84a" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" opacity=".38"/>`, 0.2);
+        if (SEWN.includes(d.stitch)) { out += H.stitch(D(pts, m, false), t0, 1.4, 'foot', 'stitch inst'); t0 += 1.5; }
+        else if (d.stitch === 'zigzag') { out += H.stitch(H.zz(pts.map(m), 5, 10), t0, 1.4, 'foot', 'stitch solid inst'); t0 += 1.5; }
         else if (d.stitch === 'hand') { out += H.draw(D(pts, m, false), 'stitch', t0, 1.6) + H.follow(D(pts, m, false), t0, 1.6, ICON.hand(), false); t0 += 1.7; }
         else if (d.stitch === 'none' && d.trim) { out += H.cut(D(pts, m, false), t0, 1.4); t0 += 1.5; }
         else if (d.stitch === 'none' && !d.press && !turning) { out += pinsAlong(pts, m, t0, 4, 1); t0 += 0.8; }
@@ -102,5 +107,19 @@ export function pieceScene(ctx, d, color, cap = '', ctxRefs = null) {
   }
   // the seam-width close-up sits to the right of the pieces, so it never hides them
   if (d.sa && SEWN.includes(d.stitch)) out += `<g transform="translate(300 10) scale(.82)">${zoom(d.sa, 0.2, col)}</g>`;
-  return out + (cap ? `<text x="400" y="62" class="wordt" style="font-size:28px">${esc(cap.toUpperCase())}</text>` : '');
+  // key, as on a pattern instruction sheet
+  const lum = (h) => { const v = parseInt(String(h).slice(1), 16); return (0.2126 * ((v >> 16) & 255) + 0.7152 * ((v >> 8) & 255) + 0.0722 * (v & 255)) / 255; };
+  // thread contrasts with the side you are looking at
+  const thr = lum(side === 'right' ? col.right : col.wrong) > 0.55 ? '#23303a' : '#fbf7ee';
+  const key = opts.key === false ? '' : keySvg(col, thr);
+  return `<g style="--thr:${thr}">${out}${key}</g>` + (cap ? `<text x="400" y="62" class="wordt" style="font-size:28px">${esc(cap.toUpperCase())}</text>` : '');
 }
+
+/** key, as on a pattern instruction sheet */
+export function keySvg(col, thr = '#fbf7ee', x = 24, y = 462) {
+  return `<g transform="translate(${x} ${y})" class="pkey"><rect width="18" height="12" rx="2" fill="${col.right}" stroke="${col.edge}"/><text x="24" y="10">Good side</text>` +
+    `<rect x="104" width="18" height="12" rx="2" fill="${col.wrong}" stroke="${col.edge}"/><rect x="104" width="18" height="12" fill="url(#wrongTex)"/><text x="128" y="10">Wrong side</text>` +
+    `<path d="M218 6 L242 6" stroke="${thr}" stroke-width="2.6" stroke-dasharray="7 4"/><text x="248" y="10">Stitching</text>` +
+    `<path d="M322 6 L346 6" stroke="#ffd84a" stroke-width="9" opacity=".5"/><text x="352" y="10">Edge to work</text></g>`;
+}
+export { fabricColors };
