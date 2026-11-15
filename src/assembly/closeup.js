@@ -2,7 +2,7 @@
 // the pieces the step works on, the edges it touches glowing, and the action itself (sewing along the
 // real edge, zigzag, gathering, pinning, folding, turning over, pressing, trimming, buttonholes, buttons,
 // hand stitches), with the seam width in a close-up circle.
-import { H, ICON, fabricColors, pieceShape, place, D, fabric, glow, sewAlong, pinsAlong, zoom } from './kit.js';
+import { H, ICON, f, fabricColors, pieceShape, place, D, fabric, glow, sewAlong, pinsAlong, zoom } from './kit.js';
 
 const SEWN = ['straight', 'stay', 'baste', 'gather', 'edge', 'top', 'under', 'ditch'];
 const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
@@ -90,6 +90,13 @@ export function pieceScene(ctx, d, color, cap = '', ctxRefs = null, opts = {}) {
         else if (d.stitch === 'none' && d.trim) { out += H.cut(D(pts, m, false), t0, 1.4); t0 += 1.5; }
         else if (d.stitch === 'none' && !d.press && !turning) { out += pinsAlong(pts, m, t0, 4, 1); t0 += 0.8; }
       }
+    }
+    // darts: their real size for this person, measured on the piece (width at the edge, and length to the point)
+    for (const run of (named.includes('dart') ? R.dart || [] : [])) {
+      const pts = run, a = pts[0], b = pts[pts.length - 1], m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+      const tip = pts.reduce((best, q) => (Math.hypot(q[0] - m[0], q[1] - m[1]) > Math.hypot(best[0] - m[0], best[1] - m[1]) ? q : best), pts[0]);
+      const len = (u, v) => Math.hypot(v[0] - u[0], v[1] - u[1]);
+      out += H.dim(p.M(a), p.M(b), f(len(a, b)), 0.6, 26) + H.dim(p.M(m), p.M(tip), f(len(m, tip)), 0.9, -24);
     }
     const mid = p.M([(p.x0 + p.x1) / 2 * (p.whole ? 0 : 1) + (p.whole ? 0 : 0), (p.y0 + p.y1) / 2]);
     if (d.stitch === 'fuse' || (d.stitch === 'none' && d.press)) out += H.iron(mid[0] - 40, mid[1] + 30, 0.6, 120, 0, 3);

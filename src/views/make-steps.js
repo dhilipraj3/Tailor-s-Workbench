@@ -10,7 +10,8 @@ import { markSteps } from './mark-steps.js';
 import { sketchSvg } from './common.js';
 import { closestPhoto } from './photos.js';
 import { techniqueScene } from '../art/technique.js';
-import { pieceScene, keySvg, fabricColors } from '../assembly/closeup.js';
+import { pieceScene, keySvg, fabricColors, runs } from '../assembly/closeup.js';
+import { f as fmt, sn } from '../core/units.js';
 import { howStrip } from '../art/howto.js';
 import SEW_PHOTOS from '../sew-photos.json';
 
@@ -107,7 +108,21 @@ export function makeSteps(ctx, widthIn = 58) {
   const near = (i) => (/^(fold|pin|mark|ease|gather|iron|tack|cut|make|prepare|press the [a-z]+s?$)/i.test(sew[i].cap) ? ahead(i) || back(i) : back(i) || ahead(i));
   // the final press works on every main piece
   const allMain = { pieces: ctx.pieces.filter((g) => g.piece.fabric === 'main' && !g.piece.simple).slice(0, 3).map((g) => g.piece.id) };
-  const out = sew.map((st, i) => {
+  // Dart steps get this person's dart size in their words: width at the side, length, and how far below the armhole.
+  const front = ctx.pieces.find((g) => g.piece.id === 'front')?.piece, R = front ? runs(front) : {};
+  const dartRun = (R.dart || [])[0], sideStart = (R.side || [])[0]?.[0];
+  const dartWords = dartRun && sideStart ? (() => {
+    const a = dartRun[0], b = dartRun[dartRun.length - 1], m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2], L = (u, v) => Math.hypot(v[0] - u[0], v[1] - u[1]);
+    const tip = dartRun.reduce((q, p) => (L(p, m) > L(q, m) ? p : q), a);
+    return { show: `Each dart is ${fmt(L(a, b))} wide at the side seam and ${fmt(L(m, tip))} long, starting ${fmt(L(sideStart, a))} below the armhole.`,
+      say: `Each dart is ${sn(L(a, b))} wide at the side seam and ${sn(L(m, tip))} long, starting ${sn(L(sideStart, a))} below the armhole.` };
+  })() : null;
+  const withDart = (st) => (dartWords && /dart/i.test(st.cap) ? {
+    ...st,
+    text: () => `${typeof (st.text ?? st.say) === 'function' ? (st.text ?? st.say)() : (st.text ?? st.say)} ${dartWords.show}`,
+    say: () => `${typeof st.say === 'function' ? st.say() : st.say} ${dartWords.say}`,
+  } : st);
+  const out = sew.map(withDart).map((st, i) => {
     const repeat = seen.has(st.svg); seen.add(st.svg);
     if (real && i < sew.length - 1) {
       // A1: steps without sewing detail (the final press) are drawn on the real pieces too
