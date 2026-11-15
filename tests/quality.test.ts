@@ -110,3 +110,21 @@ group('steps that place, size or space something say how much, in this person\'s
     }
   });
 });
+
+group('a finished top can be put on, and its front and back match', () => {
+  for (const d of DESIGNS.filter((x) => x.garment === 'tunic')) it(d.name, async () => {
+    const { neckOpening, headOpening } = await import('../src/garments/tunic');
+    for (const size of [M, { ...M, chest: 34, neck: 13.5, waist: 28, hip: 37, height: 62 }, { ...M, chest: 26, neck: 11.5, waist: 23, hip: 27, height: 48, shoulder: 11, sleeve: 16 }]) {
+      for (const o of variants(d)) {
+        const ps = GARMENTS.tunic.draft(size, o), where = JSON.stringify(o);
+        const key = ps.find((p) => p.id === 'keyface'), keyDepth = key ? Math.max(...key.outline.points().map((p) => p[1])) - 2 : 0;
+        const extra = 2 * keyDepth + (o.opening === 'halfplacket' ? 18 : 0) + (o.opening === 'fronthooks' ? 99 : 0);
+        expect(neckOpening(ps) + extra, `goes over the head ${where}`).toBeGreaterThanOrEqual(headOpening(size));
+        const f = ps.find((p) => p.id === 'front')!, b = ps.find((p) => p.id === 'back')!;
+        const hipWidth = (p: typeof f) => Math.max(...p.outline.points().filter((q) => q[1] > (p.outline.points().reduce((a, c) => Math.max(a, c[1]), 0)) - 1).map((q) => Math.abs(q[0])));
+        // a cropped blouse ends at the bust, where the front is meant to be wider; every longer top must match at the hem
+        if (o.length !== 'crop') expect(Math.abs(hipWidth(f) - hipWidth(b)), `front and back hem width ${where}`).toBeLessThanOrEqual(0.13);
+      }
+    }
+  });
+});

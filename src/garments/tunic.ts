@@ -6,6 +6,11 @@ import { tunicSteps } from './sew-tunic';
 
 const r4 = (x: number) => Math.round(x * 4) / 4;
 
+/** distance round the neckline (front and back, both halves) */
+export const neckOpening = (pieces: Piece[]) => 2 * (edgeLength(pieces.find((p) => p.id === 'front'), 'neck') + edgeLength(pieces.find((p) => p.id === 'back'), 'neck'));
+/** the opening a woven neckline needs to pull over the head: head round + 1½″ (head estimated from height when not measured) */
+export const headOpening = (m: Measurements) => (m.head || (m.height && m.height < 56 ? 18 + (m.height - 36) * 0.15 : 22.5)) + 1.5;
+
 /** Where each length ends, measured down from the shoulder/neck line. */
 export function tunicLengthY(m: Measurements, len: string) {
   const H = m.height || 66, waistY = H * 0.25, hipY = waistY + (H < 52 ? 5 : 8);
@@ -27,9 +32,12 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
   const bd = o.back === 'deepu' ? Math.max(6, armY - 1.5) : o.neck === 'deep' ? 2.5 : o.neck === 'boat' ? 1 : 0.75;
   const di = o.darts === 'yes' ? Math.max(0.5, (C - Wst) / 8) : 0; // bust dart intake, front gets longer by this much
   const halfW = (x: number) => x / 4;
-  const chestF = halfW(G) - 0.25, chestB = halfW(G) + 0.25;
-  const waistF = fitted ? halfW(Wst + E) : chestF - 0.25, waistB = fitted ? halfW(Wst + E) + 0.5 : chestB - 0.25;
-  const hipF = Math.max(halfW(H + E), waistF), hipB = Math.max(halfW(H + E) + 0.25, waistB);
+  // Front and back are the same width at the waist, hip and hem, so the side seams meet. Where there are bust darts
+  // the front gets ¼″ more per quarter at the bust (the dart takes it in again below); without darts both are equal.
+  const bust = o.darts === 'yes' ? 0.25 : 0;
+  const chestF = halfW(G) + bust, chestB = halfW(G) - bust;
+  const waistF = fitted ? halfW(Wst + E) : halfW(G) - 0.25, waistB = waistF;
+  const hipF = Math.max(halfW(H + E), waistF), hipB = hipF;
   const flare = aline ? Math.max(0, len - hipY) * 0.2 + 1 : 0;
   const SA = 0.5, plain: Allow = { sa: SA }, side: Allow = { sa: SA, extra: sideExtra }, hem: Allow = { sa: peplum ? SA : len > hipY + 4 ? 1.25 : 1 }, fold: Allow = { sa: 0, fold: true };
   const neckA: Allow = { sa: 0.375 };
@@ -42,7 +50,8 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
     }
     if (len > waistY + 0.5) ol.line([waist, waistY + drop], side, 'side');
     if (len > hipY + 0.5) ol.line([hip, hipY + drop], side, 'side');
-    const hemX = len > hipY + 0.5 ? hip + flare : len > waistY + 0.5 ? waist : chest;
+    // a top cut to the waist (peplum bodice) ends at the waist width, not the bust width
+    const hemX = len > hipY + 0.5 ? hip + flare : len > waistY - 0.01 ? waist : chest;
     ol.line([hemX, len + drop], side, 'side');
     return hemX;
   };
@@ -119,7 +128,17 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
     const w = r4(((H + E) / 2) * 1.5 + 1);
     pieces.push(rectPiece('pepF', 'Peplum front', openFront ? r4(w / 2 + 1.5) : w, 8, openFront ? 2 : 1), rectPiece('pepB', 'Peplum back', w, 8, 1));
   }
-  if (o.back === 'keyhole') pieces.push(rectPiece('keyface', 'Keyhole facing', 3, 6, 1), rectPiece('dori', 'Tie string', 1.5, 18, 2));
+  // A pull-on top must go over the head. If the neckline is too small and there is no other opening,
+  // a 4 inch back keyhole is added (it opens the neck by 8 inches), with ties to close it.
+  const needKeyhole = o.back !== 'keyhole' && o.opening === 'none' && neckOpening(pieces) < headOpening(m);
+  if (o.back === 'keyhole' || needKeyhole) {
+    // deep enough that the neck opens to fit the head (a keyhole adds twice its depth), at least 4 inches
+    const depth = Math.max(4, Math.ceil(((headOpening(m) - (o.opening === 'halfplacket' ? 18 : 0) - neckOpening(pieces)) / 2 + 0.25) * 4) / 4);
+    const backP = pieces.find((p) => p.id === 'back');
+    if (backP) { backP.marks = backP.marks.filter((mk) => !(mk.k === 'text' && mk.t === 'keyhole')); const i = backP.marks.findIndex((mk) => mk.k === 'line' && mk.a[0] === 0 && mk.b[0] === 0 && mk.style === 'mark' && Math.abs(mk.b[1] - mk.a[1] - 4) < 1e-6); if (i >= 0) backP.marks.splice(i, 1); }
+    backP?.marks.push({ k: 'line', a: [0, bd], b: [0, bd + depth], style: 'mark' }, { k: 'text', p: [0.3, bd + depth / 2], t: 'keyhole' });
+    pieces.push(rectPiece('keyface', 'Keyhole facing', 3, depth + 2, 1), rectPiece('dori', 'Tie string', 1.5, 18, 2));
+  }
   // A blouse that opens at the front is lined: each lining piece is the same shape and is tacked to its blouse piece.
   if (openFront) for (const id of ['front', 'back', 'sleeve']) {
     const p = pieces.find((x) => x.id === id);

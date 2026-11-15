@@ -75,7 +75,8 @@ function tunicSizes(o: Options, fit: Fit): Record<string, string> {
   if (opening) out['Sew on the hooks'] = `Your opening is ${sn(opening)} long: ${Math.max(3, Math.round(opening))} hooks, about an inch apart.`;
   const pf = rectSize(get('pepF')), pb = rectSize(get('pepB'));
   if (pf && pb) out['Gather the peplum'] = `The peplum is ${sn(pf.h)} deep. Gather it down to fit the ${sn(2 * (edgeLen(front, 'hem') + edgeLen(back, 'hem')))} waist of the top.`;
-  if (get('keyface')) out['Sew the keyhole facing'] = `The keyhole is ${sn(4)} deep. The facing is ${sn(3)} wide and ${sn(6)} long.`;
+  const kf = rectSize(get('keyface'));
+  if (kf) { const depth = kf.h - 2; out['Sew the keyhole facing'] = `The keyhole is ${sn(depth)} deep. The facing is ${sn(kf.w)} wide and ${sn(kf.h)} long.${o.back !== 'keyhole' ? ` Your neckline is ${sn(neck)} round, too small to go over the head, so this keyhole opens it to ${sn(neck + 2 * depth)}.` : ''}`; }
   const tie = rectSize(get('dori'));
   if (tie) out['Make the tie strings'] = `Each strip is ${sn(tie.h)} long and ${sn(tie.w)} wide; it finishes ${sn(tie.w / 4)} wide.`;
   const ab = rectSize(get('armbind'));
@@ -85,6 +86,8 @@ function tunicSizes(o: Options, fit: Fit): Record<string, string> {
 
 export function tunicSteps(o: Options, fit?: Fit): Step[] {
   // side slits exist only on longer kurtas (the pattern draws them below the hip), never on a peplum
+  // the pattern adds a back keyhole when a pull-on neckline is too small for the head
+  const keyhole = o.back === 'keyhole' || !!fit?.pieces.some((p) => p.id === 'keyface');
   const slits = o.slits === 'yes' && ['thigh', 'knee', 'calf'].includes(o.length) && o.fit !== 'peplum';
   const SA = TUNIC_SA.seam, hemSA = tunicHem(o.length), sleeves = o.sleeve !== 'none', gathered = o.sleeve === 'puff' || o.sleeve === 'balloon';
   const blouse = o.opening === 'fronthooks', placket = o.opening === 'halfplacket', band = o.neck === 'band';
@@ -129,7 +132,7 @@ export function tunicSteps(o: Options, fit?: Fit): Step[] {
     );
   }
 
-  if (o.back === 'keyhole') out.push(
+  if (keyhole) out.push(
     s(W.stay, 'Make the tie strings', `Press both long edges of each tie strip to the middle, fold it in half again and press. Tuck one end in. Sew along the open edge.`,
       { pieces: ['dori'], stitch: 'edge', sa: 0.0625, lock: true }),
     s(W.stay, 'Sew the keyhole facing', 'Lay the keyhole facing on the good side of the back, centred over the keyhole mark, good sides together. Sew a narrow U a quarter inch each side of the mark and across its bottom.',
