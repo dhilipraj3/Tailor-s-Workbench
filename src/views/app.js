@@ -47,8 +47,8 @@ export function route() {
     el.innerHTML = `<h2 class="h2">${IC.help} ${HELP[b][0]}</h2><div id="hp"></div>`;
     helpCleanup = mountPlayer(el.querySelector('#hp'), { steps: HELP[b][1], onFinish: () => { location.hash = '#/help'; } });
   } else if (a === 'help') {
-    el.innerHTML = `<section class="sec"><h2 class="h2">${IC.help} Help</h2><div class="cards">${Object.entries(HELP).map(([k, [n, st]]) =>
-      `<a class="dcard" href="#/help/${k}"><div class="help-pic">${k === 'tools' ? IC.scissors : IC.needle}</div><b>${n}</b><span class="meta">${st.length} steps</span></a>`).join('')}</div></section>`;
+    el.innerHTML = `<section class="sec"><span class="eyebrow">Before you start</span><h2 class="h2">Help</h2><p class="hint">Short guides for the basics. Every design's own steps are in its Make it tab.</p><div class="hcards">${Object.entries(HELP).map(([k, [n, st]]) =>
+      `<a class="hcard" href="#/help/${k}"><span class="help-pic">${k === 'tools' ? IC.scissors : IC.needle}</span><span class="hc-t"><b>${n}</b><span>${st.length} picture steps with voice</span></span><span class="hc-go" aria-hidden="true">${IC.next}</span></a>`).join('')}</div></section>`;
   } else {
     // home, and the home sections the top menu jumps to
     renderCatalog(el);

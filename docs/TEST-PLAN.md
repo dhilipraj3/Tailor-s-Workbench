@@ -109,3 +109,5 @@ Widths: 390 px (phone), 768 px (tablet), 1440 px (desktop). No horizontal scroll
 | 18 | Blouse neck facing strip 3″ shorter than its neckline | Pattern | Fixed: strip drafted from the real neckline + 2″ |
 | 19 | Waist darts showed the bust dart size | Instructions | Fixed |
 | 20 | Shirt steps showed the wrong piece: Tack the yoke edges (collar), Cut the sleeve slit (placket strip), Tack the sleeve pleats (sleeve top), Mark the buttonholes (pins on the hem) | Pictures | Fixed: steps name their exact pieces; marking and cutting steps draw the real chalk marks |
+| 21 | Help cards: icons overflowed the corners, step count cut off | Screens | Fixed: own card layout |
+| 22 | People: person card without padding; person page measurement cards overlapping, buttons cut off | Screens | Fixed |
