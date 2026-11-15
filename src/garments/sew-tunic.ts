@@ -90,7 +90,7 @@ export function tunicSteps(o: Options, fit?: Fit): Step[] {
   const keyhole = o.back === 'keyhole' || !!fit?.pieces.some((p) => p.id === 'keyface');
   const slits = o.slits === 'yes' && ['thigh', 'knee', 'calf'].includes(o.length) && o.fit !== 'peplum';
   const SA = TUNIC_SA.seam, hemSA = tunicHem(o.length), sleeves = o.sleeve !== 'none', gathered = o.sleeve === 'puff' || o.sleeve === 'balloon';
-  const blouse = o.opening === 'fronthooks', placket = o.opening === 'halfplacket', band = o.neck === 'band';
+  const blouse = o.opening === 'fronthooks', placket = o.opening === 'halfplacket' || (o.neck === 'band' && o.opening === 'none'), band = o.neck === 'band';
   const out: Step[] = [];
 
   if (blouse) {

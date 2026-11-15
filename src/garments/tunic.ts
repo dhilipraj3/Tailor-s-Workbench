@@ -20,16 +20,21 @@ export function tunicLengthY(m: Measurements, len: string) {
 export interface BodiceOpts { neck: string; sleeve: string; length: string; fit: string; slits: string; darts: string; opening: string; back?: string }
 
 /** Draft front, back, sleeves and finishing pieces. Shared with the dress. */
-export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece[] {
+export function draftTunic(m: Measurements, o0: BodiceOpts, sideExtra = 1, grow = 0): Piece[] {
+  // a band collar closes round the neck, so it always has a front placket to get the head through
+  const o: BodiceOpts = o0.neck === 'band' && o0.opening === 'none' ? { ...o0, opening: 'halfplacket' } : o0;
+  // a pull-on top (no placket, hooks, zip or keyhole) has a wider, deeper kurti neckline; `grow` widens it further until the head fits
+  const pullOn = o.opening === 'none' && o.back !== 'keyhole';
   const C = m.chest, N = m.neck, Sh = m.shoulder, H = m.hip, Wst = m.waist;
   // a peplum top is a fitted bodice cut to the waist, with a gathered peplum sewn on below
   const peplum = o.fit === 'peplum', fitted = o.fit === 'fitted' || peplum, aline = o.fit === 'aline';
   const E = fitted ? 2.5 : 5, G = C + E;
-  const nw = N / 6 + (o.neck === 'boat' ? 1.75 : 0.25), armY = G / 6 + (fitted ? 2.5 : 3);
+  // never so wide that the shoulder seam shrinks below 2¾ inches (narrow child shoulders)
+  const nw = Math.min(N / 6 + (o.neck === 'boat' ? 1.75 : pullOn ? 1.25 : 0.25) + grow * 0.4, Sh / 2 - 3), armY = G / 6 + (fitted ? 2.5 : 3);
   const L0 = tunicLengthY(m, o.length), { waistY, hipY } = L0, len = peplum ? waistY : L0.len;
-  const fd = ({ round: N / 6 + 0.75, v: Math.max(4, N / 2.6), deep: Math.max(5, N / 2.4), boat: 1.5, band: N / 6 + 0.75, square: Math.max(4, N / 2.8), sweetheart: Math.max(4.5, N / 2.6), high: N / 6 + 0.25 } as Record<string, number>)[o.neck] ?? N / 6 + 0.75;
+  const fd = (({ round: N / 6 + 0.75, v: Math.max(4, N / 2.6), deep: Math.max(5, N / 2.4), boat: 1.5, band: N / 6 + 0.75, square: Math.max(4, N / 2.8), sweetheart: Math.max(4.5, N / 2.6), high: N / 6 + 0.25 } as Record<string, number>)[o.neck] ?? N / 6 + 0.75) + (pullOn ? 2 + grow : 0);
   // back neck depth: a deep U back is cut well down the back (popular for saree blouses)
-  const bd = o.back === 'deepu' ? Math.max(6, armY - 1.5) : o.neck === 'deep' ? 2.5 : o.neck === 'boat' ? 1 : 0.75;
+  const bd = o.back === 'deepu' ? Math.max(6, armY - 1.5) : Math.max(o.neck === 'deep' ? 2.5 : o.neck === 'boat' ? 1 : 0.75, pullOn ? 2 + grow * 0.5 : 0);
   const di = o.darts === 'yes' ? Math.max(0.5, (C - Wst) / 8) : 0; // bust dart intake, front gets longer by this much
   const halfW = (x: number) => x / 4;
   // Front and back are the same width at the waist, hip and hem, so the side seams meet. Where there are bust darts
@@ -130,8 +135,9 @@ export function draftTunic(m: Measurements, o: BodiceOpts, sideExtra = 1): Piece
   }
   // A pull-on top must go over the head. If the neckline is too small and there is no other opening,
   // a 4 inch back keyhole is added (it opens the neck by 8 inches), with ties to close it.
-  const needKeyhole = o.back !== 'keyhole' && o.opening === 'none' && neckOpening(pieces) < headOpening(m);
-  if (o.back === 'keyhole' || needKeyhole) {
+  // still too small for the head? draft again with a wider, deeper neckline (no keyhole is added)
+  if (pullOn && neckOpening(pieces) < headOpening(m) && grow < 6) return draftTunic(m, o0, sideExtra, grow + 0.5);
+  if (o.back === 'keyhole') {
     // deep enough that the neck opens to fit the head (a keyhole adds twice its depth), at least 4 inches
     const depth = Math.max(4, Math.ceil(((headOpening(m) - (o.opening === 'halfplacket' ? 18 : 0) - neckOpening(pieces)) / 2 + 0.25) * 4) / 4);
     const backP = pieces.find((p) => p.id === 'back');

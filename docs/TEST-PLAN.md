@@ -111,6 +111,6 @@ Widths: 390 px (phone), 768 px (tablet), 1440 px (desktop). No horizontal scroll
 | 20 | Shirt steps showed the wrong piece: Tack the yoke edges (collar), Cut the sleeve slit (placket strip), Tack the sleeve pleats (sleeve top), Mark the buttonholes (pins on the hem) | Pictures | Fixed: steps name their exact pieces; marking and cutting steps draw the real chalk marks |
 | 21 | Help cards: icons overflowed the corners, step count cut off | Screens | Fixed: own card layout |
 | 22 | People: person card without padding; person page measurement cards overlapping, buttons cut off | Screens | Fixed |
-| 23 | **Found by sewing a real straight kurti:** pull-on neckline (17½″ in M) too small to go over the head | Pattern | Fixed: a back keyhole with ties is added whenever a pull-on neckline is under head + 1½″, deep enough for the head; test for every top, option and size |
+| 23 | **Found by sewing a real straight kurti:** pull-on neckline (17½″ in M) too small to go over the head | Pattern | Fixed properly: pull-on necklines are drafted as kurti necklines (wider and deeper, grown until the head fits); no keyhole is added; band collars always get a front placket; test for every top, option and size |
 | 24 | **Found by sewing a real straight kurti:** back ½″ wider than front all the way down, so side seams did not meet | Pattern | Fixed: front and back equal at waist, hip and hem; front ¼″ more per quarter at the bust only with darts; test |
 | 25 | Peplum bodice ended at the bust width instead of the waist width | Pattern | Fixed |
