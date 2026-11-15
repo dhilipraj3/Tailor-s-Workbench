@@ -102,3 +102,5 @@ Widths: 390 px (phone), 768 px (tablet), 1440 px (desktop). No horizontal scroll
 | 11 | "Turn and topstitch" flipped the pieces to the wrong side | Pictures | Fixed |
 | 12 | Final "Press it" step used the old generic picture | Pictures | Fixed; test now covers steps without sewing detail |
 | 13 | Customiser switched to the drawing as soon as any option changed | Customiser | Fixed: closest photo + note + "Yours" drawing; 272 option-photo prompts in docs/image-prompts-options.md |
+| 14 | Hero colour swatches switched to a flat drawing; marker 3 floated off the garment | Home | Fixed: every swatch dyes the real photo |
+| 15 | Many sewing pictures did not explain the technique (e.g. Sew the darts showed only two glowing lines) | Pictures | Fixed: three-picture How strip beside the real piece for darts, seams, hems, casings, bands, understitching, felled seams, gathering, easing, set-in sleeves, stay-stitching, clipping, edgestitching, zigzag, buttonholes, buttons, bartacks and interfacing |

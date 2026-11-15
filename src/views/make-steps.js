@@ -11,6 +11,7 @@ import { sketchSvg } from './common.js';
 import { closestPhoto } from './photos.js';
 import { techniqueScene } from '../art/technique.js';
 import { pieceScene } from '../assembly/closeup.js';
+import { howStrip } from '../art/howto.js';
 import { assemblePants } from '../assembly/pants.js';
 
 const ASSEMBLY = { pants: assemblePants };
@@ -107,7 +108,10 @@ export function makeSteps(ctx, widthIn = 58) {
     if (real && i < sew.length - 1) {
       // A1: steps without sewing detail (the final press) are drawn on the real pieces too
       const d = st.d || { stitch: 'none', press: 'Press with a damp cloth' }, refs = st.d ? near(i) : allMain;
-      return { ...st, sec: 'Sew', svg: () => pieceScene(ctx, d, col, st.cap, refs) || techniqueScene(d, col, st.cap) };
+      // the real piece on the left; the three-picture How strip for the technique on the right
+      const how = howStrip({ ...st, d }, col);
+      const scene = () => pieceScene(ctx, d, col, st.cap, refs) || techniqueScene(d, col, st.cap);
+      return { ...st, sec: 'Sew', svg: () => (how ? `<g transform="translate(4 70) scale(.62)">${scene()}</g>` + how : scene()) };
     }
     return repeat && st.d ? { ...st, sec: 'Sew', svg: () => techniqueScene(st.d, col, st.cap) } : { ...st, sec: 'Sew' };
   });

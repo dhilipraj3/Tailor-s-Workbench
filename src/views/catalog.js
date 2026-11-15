@@ -33,7 +33,10 @@ const HERO_OPTS = { ...HERO.options, opening: 'halfplacket' };
 const HERO_COLORS = [['#b5263f', 'Crimson'], ['#efe8d8', 'Ivory'], ['#3f7f8c', 'Teal'], ['#b8862e', 'Mustard']];
 let heroColor = HERO_COLORS[0][0];
 // the photo shows the shirt in its own colour; any other swatch shows the recoloured drawing
-const heroArt = () => (heroColor === HERO_COLORS[0][0] ? `<img class="hero-img" src="img/hero-kurti.png" alt="" onload="this.parentNode.classList.add('has-photo')">` : sketchSvg('tunic', HERO_OPTS, null, 'hero', heroColor));
+// every colour is your photo, dyed: the photo turns grey and the colour is multiplied over it, so folds and shading stay real
+const heroArt = () => { const dyed = heroColor !== HERO_COLORS[0][0];
+  return `<img class="hero-img${dyed ? ' dyed' : ''}" src="img/hero-kurti.png" alt="" onload="this.parentNode.classList.add('has-photo')">` +
+    (dyed ? `<span class="hero-dye" style="background:${heroColor};-webkit-mask-image:url(img/hero-kurti.png);mask-image:url(img/hero-kurti.png)"></span>` : ''); };
 
 function hero() {
   return `<section class="hero" aria-label="Welcome">
