@@ -60,11 +60,11 @@ function stageArt(design, g, o) {
     `<figcaption class="dz-note">${ph.diff.map((x) => `<b>${esc(x.group)}:</b> ${esc(x.photo)} in the photo, ${esc(x.yours)} in yours`).join('<br>')}</figcaption>`;
 }
 
-export function renderDesign(el, designId, editProjectId) {
+export function renderDesign(el, designId, editProjectId, startOptions = {}) {
   const design = DESIGNS.find((d) => d.id === designId) || DESIGNS[0];
   const g = GARMENTS[design.garment];
   const editing = editProjectId ? getProject(editProjectId) : null;
-  const st = { options: { ...(editing?.options || design.options) }, personId: editing?.personId || personFor(design.for || 'man')?.id || 'new', extra: editing?.extra || 'standard' };
+  const st = { options: { ...(editing?.options || { ...design.options, ...startOptions }) }, personId: editing?.personId || personFor(design.for || 'man')?.id || 'new', extra: editing?.extra || 'standard' };
   const kindWord = ({ man: 'man', woman: 'woman', child: 'child' })[design.for || 'man'];
   const draw = () => {
     // the drawing always shows exactly what will be made, with the options chosen

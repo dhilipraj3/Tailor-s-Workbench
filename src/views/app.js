@@ -39,7 +39,7 @@ export function route() {
     const des = DESIGNS.find((x) => x.id === b), p = { id: uid(), designId: des.id, options: { ...des.options }, personId: personFor(des.for || 'man', true).id, extra: 'standard', created: Date.now(), step: 0, done: [] };
     store.projects.push(p); save(); location.replace(`#/project/${p.id}/${c || 'pattern'}${d ? '/' + d : ''}${query ? '?' + query : ''}`); return;
   }
-  if (a === 'design') renderDesign(el, b, new URLSearchParams(query || '').get('p'));
+  if (a === 'design') { const q = new URLSearchParams(query || ''); renderDesign(el, b, q.get('p'), Object.fromEntries((q.get('o') || '').split(',').filter(Boolean).map((kv) => kv.split(':')))); }
   else if (a === 'project') renderProject(el, b, c || 'pattern', d === undefined ? undefined : +d, new URLSearchParams(query || '').get('t'));
   else if (a === 'people' && b) renderPerson(el, b);
   else if (a === 'people') renderPeople(el);

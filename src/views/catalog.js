@@ -27,11 +27,13 @@ const HOW = [
   ['Sew with voice', 'Seam width, stitch and pressing, spelled out and read aloud.'],
 ];
 
-const HERO = DESIGNS.find((d) => d.id === 'formal-shirt');
-const HERO_COLORS = [['#a8c0e0', 'Sky blue'], ['#f1efe9', 'White'], ['#2f3e5c', 'Navy'], ['#e3b7c2', 'Rose']];
+// the hero: your A-line kurti photo (with a short front placket, so the link opens the design with that option)
+const HERO = DESIGNS.find((d) => d.id === 'aline-kurti');
+const HERO_OPTS = { ...HERO.options, opening: 'halfplacket' };
+const HERO_COLORS = [['#b5263f', 'Crimson'], ['#efe8d8', 'Ivory'], ['#3f7f8c', 'Teal'], ['#b8862e', 'Mustard']];
 let heroColor = HERO_COLORS[0][0];
 // the photo shows the shirt in its own colour; any other swatch shows the recoloured drawing
-const heroArt = () => sketchSvg('shirt', HERO.options, null, 'hero', heroColor) + (heroColor === HERO_COLORS[0][0] ? designPhoto(HERO.id) : '');
+const heroArt = () => (heroColor === HERO_COLORS[0][0] ? `<img class="hero-img" src="img/hero-kurti.png" alt="" onload="this.parentNode.classList.add('has-photo')">` : sketchSvg('tunic', HERO_OPTS, null, 'hero', heroColor));
 
 function hero() {
   return `<section class="hero" aria-label="Welcome">
@@ -41,23 +43,23 @@ function hero() {
       <a class="cta" href="#/designs">EXPLORE THE DESIGNS</a>
     </div>
     <div class="hero-stage">
-      <figure class="hero-garment" role="img" aria-label="Classic formal shirt, showing the collar, button band and sleeve">
-        <span class="hero-word" aria-hidden="true">SHIRT</span>
+      <figure class="hero-garment" role="img" aria-label="A-line kurti in crimson, showing the front placket, three-quarter sleeve and flared panels">
+        <span class="hero-word" aria-hidden="true">KURTI</span>
         <span class="hero-floor" aria-hidden="true"></span>
         <span class="hero-art" id="hero-art">${heroArt()}</span>
-        <span class="hot" style="--dx:42%;--dy:16%;--px:45.3%;--py:17.2%" aria-hidden="true">1</span>
-        <span class="hot" style="--dx:50%;--dy:45.5%;--px:50%;--py:36%" aria-hidden="true">2</span>
-        <span class="hot" style="--dx:74.4%;--dy:19.3%;--px:68.4%;--py:24%" aria-hidden="true">3</span>
+        <span class="hot" style="--dx:50%;--dy:17%;--px:50%;--py:20%" aria-hidden="true">1</span>
+        <span class="hot" style="--dx:20%;--dy:45%;--px:26%;--py:42%" aria-hidden="true">2</span>
+        <span class="hot" style="--dx:74%;--dy:80%;--px:74%;--py:84%" aria-hidden="true">3</span>
       </figure>
       <div class="hero-side">
-        <div class="hero-name"><b>Classic formal shirt</b><span>Level 4 · about 8 hours</span></div>
+        <div class="hero-name"><b>A-line kurti</b><span>Level 3 · about 6 hours</span></div>
         <div class="hero-sw" role="group" aria-label="Fabric colour">${HERO_COLORS.map(([c, n]) => `<button type="button" data-hc="${c}" aria-label="${n}" aria-pressed="${c === heroColor}" style="background:${c}"></button>`).join('')}<span>${HERO_COLORS.find(([c]) => c === heroColor)[1].toUpperCase()}</span></div>
       <ol class="hero-notes">
-        <li><span class="n">1</span><span><b>Collar on a stand</b><span>Interfaced collar and stand, topstitched ⅛″ from the edge.</span></span></li>
-        <li><span class="n">2</span><span><b>Front button band</b><span>Folded band, buttonholes spaced evenly from the collar.</span></span></li>
-        <li><span class="n">3</span><span><b>Set-in sleeve</b><span>Felled armhole seam, then side and sleeve in one seam.</span></span></li>
+        <li><span class="n">1</span><span><b>Front placket</b><span>Two folded strips, edgestitched and boxed at the base, round neck faced.</span></span></li>
+        <li><span class="n">2</span><span><b>Three-quarter sleeve</b><span>Eased into the armhole, hem turned twice and stitched.</span></span></li>
+        <li><span class="n">3</span><span><b>A-line flare</b><span>Bust darts for shape, flared side seams, curved hem eased flat.</span></span></li>
       </ol>
-      <a class="cta hero-make" href="#/design/formal-shirt">MAKE THIS SHIRT</a>
+      <a class="cta hero-make" href="#/design/aline-kurti?o=opening:halfplacket">MAKE THIS KURTI</a>
       </div>
     </div>
   </section>
