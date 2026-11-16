@@ -4,3 +4,4 @@ dist/
 .DS_Store
 docs/chat-session/*.raw.jsonl
 public/audit/
+.tmp/

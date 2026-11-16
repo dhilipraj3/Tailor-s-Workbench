@@ -170,7 +170,31 @@ function pieceSteps(ctx, pls, layIn, cls) {
         `<path d="${big.D(S2pts)}" fill="rgba(255,216,74,.18)" stroke="#ffd84a" stroke-width="2" stroke-dasharray="6 5"/>` + H.pop(cross(bS), 0.6) + H.pop(label(bS, 'S', '#ffd84a'), 0.7);
     } });
   });
-  return steps;
+  // the whole piece at once, for the stage picture: S, every point with its letter, the chalk line,
+  // the sewing space (blue) and the extra cloth (orange) out to the cutting line, and the detail marks
+  const overview = () => {
+    let o = bg() + `<path d="${v.D(cut)} ${v.D([...sa].reverse())}" fill="rgba(242,140,40,.55)" fill-rule="evenodd"/>` +
+      `<path d="${v.D(sa)} ${v.D([...stitch].reverse())}" fill="rgba(120,180,255,.35)" fill-rule="evenodd"/>` +
+      `<path d="${v.D(stitch)}" class="chalkl"/><path d="${v.D(cut)}" fill="none" stroke="#fff" stroke-width="2.5"/>`;
+    for (const mk of piece.marks.filter((m) => m.k !== 'text' && !(m.k === 'line' && m.style === 'guide'))) {
+      if (mk.k === 'btn') { const P = v.M(F(mk.p)); o += `<circle cx="${P[0]}" cy="${P[1]}" r="7" fill="none" stroke="#ff8a65" stroke-width="3"/>`; }
+      else if (mk.k === 'line') o += `<path d="${v.D([F(mk.a), F(mk.b)], false)}" class="redmk"/>`;
+      else { const pairs = [...mk.d.matchAll(/(-?\d*\.?\d+)[ ,]+(-?\d*\.?\d+)/g)].map((m) => F([+m[1], +m[2]])); o += `<path d="${v.D(pairs, /Z\s*$/.test(mk.d))}" class="redmk"/>`; }
+    }
+    if (!piece.simple) {
+      const seen = [];
+      for (const e of piece.outline.edges) {
+        for (const [p, guide] of [[e.pts[0], false], ...(/^[CQ]/.test(e.cmd) ? [[e.pts[Math.floor(e.pts.length / 2)], true]] : [])]) {
+          if (seen.some((q) => near(q, p))) continue;
+          seen.push(p);
+          const P = v.M(F(p)), nm = LETTERS[(seen.length - 1) % LETTERS.length] + (seen.length > LETTERS.length ? '2' : '');
+          o += dot(P, guide ? 4 : 6, guide ? '#9fd3ff' : '#fff') + label(P, nm, guide ? '#9fd3ff' : '#fff');
+        }
+      }
+    }
+    return o + cross(Sm) + label(Sm, 'S', '#ffd84a');
+  };
+  return { steps, overview, name };
 }
 
 export function markSteps(ctx, widthIn = 58) {
@@ -183,5 +207,12 @@ export function markSteps(ctx, widthIn = 58) {
     return fabricBg(v, lay, cls) + lay.placed.map((p, i) => H.move(`<path d="${v.D(p.poly)}" fill="rgba(255,216,74,.16)" stroke="#ffd84a" stroke-width="1.5" stroke-dasharray="5 4"/>`, 0, -60, 0.2 + i * 0.08, 0.5)).join('') +
       H.chip(160, 40, `${widthIn}″ fabric`, 0.2) + H.chip(380, 40, `${lay.metres} m`, 0.4);
   } };
-  return [intro, ...[...groups.values()].flatMap((pls) => pieceSteps(ctx, pls, lay, cls))];
+  // one stage per piece: the piece drawn whole, and its small steps (start point, each point with its
+  // measurements, joining, details, cutting line, cutting, more copies) as a numbered checklist
+  const sayOf = (st) => (typeof st.say === 'function' ? st.say() : st.say);
+  return [intro, ...[...groups.values()].map((pls) => {
+    const { steps, overview, name } = pieceSteps(ctx, pls, lay, cls);
+    return { sec: 'Mark & cut', cap: name, piece: pls[0].g.piece.id, actions: steps, text: '',
+      say: steps.map((a, j) => `${j + 1}. ${a.cap}. ${sayOf(a)}`).join(' '), svg: overview };
+  })];
 }

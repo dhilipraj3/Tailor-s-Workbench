@@ -60,7 +60,7 @@ describe('every stitch is covered', () => {
     const d0 = DESIGNS.find((d) => d.garment === 'pants')!;
     for (const o of combos('pants')) {
       const ctx = buildCtx(d0.id, o, M, 'standard', 'T');
-      const sew = makeSteps(ctx).filter((s: Step) => s.sec === 'Sew');
+      const sew = makeSteps(ctx).filter((s: Step) => s.sec === 'Sew').flatMap((s: any) => s.actions || [s]); // each small step inside a stage
       for (const p of problems(ctx.pieces.map((g) => g.piece), sew)) if (!bad.has(p)) bad.set(p, JSON.stringify(o));
     }
     expect([...bad].map(([p, o]) => `${p}  (${o})`)).toEqual([]);

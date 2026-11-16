@@ -30,7 +30,7 @@ describe('every design in the catalogue', () => {
       expect(lay.metres).toBeGreaterThan(0.4);
       expect(lay.metres).toBeLessThan(6);
       const steps = makeSteps(ctx);
-      expect(steps.length).toBeGreaterThan(15);
+      expect(steps.flatMap((st: any) => st.actions || [st]).length).toBeGreaterThan(15); // small steps, counted inside their stages
       for (const [i, st] of steps.entries()) {
         const svg = stageSvg(st.svg());
         expect(svg, `${d.id} step ${i + 1}`).not.toMatch(/NaN|undefined/);
@@ -39,7 +39,7 @@ describe('every design in the catalogue', () => {
       }
       expect(sheetSvg(ctx, {})).not.toMatch(/NaN/);
       // every main-fabric piece is chalked on the fabric, with a start point and a cut step
-      for (const g of ctx.pieces.filter((x) => x.piece.fabric === 'main')) expect(steps.some((st) => st.cap === 'Start: ' + g.piece.name), g.piece.name + ' has marking steps').toBe(true);
+      for (const g of ctx.pieces.filter((x) => x.piece.fabric === 'main')) expect(steps.flatMap((st: any) => st.actions || [st]).some((st: any) => st.cap === 'Start: ' + g.piece.name), g.piece.name + ' has marking steps').toBe(true);
       for (const w of [36, 44]) for (const st of makeSteps(ctx, w)) expect(stageSvg(st.svg())).not.toMatch(/NaN|undefined/);
     });
   }

@@ -16,6 +16,7 @@ import { howStrip } from '../art/howto.js';
 import { lessonsFor } from '../art/lessons.js';
 import SEW_PHOTOS from '../sew-photos.json';
 import { groupStages, drawStage } from '../guide/tunic.js';
+import { hasPlan, groupFlat, drawFlat } from '../guide/flat.js';
 const sayOf = (st) => (typeof st.say === 'function' ? st.say() : st.say);
 
 /** file name of a sewing step's photo: <garment>--<caption in lower case with dashes> */
@@ -166,6 +167,17 @@ export function makeSteps(ctx, widthIn = 58) {
       const words = g.actions.map((a, k) => `${k + 1}. ${a.cap}. ${sayOf(a)}`).join(' ');
       return { sec: 'Sew', stage: g.key, cap: g.title, actions: g.actions, lessons, say: words, text: '', svg: () => drawStage(ctx, g.key, col) };
     });
+    return [...steps, ...staged, out[out.length - 1]];
+  }
+  // shirts, dresses, skirts, trousers and the pyjama family: the same, with their own stages
+  if (hasPlan(ctx.garment.id) && out.length > 1) {
+    const groups = groupFlat(ctx.garment.id, out.slice(0, -1));
+    const staged = groups.map((g, k) => ({
+      sec: 'Sew', stage: g.key, cap: g.title, actions: g.actions, text: '',
+      lessons: [...new Set(g.actions.flatMap((a) => a.lessons || []))],
+      say: g.actions.map((a, j) => `${j + 1}. ${a.cap}. ${sayOf(a)}`).join(' '),
+      svg: () => drawFlat(ctx, groups, k, col),
+    }));
     return [...steps, ...staged, out[out.length - 1]];
   }
   return [...steps, ...out];

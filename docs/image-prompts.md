@@ -16,7 +16,7 @@ File: `formal-shirt.jpg`
 ## Slim formal shirt
 File: `slim-formal-shirt.jpg`
 
-> Men's light blue cotton slim-fit shirt, spread collar, full button-front placket, long sleeves with buttoned cuffs, no chest pocket, curved shirt-tail hem. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Men's lilac cotton slim-fit shirt, spread collar, full button-front placket, long sleeves with buttoned cuffs, no chest pocket, curved shirt-tail hem. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Button-down shirt
 File: `oxford-shirt.jpg`
@@ -26,7 +26,7 @@ File: `oxford-shirt.jpg`
 ## Band collar shirt
 File: `band-collar-shirt.jpg`
 
-> Men's light blue cotton shirt, mandarin band collar, full button-front placket, long sleeves with buttoned cuffs, no chest pocket, curved shirt-tail hem. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Men's lilac cotton shirt, mandarin band collar, full button-front placket, long sleeves with buttoned cuffs, no chest pocket, curved shirt-tail hem. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Half-sleeve shirt
 File: `half-sleeve-shirt.jpg`
@@ -41,22 +41,22 @@ File: `two-pocket-shirt.jpg`
 ## Formal trousers
 File: `formal-trousers.jpg`
 
-> Men's charcoal grey wool-blend tailored trousers, straight leg, flat front, zip fly with waistband hook, slanted front pockets, belt loops, pressed front creases, plain hem. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Men's deep purple wool-blend tailored trousers, straight leg, flat front, zip fly with waistband hook, slanted front pockets, belt loops, pressed front creases, plain hem. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Slim fit trousers
 File: `slim-trousers.jpg`
 
-> Men's charcoal grey wool-blend tailored trousers, slim tapered leg, flat front, zip fly with waistband hook, slanted front pockets, belt loops, pressed front creases, plain hem. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Men's navy blue wool-blend tailored trousers, slim tapered leg, flat front, zip fly with waistband hook, slanted front pockets, belt loops, pressed front creases, plain hem. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Pleated trousers
 File: `pleated-trousers.jpg`
 
-> Men's charcoal grey wool-blend tailored trousers, straight leg, single front pleats, zip fly with waistband hook, slanted front pockets, belt loops, pressed front creases, cuffed hem (turn-ups). Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Men's deep purple wool-blend tailored trousers, straight leg, single front pleats, zip fly with waistband hook, slanted front pockets, belt loops, pressed front creases, cuffed hem (turn-ups). Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Side-pocket trousers
 File: `side-pocket-trousers.jpg`
 
-> Men's charcoal grey wool-blend tailored trousers, straight leg, flat front, zip fly with waistband hook, side-seam pockets, pressed front creases, plain hem. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Men's deep purple wool-blend tailored trousers, straight leg, flat front, zip fly with waistband hook, side-seam pockets, pressed front creases, plain hem. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Classic kurta
 File: `kurta.jpg`
@@ -66,12 +66,12 @@ File: `kurta.jpg`
 ## Short kurta
 File: `short-kurta.jpg`
 
-> Men's sage green cotton kurta, Indian ethnic wear, round neckline, full-length sleeves, knee length, straight cut, side slits at the hem, short front button placket. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Men's olive green cotton kurta, Indian ethnic wear, round neckline, full-length sleeves, knee length, straight cut, side slits at the hem, short front button placket. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Pyjama
 File: `pyjama.jpg`
 
-> Men's off-white cotton straight-leg pyjama pants, drawstring waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Men's beige cotton straight-leg pyjama pants, drawstring waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Elastic shorts
 File: `men-shorts.jpg`
@@ -96,12 +96,12 @@ File: `saree-blouse.jpg`
 ## Salwar
 File: `salwar.jpg`
 
-> Women's beige cotton salwar pants, very full at the top and narrow at the ankle, drawstring waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Women's sage green cotton salwar pants, very full at the top and narrow at the ankle, drawstring waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Churidar
 File: `churidar.jpg`
 
-> Women's lilac cotton churidar pants, slim legs with soft gathered folds at the ankle, elastic waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Women's sage green cotton churidar pants, slim legs with soft gathered folds at the ankle, elastic waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Palazzo
 File: `palazzo.jpg`
@@ -116,7 +116,7 @@ File: `aline-skirt.jpg`
 ## Gathered maxi skirt
 File: `maxi-skirt.jpg`
 
-> Women's burnt orange cotton gathered skirt, maxi length, elastic waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Women's mustard gold cotton gathered skirt, maxi length, elastic waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Simple dress
 File: `simple-dress.jpg`
@@ -131,12 +131,12 @@ File: `kids-frock.jpg`
 ## Kids' shorts
 File: `kids-shorts.jpg`
 
-> Children's denim blue cotton pull-on shorts, drawstring waist, side pockets. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Children's teal cotton pull-on shorts, drawstring waist, side pockets. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Kids' pyjama
 File: `kids-pyjama.jpg`
 
-> Children's cream cotton straight-leg pyjama pants, elastic waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
+> Children's beige cotton straight-leg pyjama pants, elastic waist. Professional e-commerce product photo, ghost mannequin (invisible mannequin) style, front view, centred, the whole garment visible with a little space around it, no person, no hanger, no visible mannequin, no text, no logo, no brand label, realistic fabric texture with natural soft folds, seamless dark charcoal studio background (#1c1c1b) with a soft round spotlight behind the garment and a subtle shadow below it, soft diffused lighting, sharp focus, photorealistic, portrait 4:5.
 
 ## Kids' kurta
 File: `kids-kurta.jpg`

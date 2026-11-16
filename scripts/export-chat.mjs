@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const SESSION = 'ac5c3b2f-8690-4b90-b52f-d281b0a6a72b';
-const src = process.argv[2] || path.join(os.homedir(), '.claude', 'projects', 'C--Users-Rajkumarb', `${SESSION}.jsonl`);
+const src = process.argv[2] || path.join(os.homedir(), '.claude', 'projects', `C--Users-${path.basename(os.homedir())}`, `${SESSION}.jsonl`);
 const outDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'chat-session');
 
 const lines = fs.readFileSync(src, 'utf8').trim().split('\n').map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);

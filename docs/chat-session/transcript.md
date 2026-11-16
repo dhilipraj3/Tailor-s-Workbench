@@ -58,7 +58,7 @@ Planning the app around ready-made sizes makes sense, because most people know t
 
 I'll build it as a general tailoring workbench that starts with a formal shirt and formal trousers. I read "343" as a typo for waist size 34 and set that as the default.
 
-> 🔧 *Write* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tailors-workbench.html
+> 🔧 *Write* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tailors-workbench.html
 
 > 🔧 *Artifact* · Pick a ready-made shirt or trouser size and get a pattern drafted to those measurements, a fabric calculator and a step-by-step sewing check
 
@@ -95,15 +95,15 @@ thi kind of high level information i can check in online, why should i develop a
 
 I'll rebuild it from scratch as a picture-and-voice guide. Each step will be an animated picture with a spoken explanation, and the text cut down to a few words. It will start at "these are the tools" and go all the way to "wear your shirt".
 
-> 🔧 *Write* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tailors-workbench.html
+> 🔧 *Write* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tailors-workbench.html
 
 ### 🤖 Claude
 
 Yes, I'll set up a code repo at `D:\New folder` in a moment. First I'll fix two picture glitches I spotted and check that the code runs.
 
-> 🔧 *Edit* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tailors-workbench.html
+> 🔧 *Edit* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tailors-workbench.html
 
-> 🔧 *Edit* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tailors-workbench.html
+> 🔧 *Edit* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tailors-workbench.html
 
 > 🔧 *Bash* · Check script syntax and look at target folder
 
@@ -155,13 +155,13 @@ i just told you the thought, you should take care of creating proper webapp. not
 
 > 🔧 *Bash* · Split the single-file app into ES modules
 
-> 🔧 *Write* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tools\split.mjs
+> 🔧 *Write* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tools\split.mjs
 
 > 🔧 *Bash* · Run module split and show generated imports
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tools\split.mjs
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tools\split.mjs
 
-> 🔧 *Write* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tools\split.mjs
+> 🔧 *Write* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\tools\split.mjs
 
 > 🔧 *Bash* · Run module split and show generated imports
 
@@ -239,9 +239,9 @@ The README update didn't save because the tool needs the file to be read first. 
 
 > 🔧 *Bash* · Commit README, plan fix, and fresh transcript
 
-> 🔧 *Write* · C:\Users\Rajkumarb\.claude\projects\C--Users-Rajkumarb\memory\tailors-workbench-project.md
+> 🔧 *Write* · C:\Users\USER\.claude\projects\C--Users-USER\memory\tailors-workbench-project.md
 
-> 🔧 *Write* · C:\Users\Rajkumarb\.claude\projects\C--Users-Rajkumarb\memory\feedback-real-projects-not-artifacts.md
+> 🔧 *Write* · C:\Users\USER\.claude\projects\C--Users-USER\memory\feedback-real-projects-not-artifacts.md
 
 > 🔧 *Bash* · Add memory index entries
 
@@ -249,7 +249,7 @@ The README update didn't save because the tool needs the file to be read first. 
 
 The `\t` was read as a tab character, so I'll correct that index line:
 
-> 🔧 *Write* · C:\Users\Rajkumarb\.claude\projects\C--Users-Rajkumarb\memory\MEMORY.md
+> 🔧 *Write* · C:\Users\USER\.claude\projects\C--Users-USER\memory\MEMORY.md
 
 ### 🤖 Claude
 
@@ -587,17 +587,17 @@ Better, but still above what tailors usually buy. I'll check where the trouser p
 
 > 🔧 *Bash* · Take headless Edge screenshots of key screens
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\catalog.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\catalog.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\design.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\design.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\pattern.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\pattern.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\fabric.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\fabric.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\make.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\make.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\phone.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\phone.png
 
 > 🔧 *Bash* · Fix preview class clash and phone logo
 
@@ -621,13 +621,13 @@ Rebuilding and taking new screenshots, including the light theme, the people scr
 
 > 🔧 *Bash* · Rebuild and retake screenshots
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\design2.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\design2.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\pattern2.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\pattern2.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\people.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\people.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\phone2.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\phone2.png
 
 > 🔧 *Bash* · Find CSS drawing the frame around the preview sketch
 
@@ -635,15 +635,15 @@ Rebuilding and taking new screenshots, including the light theme, the people scr
 
 > 🔧 *Bash* · Fix phone layout, service worker, rebuild, reshoot
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\design3.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\design3.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\phone3.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\phone3.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\phone4.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\phone4.png
 
 > 🔧 *Bash* · Screenshot at 500px width
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\phone5.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\phone5.png
 
 > 🔧 *Bash* · Generate PDFs and try rendering one in Edge
 
@@ -651,15 +651,15 @@ Rebuilding and taking new screenshots, including the light theme, the people scr
 
 Edge's headless mode can't display PDFs, but I can open the PDF directly:
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shirt-full.pdf
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shirt-full.pdf
 
 > 🔧 *Bash* · Fix quote handling in PDF text
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shirt-a4.pdf
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shirt-a4.pdf
 
 > 🔧 *Bash* · Extract first A4 pages for visual check
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\trousers-a4-first3.pdf
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\trousers-a4-first3.pdf
 
 > 🔧 *Read* · D:\New folder\tailors-workbench\src\engine\geometry.ts
 
@@ -673,7 +673,7 @@ Edge's headless mode can't display PDFs, but I can open the PDF directly:
 
 > 🔧 *Bash* · Recheck page counts and regenerate trousers PDF
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\trousers-full.pdf
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\trousers-full.pdf
 
 ### 🤖 Claude
 
@@ -744,7 +744,7 @@ you run the npn and show the output
 
 > 🔧 *Bash* · Run the test suite
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\tasks\bucwjgpb4.output
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\tasks\bucwjgpb4.output
 
 ### 🤖 Claude
 
@@ -845,13 +845,13 @@ All tests pass. Now I want to see the marking steps on screen. I'll add a direct
 
 > 🔧 *Bash* · Screenshot the marking steps
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-start.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-start.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-pts.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-pts.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-cutline.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-cutline.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-det.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-det.png
 
 ### 🤖 Claude
 
@@ -881,19 +881,19 @@ Found it. In the shortcut link code, two different values had the same name `d`,
 
 > 🔧 *Bash* · Fix the name clash, remove debug, retake screenshots
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-start.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-start.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-pts.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-pts.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-cutline.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-cutline.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-det.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-det.png
 
 > 🔧 *Edit* · D:\New folder\tailors-workbench\src\views\mark-steps.js
 
 > 🔧 *Bash* · Move chips to a list, run tests, screenshot trousers step
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-tr2.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\m-tr2.png
 
 ### 🤖 Claude
 
@@ -981,19 +981,19 @@ The shell's quoting got in the way again, so I'll write the script with the file
 
 > 🔧 *Bash* · Screenshot realistic visuals
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-sew.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-sew.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-mark.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-mark.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-cat.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-cat.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-help.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-help.png
 
 > 🔧 *Bash* · Soften folds, upgrade tool icons, reshoot
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-help2.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-help2.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-sew2.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\r-sew2.png
 
 > 🔧 *Bash* · Test and commit realism update
 
@@ -1109,13 +1109,13 @@ All 49 tests pass, covering 28 designs and thousands of option combinations. Now
 
 > 🔧 *Bash* · Screenshot new designs
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-cat.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-cat.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-kurti.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-kurti.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-frockpat.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-frockpat.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-skirtfab.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-skirtfab.png
 
 > 🔧 *Read* · D:\New folder\tailors-workbench\src\engine\project.ts
 
@@ -1139,9 +1139,9 @@ The only failure is the maxi skirt with exactly 20 steps. That's fine for such a
 
 > 🔧 *Bash* · Relax step-count check and rerun
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-frock2.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-frock2.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-skirt2.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\b-skirt2.png
 
 ### 🤖 Claude
 
@@ -1246,7 +1246,7 @@ mesurements should be on the line will be more clear to understand. wht you thin
 
 ## 🧑 User
 
-[Image: source: C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\images\1.png]
+[Image: source: C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\images\1.png]
 
 ### 🤖 Claude
 
@@ -1265,9 +1265,9 @@ Your eye then follows the line and reads the number in the same place. Making th
 
 > 🔧 *Bash* · Screenshot point-marking steps
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\ml11.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\ml11.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\ml8.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\ml8.png
 
 > 🔧 *Read* · D:\New folder\tailors-workbench\src\views\mark-steps.js
 
@@ -1275,9 +1275,9 @@ Your eye then follows the line and reads the number in the same place. Making th
 
 > 🔧 *Bash* · Screenshot updated marking steps
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\mm8.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\mm8.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\mm16.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\mm16.png
 
 > 🔧 *Bash* · Run tests and commit
 
@@ -1305,9 +1305,9 @@ Sounds good. Like a tailor writing on the fabric: plain text with no box, writte
 
 > 🔧 *Bash* · Screenshot box-free measurements
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\mt16.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\mt16.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\mt10.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\mt10.png
 
 ### 🤖 Claude
 
@@ -1453,35 +1453,35 @@ All 49 tests pass. Now I'll look at the pyjama assembly steps on screen:
 
 > 🔧 *Bash* · Screenshot pyjama assembly steps
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\a40-9000.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\a40-9000.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\a42-1400.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\a42-1400.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\a42-9000.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\a42-9000.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\a43-9000.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\a43-9000.png
 
 > 🔧 *Bash* · Add ?t= deep link, gap between cut pieces, centred zoom
 
 > 🔧 *Bash* · Test, then screenshot steps at chosen moments
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p42-1.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p42-1.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p42-5.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p42-5.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p43-4.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p43-4.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p44-1.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p44-1.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p45-4.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p45-4.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p47-3.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p47-3.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p48-5.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p48-5.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p50-4.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p50-4.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p52-5.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\p52-5.png
 
 > 🔧 *Bash* · Locate front-view code
 
@@ -1493,8 +1493,8 @@ All 49 tests pass. Now I'll look at the pyjama assembly steps on screen:
 
 > 🔧 *Bash* · Screenshot front views for several styles
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\fv-pyjama.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\fv-pyjama.png
 
-> 🔧 *Read* · C:\Users\RAJKUM~1\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\fv-palazzo.png
+> 🔧 *Read* · C:\Users\USER\AppData\Local\Temp\claude\be4920f8f543cea9\ac5c3b2f-8690-4b90-b52f-d281b0a6a72b\scratchpad\shots\fv-palazzo.png
 
 > 🔧 *Bash* · Test and commit pants assembly
