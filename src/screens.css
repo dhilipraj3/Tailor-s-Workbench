@@ -215,3 +215,17 @@
 .learn { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: .82rem; color: #b3b3ae; }
 .learn-l { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); font-weight: 700; }
 .learn-l:hover { background: var(--accent); color: var(--accent-ink); }
+
+/* stage checklist: each small step of a sewing stage, numbered; tap the number when it is done */
+.acts { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.act { display: grid; grid-template-columns: 34px 1fr; gap: 12px; padding: 12px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); }
+.act.ok { opacity: .55; }
+.act-n { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--accent); background: transparent; color: var(--accent); font-weight: 800; cursor: pointer; }
+.act.ok .act-n { background: var(--accent); color: var(--accent-ink); }
+.act-b { display: grid; gap: 6px; min-width: 0; }
+.act-b b { color: #f2f2ee; font-size: 1rem; }
+.act-b p { margin: 0; color: #c9c9c4; line-height: 1.55; font-size: .92rem; }
+.act .chips-sew li { font-size: .76rem; padding: 4px 10px; }
+.act .sew-check { font-size: .86rem; margin: 0; }
+/* while reading a long checklist, the stage drawing stays in view */
+@media (min-width: 900px) { .pl2 .pl-stage { position: sticky; top: 12px; align-self: start; } }

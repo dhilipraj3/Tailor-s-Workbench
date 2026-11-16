@@ -15,6 +15,8 @@ import { f as fmt, sn } from '../core/units.js';
 import { howStrip } from '../art/howto.js';
 import { lessonsFor } from '../art/lessons.js';
 import SEW_PHOTOS from '../sew-photos.json';
+import { groupStages, drawStage } from '../guide/tunic.js';
+const sayOf = (st) => (typeof st.say === 'function' ? st.say() : st.say);
 
 /** file name of a sewing step's photo: <garment>--<caption in lower case with dashes> */
 export const sewPhotoName = (garment, cap) => `${garment}--${String(cap).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
@@ -156,5 +158,15 @@ export function makeSteps(ctx, widthIn = 58) {
   for (let i = 0; i < out.length - 1; i++) out[i] = { ...out[i], lessons: lessonsFor(out[i], ctx.garment.id) };
   const last = out[out.length - 1];
   if (last) out[out.length - 1] = { ...last, svg: () => finishedScene(ctx) };
+  // Kurta, kurti and blouse: the small steps are grouped into stages, each with one drawing of the garment
+  // as it is at that point and the small steps as a numbered checklist (nothing is dropped).
+  if (ctx.garment.id === 'tunic' && out.length > 1) {
+    const staged = groupStages(out.slice(0, -1)).map((g) => {
+      const lessons = [...new Set(g.actions.flatMap((a) => a.lessons || []))];
+      const words = g.actions.map((a, k) => `${k + 1}. ${a.cap}. ${sayOf(a)}`).join(' ');
+      return { sec: 'Sew', stage: g.key, cap: g.title, actions: g.actions, lessons, say: words, text: '', svg: () => drawStage(ctx, g.key, col) };
+    });
+    return [...steps, ...staged, out[out.length - 1]];
+  }
   return [...steps, ...out];
 }

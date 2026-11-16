@@ -85,9 +85,17 @@ describe('every sewing step is drawn on the real pieces', () => {
       S.unit = 'in';
       const ctx = buildCtx(d.id, d.options, M, 'standard', 'T');
       const sew = makeSteps(ctx).filter((s: Step) => s.sec === 'Sew');
-      // every step except the finished garment shows at least one real piece (fabric drawn with the cloth filter)
-      const generic = sew.slice(0, -1).filter((s: Step) => !/filter:url\(#cloth\)/.test(s.svg())).map((s: Step) => s.cap);
+      // every step except the finished garment shows the real pieces: drawn with the cloth filter, or (kurta family)
+      // a stage drawing of the garment built from the pieces, with the seam to sew now highlighted
+      const real = (s: any) => /filter:url\(#cloth\)/.test(s.svg()) || (s.actions?.length && /Sew now/.test(s.svg()) && /stroke="#e8762c"/.test(s.svg()));
+      const generic = sew.slice(0, -1).filter((s: Step) => !real(s)).map((s: Step) => s.cap);
       expect(generic).toEqual([]);
+      // a stage keeps every small step: nothing from the old step list is dropped
+      if (d.garment === 'tunic') {
+        const flat = sew.slice(0, -1).flatMap((s: any) => s.actions || [s]).map((s: Step) => s.cap);
+        const own = ctx.garment.steps(ctx.options, { m: ctx.m, pieces: ctx.pieces.map((g) => g.piece) }).slice(0, -1).map((s: Step) => s.cap);
+        expect(flat).toEqual(own);
+      }
     });
   }
 });
@@ -109,7 +117,7 @@ describe('every sewing step explains its technique', () => {
     it(d.name, async () => {
       const { howStrip } = await import('../src/art/howto.js');
       S.unit = 'in';
-      const sew = makeSteps(buildCtx(d.id, d.options, M, 'standard', 'T')).filter((s: Step) => s.sec === 'Sew').slice(0, -1);
+      const sew = makeSteps(buildCtx(d.id, d.options, M, 'standard', 'T')).filter((s: Step) => s.sec === 'Sew').slice(0, -1).flatMap((s: any) => s.actions || [s]); // each small step inside a stage
       const missing = sew.filter((s: any) => !howStrip(s, '#c45b6b', d.garment)).map((s: Step) => s.cap);
       expect(missing).toEqual([]);
     });

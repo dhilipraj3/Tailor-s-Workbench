@@ -52,7 +52,7 @@ group('everything a step uses is on the shopping list', () => {
       await new Promise((r) => setTimeout(r, 0)); // let the test runner report progress
       const ctx = buildCtx(d.id, o, M, 'standard', 'T');
       const sup = ctx.garment.supplies(ctx.m, ctx.options), has = (icon: string, word = '') => sup.some((x) => x.icon === icon || (word && x.say.toLowerCase().includes(word)));
-      const sew: Step[] = makeSteps(ctx).filter((s: Step) => s.sec === 'Sew');
+      const sew: Step[] = makeSteps(ctx).filter((s: Step) => s.sec === 'Sew').flatMap((s: any) => s.actions || [s]); // each small step inside a stage
       const where = JSON.stringify(o);
       if (sew.some((s) => s.d?.stitch === 'button')) expect(has('buttons'), `buttons ${where}`).toBe(true);
       if (sew.some((s) => s.d?.foot === 'Zipper foot')) expect(has('zip'), `zip ${where}`).toBe(true);
@@ -108,7 +108,7 @@ group('steps that place, size or space something say how much, in this person\'s
     S.unit = 'in';
     for (const o of variants(d)) {
       await new Promise((r) => setTimeout(r, 0)); // let the test runner report progress
-      const sew: Step[] = makeSteps(buildCtx(d.id, o, M, 'standard', 'T')).filter((s: Step) => s.sec === 'Sew');
+      const sew: Step[] = makeSteps(buildCtx(d.id, o, M, 'standard', 'T')).filter((s: Step) => s.sec === 'Sew').flatMap((s: any) => s.actions || [s]);
       const missing = sew.filter((s) => NEED.test(s.cap) && !SIZE.test(say(s))).map((s) => s.cap);
       expect(missing, JSON.stringify(o)).toEqual([]);
     }

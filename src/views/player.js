@@ -18,6 +18,14 @@ function chipsHtml(d) {
   return `<div class="sewd"><ul class="chips-sew" aria-label="How to sew this">${items}</ul>${d.check ? `<p class="sew-check">Check: ${esc(d.check)}</p>` : ''}</div>`;
 }
 
+/** A stage's small steps as a numbered checklist: what to do, the size, the stitch and the check for each. */
+function actionsHtml(st, ticks) {
+  const textOf = (a) => { const t = a.text ?? a.say; return typeof t === 'function' ? t() : t; };
+  return `<ol class="acts">${st.actions.map((a, k) => `<li class="act ${ticks.includes(k) ? 'ok' : ''}">
+    <button class="act-n" data-tick="${k}" aria-pressed="${ticks.includes(k)}" aria-label="Mark ${k + 1} done">${ticks.includes(k) ? '✓' : k + 1}</button>
+    <div class="act-b"><b>${esc(a.cap)}</b><p>${esc(textOf(a))}</p>${chipsHtml(a.d)}</div></li>`).join('')}</ol>`;
+}
+
 const PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z" fill="currentColor"/></svg>';
 const PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/></svg>';
 
@@ -61,6 +69,11 @@ function timeline(svg, onTick, onEnd) {
 export function mountPlayer(el, { steps, start = 0, done = [], onIndex, onFinish, finishIcon, atTime = null }) {
   let i = Math.min(Math.max(0, Number.isFinite(+start) ? +start : 0), steps.length - 1);
   let tl = null, autoTimer = 0;
+  // ticked actions of a stage, remembered per project page and stage
+  const ticksOf = (j) => {
+    const all = (store.ticks ||= {}), k = `${(typeof location !== 'undefined' ? location.hash : '').split('?')[0].replace(/\/\d+$/, '')}#${j}:${steps[j]?.cap}`;
+    return (all[k] ||= []);
+  };
   const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
   const tick = (t, dur, playing) => {
     const r = el.querySelector('#tl-range'), b = el.querySelector('#tl-play');
@@ -85,7 +98,7 @@ export function mountPlayer(el, { steps, start = 0, done = [], onIndex, onFinish
       return `<button class="sec-t ${s === cur ? 'cur' : ''} ${doneN === tot ? 'full' : ''}" data-go="${s.a}"><b>${s.n}</b><span class="sbar"><i style="width:${(doneN / tot) * 100}%"></i></span></button>`;
     }).join('')}</div>` : '';
     const secName = (cur.n || '').toUpperCase(), text = st.text ? (typeof st.text === 'function' ? st.text() : st.text) : sayOf(st);
-    const slow = (store.speed || 1) < 1;
+    const slow = (store.speed || 1) < 1, still = !!st.actions;
     el.innerHTML = `<div class="player pl2">${secBar}
       <div class="pl-grid">
         <div class="pl-stage">
@@ -95,23 +108,26 @@ export function mountPlayer(el, { steps, start = 0, done = [], onIndex, onFinish
         <div class="pl-side">
           <span class="eyebrow">${esc(secName)}${secName ? ' · ' : ''}STEP ${i - cur.a + 1} OF ${cur.b - cur.a + 1}</span>
           <h2 class="pl-cap">${esc(st.cap)}</h2>
-          <p class="pl-say">${esc(text)}</p>
-          ${chipsHtml(st.d)}
-          ${st.lessons?.length ? `<div class="learn"><span>Learn this first:</span>${st.lessons.map((l) => `<a class="learn-l" href="#/help/learn/${l}">${esc(LESSONS[l].title)}</a>`).join('')}</div>` : ''}
-          <div class="pl-tl"><input type="range" id="tl-range" min="0" max="1000" value="0" aria-label="Move through this step"><div class="pl-times"><span id="tl-time">0:00</span><span id="tl-dur"></span></div></div>
+          ${st.actions ? actionsHtml(st, ticksOf(i)) : `<p class="pl-say">${esc(text)}</p>
+          ${chipsHtml(st.d)}`}
+          ${st.lessons?.length ? `<div class="learn"><span>${st.actions ? 'New to a technique? Learn it here:' : 'Learn this first:'}</span>${st.lessons.map((l) => `<a class="learn-l" href="#/help/learn/${l}">${esc(LESSONS[l].title)}</a>`).join('')}</div>` : ''}
+          ${still ? '' : `<div class="pl-tl"><input type="range" id="tl-range" min="0" max="1000" value="0" aria-label="Move through this step"><div class="pl-times"><span id="tl-time">0:00</span><span id="tl-dur"></span></div></div>`}
           <div class="pl-ctrls">
-            <button class="pl-b pl-sm ${slow ? 'on' : ''}" id="tl-slow" aria-pressed="${slow}" aria-label="Slow motion">0.5×</button>
+            ${still ? '' : `<button class="pl-b pl-sm ${slow ? 'on' : ''}" id="tl-slow" aria-pressed="${slow}" aria-label="Slow motion">0.5×</button>`}
             <button class="pl-b" id="b-prev" aria-label="Back" ${i === 0 ? 'disabled' : ''}>${IC.prev}</button>
-            <button class="pl-b pl-play" id="tl-play" aria-label="Pause">${PAUSE}</button>
+            ${still ? '' : `<button class="pl-b pl-play" id="tl-play" aria-label="Pause">${PAUSE}</button>`}
             <button class="pl-b" id="b-next" aria-label="${last ? 'Finish' : 'Next'}">${last ? (finishIcon || IC.check) : IC.next}</button>
             ${canSpeak ? `<button class="pl-b" id="b-say" aria-label="Say it">${IC.say}</button>` : ''}
           </div>
-          <div class="pl-more"><button class="pl-link" id="b-replay">${IC.replay}<span>Play again</span></button><button class="pl-link ${store.autoplay ? 'on' : ''}" id="tl-auto" aria-pressed="${!!store.autoplay}">${IC.next}<span>Auto-play next</span></button></div>
+          ${still ? '' : `<div class="pl-more"><button class="pl-link" id="b-replay">${IC.replay}<span>Play again</span></button><button class="pl-link ${store.autoplay ? 'on' : ''}" id="tl-auto" aria-pressed="${!!store.autoplay}">${IC.next}<span>Auto-play next</span></button></div>`}
         </div>
       </div></div>`;
-    el.querySelector('#tl-range').addEventListener('input', (e) => tl?.seek((+e.target.value / 1000) * tl.dur));
-    startTimeline();
-    if (atTime != null && Number.isFinite(atTime)) { tl.seek(atTime); atTime = null; } // deep link to a moment: ?t=seconds
+    tl?.stop(); tl = null;
+    if (!still) {
+      el.querySelector('#tl-range').addEventListener('input', (e) => tl?.seek((+e.target.value / 1000) * tl.dur));
+      startTimeline();
+      if (atTime != null && Number.isFinite(atTime)) { tl.seek(atTime); atTime = null; } // deep link to a moment: ?t=seconds
+    }
     onIndex?.(i);
     if (voice && store.voice) speak(sayOf(st));
   };
@@ -120,6 +136,14 @@ export function mountPlayer(el, { steps, start = 0, done = [], onIndex, onFinish
     const tap = e.target.closest('[data-say]'); if (tap) { speak(tap.dataset.say); return; }
     const b = e.target.closest('button');
     if (!b) { if (e.target.closest('#stage')) tl?.toggle(); return; }
+    if (b.dataset.tick != null) {
+      const t = ticksOf(i), k = +b.dataset.tick, at = t.indexOf(k);
+      if (at < 0) t.push(k); else t.splice(at, 1);
+      save();
+      const li = b.closest('.act'), on = at < 0;
+      li.classList.toggle('ok', on); b.textContent = on ? '✓' : String(k + 1); b.setAttribute('aria-pressed', String(on));
+      return;
+    }
     if (b.dataset.go) go(+b.dataset.go);
     else if (b.id === 'b-next') go(i + 1);
     else if (b.id === 'b-prev') go(i - 1);
